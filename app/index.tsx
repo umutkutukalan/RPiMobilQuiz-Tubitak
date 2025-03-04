@@ -2,9 +2,11 @@ import { Text, View } from "react-native";
 
 export default function Index() {
   return (
-    <View className="h-full flex items-center justify-center">
-      <Text className="text-lg font-bold">Beyza Nur Bostancıoğlu</Text>
-      <Text className="text-lg font-bold">Selva Korkmaz</Text>
+    <View className="h-screen flex items-center justify-center">
+      <View className="bg-blue-500 p-20 rounded-lg">
+      <Text className="text-2xl font-bold text-center">Beyza Nur Bostancıoğlu</Text>
+      <Text className="text-2xl font-bold text-center">Selva Korkmaz</Text>
+      </View>
     </View>
   );
 }
