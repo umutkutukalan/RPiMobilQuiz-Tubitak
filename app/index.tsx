@@ -6,6 +6,7 @@ export default function Index() {
       <View className="bg-blue-500 p-20 rounded-lg">
       <Text className="text-2xl font-bold text-center">Beyza Nur Bostancıoğlu</Text>
       <Text className="text-2xl font-bold text-center">Selva Korkmaz</Text>
+      <Text className="text-2xl font-bold text-center">Umut Kütükalan</Text>
       </View>
     </View>
   );
