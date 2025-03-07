@@ -6,7 +6,6 @@ export default function Index() {
     <View>
       <Link href="/sign-in">Sıgn In Click</Link>
       <Link href="/profile">Profile Click</Link>
-      <Link href="/deneme">Deneme Click</Link>
     </View>
   );
 }
