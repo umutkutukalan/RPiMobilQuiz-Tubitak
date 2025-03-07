@@ -1,11 +1,18 @@
-import { Text, View } from "react-native";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import LoginPage from "./pages/Auth/LoginPage";
+
+const Stack = createStackNavigator();
 
 export default function Index() {
   return (
-    <View className="h-screen flex items-center justify-center">
-      <View className="bg-blue-500 p-20 rounded-lg">
-        <Text className="text-white text-2xl">Project Start</Text>
-      </View>
-    </View>
+    <Stack.Navigator initialRouteName="Login">
+      <Stack.Screen
+        name="Login"
+        component={LoginPage}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
   );
 }
