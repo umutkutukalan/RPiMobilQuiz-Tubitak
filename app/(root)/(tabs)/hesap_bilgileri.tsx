@@ -10,9 +10,9 @@ interface Props {
 
 export default function AccountUpdateScreen({ navigation }: Props) {
   const [formData, setFormData] = useState({
-    fullName: 'Ahmet Yılmaz',
-    email: 'ahmet.yilmaz@example.com',
-    phone: '5551234567',
+    fullName: 'kullanici adi',
+    email: 'kullanici.adi@example.com',
+    phone: '05xx xxx xx xx',
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
