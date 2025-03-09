@@ -1,51 +1,46 @@
 import React, { useState } from "react";
-import { Text, View, TextInput, TouchableOpacity, Switch, StyleSheet } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Switch, StyleSheet } from "react-native";
 
-export default function AuthForm() {
+export default function AuthScreen() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const [forgotPassword, setForgotPassword] = useState(false);  // Forgot password ekranını kontrol etmek için bir durum ekliyoruz.
-
-  // Şifre sıfırlama işlemi (e-posta) için kullanılan state
-  const [email, setEmail] = useState("");
+  const [userType, setUserType] = useState("öğrenci");
+  const [inviteCode, setInviteCode] = useState("");
+  const [isForgotPassword, setIsForgotPassword] = useState(false); // Şifremi unuttum sayfası için state
 
   return (
     <View style={styles.container}>
-      {forgotPassword ? (
-        <View>
-          {/* Forgot Password Formu */}
+      {isForgotPassword ? ( // Eğer şifremi unuttum sayfası açık ise
+        <View style={styles.forgotPasswordContainer}>
           <Text style={styles.title}>Şifremi Unuttum</Text>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>E-posta adresinizi girin</Text>
+            <Text style={styles.label}>E-posta</Text>
             <TextInput
-              style={styles.input}
+              style={styles.input}  // Genişliği %100 yapan stil
               placeholder="E-posta adresinizi girin"
               keyboardType="email-address"
-              value={email}
-              onChangeText={setEmail}
             />
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={() => console.log("Şifre sıfırlama bağlantısı gönderildi")}>
-            <Text style={styles.buttonText}>Şifre Sıfırlama Bağlantısını Gönder</Text>
+          <TouchableOpacity style={styles.button} onPress={() => console.log("E-posta gönderildi")}>
+            <Text style={styles.buttonText}>Gönder</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => setForgotPassword(false)}>
-            <Text style={styles.toggleLink}>Geri Dön</Text>
+          <TouchableOpacity onPress={() => setIsForgotPassword(false)}>
+            <Text style={styles.toggleText}>Geri Dön</Text>
           </TouchableOpacity>
         </View>
       ) : (
         <View>
-          {/* Normal Sign In / Sign Up Formu */}
           <Text style={styles.title}>{isSignUp ? "Kayıt Ol" : "Giriş Yap"}</Text>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>E-posta</Text>
-            <TextInput style={styles.input} placeholder="E-posta adresinizi girin" keyboardType="email-address" />
+            <Text style={styles.label}>Email</Text>
+            <TextInput style={styles.input} placeholder="Email adresinizi girin" keyboardType="email-address" />
           </View>
 
           <View style={styles.inputContainer}>
@@ -72,20 +67,51 @@ export default function AuthForm() {
                 secureTextEntry={!showPassword}
                 value={confirmPassword}
                 onChangeText={setConfirmPassword}
-                placeholder="Şifrenizi onaylayın"
+                placeholder="Şifrenizi tekrar girin"
               />
             </View>
           )}
 
           {!isSignUp && (
             <View style={styles.rememberMeContainer}>
-              <Switch value={rememberMe} onValueChange={setRememberMe} />
-              <Text style={styles.rememberMeLabel}>Beni hatırla</Text>
-              <TouchableOpacity
-                onPress={() => setForgotPassword(true)}  // Forgot password formuna geçiş yapıyoruz
-              >
-                <Text style={styles.forgotPassword}>Şifrenizi mi unuttunuz?</Text>
+              <Switch
+                value={rememberMe}
+                onValueChange={(value) => setRememberMe(value)} // Düzeltilmiş
+              />
+              <Text style={styles.rememberMeLabel}>Beni Hatırla</Text>
+              <TouchableOpacity onPress={() => setIsForgotPassword(true)}>
+                <Text style={styles.forgotPassword}>Şifremi Unuttum</Text>
               </TouchableOpacity>
+            </View>
+          )}
+
+          {isSignUp && (
+            <View style={styles.registrationContainer}>
+              <Text style={styles.label}>Kayıt Türü:</Text>
+              <View style={styles.radioGroup}>
+                <TouchableOpacity
+                  style={[styles.radioButton, userType === "öğrenci" && styles.radioButtonChecked]}
+                  onPress={() => setUserType("öğrenci")}
+                >
+                  <Text style={styles.radioLabel}>Öğrenci</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[styles.radioButton, userType === "eğitmen" && styles.radioButtonChecked]}
+                  onPress={() => setUserType("eğitmen")}
+                >
+                  <Text style={styles.radioLabel}>Eğitmen</Text>
+                </TouchableOpacity>
+              </View>
+
+              {userType === "eğitmen" && (
+                <TextInput
+                  style={styles.input}
+                  placeholder="Eğitmen Davet Kodu"
+                  value={inviteCode}
+                  onChangeText={setInviteCode}
+                />
+              )}
             </View>
           )}
 
@@ -95,12 +121,9 @@ export default function AuthForm() {
 
           <View style={styles.toggleContainer}>
             <Text style={styles.toggleText}>
-              {isSignUp ? "Hesabınız var mı? " : "Hesabınız yok mu? "}
-              <Text
-                style={styles.toggleLink}
-                onPress={() => setIsSignUp(!isSignUp)}
-              >
-                {isSignUp ? "Giriş yap" : "Kayıt ol"}
+              {isSignUp ? "Zaten bir hesabın var mı? " : "Hesabın yok mu? "}
+              <Text style={styles.toggleLink} onPress={() => setIsSignUp(!isSignUp)}>
+                {isSignUp ? "Giriş Yap" : "Kayıt Ol"}
               </Text>
             </Text>
           </View>
@@ -115,6 +138,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 16,
+    backgroundColor: "white",
   },
   title: {
     fontSize: 24,
@@ -124,12 +148,14 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginBottom: 16,
+    width: "100%", // Input container'ın genişliği %100
   },
   label: {
     fontSize: 18,
     fontWeight: "500",
   },
   input: {
+    width: "100%", // Giriş kutularının genişliği %100 olacak
     paddingVertical: 12,
     paddingLeft: 10,
     borderColor: "#d1d5db",
@@ -163,7 +189,29 @@ const styles = StyleSheet.create({
     color: "#3b82f6",
     fontWeight: "500",
   },
+  registrationContainer: {
+    marginBottom: 16,
+  },
+  radioGroup: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 16,
+  },
+  radioButton: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+  },
+  radioButtonChecked: {
+    backgroundColor: "#1E90FF",
+  },
+  radioLabel: {
+    fontSize: 16,
+    color: "#333",
+  },
   button: {
+    width: "100%", // Butonun genişliği %100 olacak
     backgroundColor: "#0f1117",
     paddingVertical: 16,
     borderRadius: 8,
@@ -184,7 +232,14 @@ const styles = StyleSheet.create({
     color: "#3b82f6",
     fontWeight: "600",
   },
+  forgotPasswordContainer: {
+    alignItems: "center",
+    width: "100%", // Bu container'ın genişliğini %100 yapıyoruz
+  },
+  forgotPasswordText: {
+    marginTop: 16,
+    color: "#3b82f6",
+    fontWeight: "500",
+  },
 });
-
-
 
