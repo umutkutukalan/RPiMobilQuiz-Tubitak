@@ -22,6 +22,7 @@ import {
   StatusBar,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Link } from 'expo-router';
 
 
 
@@ -75,7 +76,7 @@ export default function ProfileScreen() {
             </View>
             <TouchableOpacity style={styles.editButton}>
               <Ionicons name="pencil-outline" size={16} color="#333" />
-              <Text style={styles.editButtonText}>Profili Düzenle</Text>
+              <Link href="/hesap_bilgileri"><Text style={styles.editButtonText}>Profili Düzenle</Text></Link>
             </TouchableOpacity>
           </View>
         </View>
@@ -122,10 +123,11 @@ export default function ProfileScreen() {
 
         {/* Menu items */}
         <View style={styles.card}>
+          <Link href="/hesap_bilgileri">
           <MenuItem 
             icon="person-outline" 
             label="Hesap Bilgileri" 
-          />
+          /></Link>
           <MenuItem 
             icon="trophy-outline" 
             label="Başarılarım" 

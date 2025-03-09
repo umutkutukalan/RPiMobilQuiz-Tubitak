@@ -6,6 +6,7 @@ export default function Index() {
     <View>
       <Link href="/sign-in">Sıgn In Click</Link>
       <Link href="/profile">Profile Click</Link>
+      <Link href="/hesap_bilgileri">Hesap Bilgileri Click</Link> 
     </View>
   );
 }
