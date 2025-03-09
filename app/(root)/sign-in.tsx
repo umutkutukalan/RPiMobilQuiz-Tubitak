@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Text, View, TextInput, TouchableOpacity, Switch, StyleSheet } from "react-native";
 
 export default function AuthForm() {
@@ -7,80 +7,105 @@ export default function AuthForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [forgotPassword, setForgotPassword] = useState(false);  // Forgot password ekranını kontrol etmek için bir durum ekliyoruz.
 
-  // Sayfa yüklendiğinde ve state değiştiğinde mesaj göster
-  useEffect(() => {
-    console.log("📌 AuthForm yüklendi!");
-  }, []);
-
-  useEffect(() => {
-    console.log("🔄 isSignUp değişti:", isSignUp);
-  }, [isSignUp]);
+  // Şifre sıfırlama işlemi (e-posta) için kullanılan state
+  const [email, setEmail] = useState("");
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{isSignUp ? "Sign Up" : "Sign In"}</Text>
+      {forgotPassword ? (
+        <View>
+          {/* Forgot Password Formu */}
+          <Text style={styles.title}>Forgot Password</Text>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Email</Text>
-        <TextInput style={styles.input} placeholder="Enter your email" keyboardType="email-address" />
-      </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Enter your email</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your email"
+              keyboardType="email-address"
+              value={email}
+              onChangeText={setEmail}
+            />
+          </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Password</Text>
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={styles.input}
-            secureTextEntry={!showPassword}
-            value={password}
-            onChangeText={setPassword}
-            placeholder="Enter your password"
-          />
-          <TouchableOpacity style={styles.eyeIcon} onPress={() => setShowPassword(!showPassword)}>
-            <Text style={styles.eyeIconText}>{showPassword ? "Hide" : "Show"}</Text>
+          <TouchableOpacity style={styles.button} onPress={() => console.log("Password reset link sent")}>
+            <Text style={styles.buttonText}>Send Reset Link</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => setForgotPassword(false)}>
+            <Text style={styles.toggleLink}>Back to Sign In</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      ) : (
+        <View>
+          {/* Normal Sign In / Sign Up Formu */}
+          <Text style={styles.title}>{isSignUp ? "Sign Up" : "Sign In"}</Text>
 
-      {isSignUp && (
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Confirm Password</Text>
-          <TextInput
-            style={styles.input}
-            secureTextEntry={!showPassword}
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            placeholder="Confirm your password"
-          />
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Email</Text>
+            <TextInput style={styles.input} placeholder="Enter your email" keyboardType="email-address" />
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Password</Text>
+            <View style={styles.passwordContainer}>
+              <TextInput
+                style={styles.input}
+                secureTextEntry={!showPassword}
+                value={password}
+                onChangeText={setPassword}
+                placeholder="Enter your password"
+              />
+              <TouchableOpacity style={styles.eyeIcon} onPress={() => setShowPassword(!showPassword)}>
+                <Text style={styles.eyeIconText}>{showPassword ? "Hide" : "Show"}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {isSignUp && (
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Confirm Password</Text>
+              <TextInput
+                style={styles.input}
+                secureTextEntry={!showPassword}
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                placeholder="Confirm your password"
+              />
+            </View>
+          )}
+
+          {!isSignUp && (
+            <View style={styles.rememberMeContainer}>
+              <Switch value={rememberMe} onValueChange={setRememberMe} />
+              <Text style={styles.rememberMeLabel}>Remember me</Text>
+              <TouchableOpacity
+                onPress={() => setForgotPassword(true)}  // Forgot password formuna geçiş yapıyoruz
+              >
+                <Text style={styles.forgotPassword}>Forgot password?</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          <TouchableOpacity style={styles.button} onPress={() => console.log(isSignUp ? "Sign Up Pressed" : "Sign In Pressed")}>
+            <Text style={styles.buttonText}>{isSignUp ? "Sign Up" : "Sign In"}</Text>
+          </TouchableOpacity>
+
+          <View style={styles.toggleContainer}>
+            <Text style={styles.toggleText}>
+              {isSignUp ? "Already have an account? " : "Don't have an account? "}
+              <Text
+                style={styles.toggleLink}
+                onPress={() => setIsSignUp(!isSignUp)}
+              >
+                {isSignUp ? "Sign in" : "Sign up"}
+              </Text>
+            </Text>
+          </View>
         </View>
       )}
-
-      {!isSignUp && (
-        <View style={styles.rememberMeContainer}>
-          <Switch value={rememberMe} onValueChange={setRememberMe} />
-          <Text style={styles.rememberMeLabel}>Remember me</Text>
-          <Text style={styles.forgotPassword}>Forgot password?</Text>
-        </View>
-      )}
-
-      <TouchableOpacity style={styles.button} onPress={() => console.log(isSignUp ? "Sign Up Pressed" : "Sign In Pressed")}>
-        <Text style={styles.buttonText}>{isSignUp ? "Sign Up" : "Sign In"}</Text>
-      </TouchableOpacity>
-
-      <View style={styles.toggleContainer}>
-        <Text style={styles.toggleText}>
-          {isSignUp ? "Already have an account? " : "Don't have an account? "}
-          <Text
-            style={styles.toggleLink}
-            onPress={() => {
-              setIsSignUp(!isSignUp);
-              console.log("🔁 Toggle butonuna basıldı, yeni isSignUp:", !isSignUp);
-            }}
-          >
-            {isSignUp ? "Sign in" : "Sign up"}
-          </Text>
-        </Text>
-      </View>
     </View>
   );
 }
@@ -160,3 +185,5 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
+
+
