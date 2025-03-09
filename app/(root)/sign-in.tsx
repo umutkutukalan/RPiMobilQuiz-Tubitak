@@ -17,62 +17,62 @@ export default function AuthForm() {
       {forgotPassword ? (
         <View>
           {/* Forgot Password Formu */}
-          <Text style={styles.title}>Forgot Password</Text>
+          <Text style={styles.title}>Şifremi Unuttum</Text>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Enter your email</Text>
+            <Text style={styles.label}>E-posta adresinizi girin</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter your email"
+              placeholder="E-posta adresinizi girin"
               keyboardType="email-address"
               value={email}
               onChangeText={setEmail}
             />
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={() => console.log("Password reset link sent")}>
-            <Text style={styles.buttonText}>Send Reset Link</Text>
+          <TouchableOpacity style={styles.button} onPress={() => console.log("Şifre sıfırlama bağlantısı gönderildi")}>
+            <Text style={styles.buttonText}>Şifre Sıfırlama Bağlantısını Gönder</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => setForgotPassword(false)}>
-            <Text style={styles.toggleLink}>Back to Sign In</Text>
+            <Text style={styles.toggleLink}>Geri Dön</Text>
           </TouchableOpacity>
         </View>
       ) : (
         <View>
           {/* Normal Sign In / Sign Up Formu */}
-          <Text style={styles.title}>{isSignUp ? "Sign Up" : "Sign In"}</Text>
+          <Text style={styles.title}>{isSignUp ? "Kayıt Ol" : "Giriş Yap"}</Text>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Email</Text>
-            <TextInput style={styles.input} placeholder="Enter your email" keyboardType="email-address" />
+            <Text style={styles.label}>E-posta</Text>
+            <TextInput style={styles.input} placeholder="E-posta adresinizi girin" keyboardType="email-address" />
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Password</Text>
+            <Text style={styles.label}>Şifre</Text>
             <View style={styles.passwordContainer}>
               <TextInput
                 style={styles.input}
                 secureTextEntry={!showPassword}
                 value={password}
                 onChangeText={setPassword}
-                placeholder="Enter your password"
+                placeholder="Şifrenizi girin"
               />
               <TouchableOpacity style={styles.eyeIcon} onPress={() => setShowPassword(!showPassword)}>
-                <Text style={styles.eyeIconText}>{showPassword ? "Hide" : "Show"}</Text>
+                <Text style={styles.eyeIconText}>{showPassword ? "Gizle" : "Göster"}</Text>
               </TouchableOpacity>
             </View>
           </View>
 
           {isSignUp && (
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Confirm Password</Text>
+              <Text style={styles.label}>Şifreyi Onayla</Text>
               <TextInput
                 style={styles.input}
                 secureTextEntry={!showPassword}
                 value={confirmPassword}
                 onChangeText={setConfirmPassword}
-                placeholder="Confirm your password"
+                placeholder="Şifrenizi onaylayın"
               />
             </View>
           )}
@@ -80,27 +80,27 @@ export default function AuthForm() {
           {!isSignUp && (
             <View style={styles.rememberMeContainer}>
               <Switch value={rememberMe} onValueChange={setRememberMe} />
-              <Text style={styles.rememberMeLabel}>Remember me</Text>
+              <Text style={styles.rememberMeLabel}>Beni hatırla</Text>
               <TouchableOpacity
                 onPress={() => setForgotPassword(true)}  // Forgot password formuna geçiş yapıyoruz
               >
-                <Text style={styles.forgotPassword}>Forgot password?</Text>
+                <Text style={styles.forgotPassword}>Şifrenizi mi unuttunuz?</Text>
               </TouchableOpacity>
             </View>
           )}
 
-          <TouchableOpacity style={styles.button} onPress={() => console.log(isSignUp ? "Sign Up Pressed" : "Sign In Pressed")}>
-            <Text style={styles.buttonText}>{isSignUp ? "Sign Up" : "Sign In"}</Text>
+          <TouchableOpacity style={styles.button} onPress={() => console.log(isSignUp ? "Kayıt Olundu" : "Giriş Yapıldı")}>
+            <Text style={styles.buttonText}>{isSignUp ? "Kayıt Ol" : "Giriş Yap"}</Text>
           </TouchableOpacity>
 
           <View style={styles.toggleContainer}>
             <Text style={styles.toggleText}>
-              {isSignUp ? "Already have an account? " : "Don't have an account? "}
+              {isSignUp ? "Hesabınız var mı? " : "Hesabınız yok mu? "}
               <Text
                 style={styles.toggleLink}
                 onPress={() => setIsSignUp(!isSignUp)}
               >
-                {isSignUp ? "Sign in" : "Sign up"}
+                {isSignUp ? "Giriş yap" : "Kayıt ol"}
               </Text>
             </Text>
           </View>
@@ -185,5 +185,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
+
 
 
