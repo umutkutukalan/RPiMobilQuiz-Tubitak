@@ -1,47 +1,37 @@
+import { register, RegisterData } from "@/app/services/Session/RegisterService";
 import { useState } from "react";
-import register from "@/app/services/Session/RegisterService";
 
-interface UseRegisterResult {
-  registerUser: (
-    email: string,
-    invite_code: string,
-    name: string,
-    password: string,
-    phone: string,
-    surname: string
-  ) => void;
-  loading: boolean;
-  error: string | null;
-  success: boolean;
-}
+export const useRegister = () => {
+  const [userData, setUserData] = useState<RegisterData>({
+    email: "",
+    invite_code: "",
+    name: "",
+    password: "",
+    phone: "",
+    surname: "",
+  });
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-const useRegister = (): UseRegisterResult => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
-
-  const registerUser = async (
-    email: string,
-    invite_code: string,
-    name: string,
-    password: string,
-    phone: string,
-    surname: string
-  ) => {
-    setLoading(true);
-    setError(null); // Hata durumunu sıfırla
-    setSuccess(false); // Başarı durumunu sıfırla
+  const handleRegister = async () => {
+    setIsLoading(true);
     try {
-      await register(email, invite_code, name, password, phone, surname);
-      setSuccess(true);
+      const response = await register(userData);
+      console.log("Register response:", response);
+      return response;
     } catch (error) {
-      setError(error.message);
+      setErrorMessage(error.message);
+      return null;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  return { registerUser, loading, error, success };
+  return {
+    userData,
+    setUserData,
+    errorMessage,
+    isLoading,
+    handleRegister,
+  };
 };
-
-export default useRegister;
