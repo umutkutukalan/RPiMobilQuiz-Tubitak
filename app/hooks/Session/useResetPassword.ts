@@ -5,7 +5,7 @@ import {
 } from "@/app/services/Session/ResetPasswordService";
 import { useState } from "react";
 
-export const useLogin = () => {
+export const useResetPassword = () => {
   const [resetPasswordData, setResetPasswordData] = useState<ResetPasswordData>(
     {
       email: "",
@@ -14,7 +14,7 @@ export const useLogin = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = async () => {
+  const handleResetPassword = async () => {
     setIsLoading(true);
     try {
       const response = await resetPassword(resetPasswordData);
@@ -33,6 +33,6 @@ export const useLogin = () => {
     setResetPasswordData,
     errorMessage,
     isLoading,
-    handleLogin,
+    handleResetPassword,
   };
 };
