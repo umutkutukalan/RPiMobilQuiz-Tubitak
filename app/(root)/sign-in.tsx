@@ -8,6 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { useRegister } from "../hooks/Session/useRegister";
+import { useLogin } from "../hooks/Session/useLogin";
 
 export default function AuthScreen() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -18,6 +19,7 @@ export default function AuthScreen() {
 
   const { userData, setUserData, errorMessage, isLoading, handleRegister } =
     useRegister();
+  const { userDataLogin, setUserDataLogin, handleLogin } = useLogin();
 
   return (
     <View style={styles.container}>
@@ -51,49 +53,49 @@ export default function AuthScreen() {
             {isSignUp ? "Kayıt Ol" : "Giriş Yap"}
           </Text>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Email adresinizi girin"
-              keyboardType="email-address"
-              onChangeText={(text) =>
-                setUserData({
-                  ...userData,
-                  email: text,
-                })
-              }
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Şifre</Text>
-            <View style={styles.passwordContainer}>
-              <TextInput
-                style={styles.input}
-                secureTextEntry={!showPassword}
-                value={userData.password}
-                onChangeText={(text) =>
-                  setUserData({
-                    ...userData,
-                    password: text,
-                  })
-                }
-                placeholder="Şifrenizi girin"
-              />
-              <TouchableOpacity
-                style={styles.eyeIcon}
-                onPress={() => setShowPassword(!showPassword)}
-              >
-                <Text style={styles.eyeIconText}>
-                  {showPassword ? "Gizle" : "Göster"}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
           {isSignUp && (
             <>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email adresinizi girin"
+                  keyboardType="email-address"
+                  onChangeText={(text) =>
+                    setUserData({
+                      ...userData,
+                      email: text,
+                    })
+                  }
+                />
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Şifre</Text>
+                <View style={styles.passwordContainer}>
+                  <TextInput
+                    style={styles.input}
+                    secureTextEntry={!showPassword}
+                    value={userData.password}
+                    onChangeText={(text) =>
+                      setUserData({
+                        ...userData,
+                        password: text,
+                      })
+                    }
+                    placeholder="Şifrenizi girin"
+                  />
+                  <TouchableOpacity
+                    style={styles.eyeIcon}
+                    onPress={() => setShowPassword(!showPassword)}
+                  >
+                    <Text style={styles.eyeIconText}>
+                      {showPassword ? "Gizle" : "Göster"}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>İsim</Text>
                 <TextInput
@@ -140,16 +142,59 @@ export default function AuthScreen() {
           )}
 
           {!isSignUp && (
-            <View style={styles.rememberMeContainer}>
-              <Switch
-                value={rememberMe}
-                onValueChange={(value) => setRememberMe(value)} // Düzeltilmiş
-              />
-              <Text style={styles.rememberMeLabel}>Beni Hatırla</Text>
-              <TouchableOpacity onPress={() => setIsForgotPassword(true)}>
-                <Text style={styles.forgotPassword}>Şifremi Unuttum</Text>
-              </TouchableOpacity>
-            </View>
+            <>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email adresinizi girin"
+                  keyboardType="email-address"
+                  onChangeText={(text) =>
+                    setUserDataLogin({
+                      ...userDataLogin,
+                      email: text,
+                    })
+                  }
+                />
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Şifre</Text>
+                <View style={styles.passwordContainer}>
+                  <TextInput
+                    style={styles.input}
+                    secureTextEntry={!showPassword}
+                    value={userDataLogin.password}
+                    onChangeText={(text) =>
+                      setUserDataLogin({
+                        ...userDataLogin,
+                        password: text,
+                      })
+                    }
+                    placeholder="Şifrenizi girin"
+                  />
+                  <TouchableOpacity
+                    style={styles.eyeIcon}
+                    onPress={() => setShowPassword(!showPassword)}
+                  >
+                    <Text style={styles.eyeIconText}>
+                      {showPassword ? "Gizle" : "Göster"}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={styles.rememberMeContainer}>
+                <Switch
+                  value={rememberMe}
+                  onValueChange={(value) => setRememberMe(value)} // Düzeltilmiş
+                />
+                <Text style={styles.rememberMeLabel}>Beni Hatırla</Text>
+                <TouchableOpacity onPress={() => setIsForgotPassword(true)}>
+                  <Text style={styles.forgotPassword}>Şifremi Unuttum</Text>
+                </TouchableOpacity>
+              </View>
+            </>
           )}
 
           {isSignUp && (
@@ -192,7 +237,7 @@ export default function AuthScreen() {
 
           <TouchableOpacity
             style={styles.button}
-            onPress={isSignUp ? handleRegister : () => console.log("Giriş Yap")}
+            onPress={isSignUp ? handleRegister : handleLogin}
           >
             <Text style={styles.buttonText}>
               {isSignUp ? "Kayıt Ol" : "Giriş Yap"}
