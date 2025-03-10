@@ -1,36 +1,33 @@
-
-import login from "@/app/services/Session/loginService";
+import { login, LoginData } from "@/app/services/Session/loginService";
 import { useState } from "react";
 
-interface UseLoginResult {
-  loginUser: (email: string, password: string) => void;
-  loading: boolean;
-  error: string | null;
-  token: string | null;
-  userId: string | null;
-}
+export const useLogin = () => {
+  const [userDataLogin, setUserDataLogin] = useState<LoginData>({
+    email: "",
+    password: "",
+  });
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-const useLogin = (): UseLoginResult => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-
-  const loginUser = async (email: string, password: string) => {
-    setLoading(true);
-    setError(null); // Hata durumunu sıfırla
+  const handleLogin = async () => {
+    setIsLoading(true);
     try {
-      const response = await login(email, password);
-      setToken(response.token);
-      setUserId(response.userId);
+      const response = await login(userDataLogin);
+      console.log("Login response:", response);
+      return response;
     } catch (error) {
-      setError(error.message);
+      setErrorMessage(error.message);
+      return null;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  return { loginUser, loading, error, token, userId };
+  return {
+    userDataLogin,
+    setUserDataLogin,
+    errorMessage,
+    isLoading,
+    handleLogin,
+  };
 };
-
-export default useLogin;
