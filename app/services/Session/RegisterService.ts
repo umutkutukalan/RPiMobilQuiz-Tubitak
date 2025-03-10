@@ -16,6 +16,7 @@ export const register = async (userData: RegisterData) => {
       `${config.baseUrl}/Session/register`,
       userData
     );
+    console.log("Register response:", response);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

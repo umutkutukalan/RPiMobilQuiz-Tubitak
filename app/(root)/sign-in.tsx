@@ -1,15 +1,23 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Switch, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Switch,
+  StyleSheet,
+} from "react-native";
+import { useRegister } from "../hooks/Session/useRegister";
 
 export default function AuthScreen() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [userType, setUserType] = useState("öğrenci");
-  const [inviteCode, setInviteCode] = useState("");
   const [isForgotPassword, setIsForgotPassword] = useState(false); // Şifremi unuttum sayfası için state
+
+  const { userData, setUserData, errorMessage, isLoading, handleRegister } =
+    useRegister();
 
   return (
     <View style={styles.container}>
@@ -20,13 +28,16 @@ export default function AuthScreen() {
           <View style={styles.inputContainer}>
             <Text style={styles.label}>E-posta</Text>
             <TextInput
-              style={styles.input}  // Genişliği %100 yapan stil
+              style={styles.input} // Genişliği %100 yapan stil
               placeholder="E-posta adresinizi girin"
               keyboardType="email-address"
             />
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={() => console.log("E-posta gönderildi")}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => console.log("E-posta gönderildi")}
+          >
             <Text style={styles.buttonText}>Gönder</Text>
           </TouchableOpacity>
 
@@ -36,11 +47,23 @@ export default function AuthScreen() {
         </View>
       ) : (
         <View>
-          <Text style={styles.title}>{isSignUp ? "Kayıt Ol" : "Giriş Yap"}</Text>
+          <Text style={styles.title}>
+            {isSignUp ? "Kayıt Ol" : "Giriş Yap"}
+          </Text>
 
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Email</Text>
-            <TextInput style={styles.input} placeholder="Email adresinizi girin" keyboardType="email-address" />
+            <TextInput
+              style={styles.input}
+              placeholder="Email adresinizi girin"
+              keyboardType="email-address"
+              onChangeText={(text) =>
+                setUserData({
+                  ...userData,
+                  email: text,
+                })
+              }
+            />
           </View>
 
           <View style={styles.inputContainer}>
@@ -49,27 +72,71 @@ export default function AuthScreen() {
               <TextInput
                 style={styles.input}
                 secureTextEntry={!showPassword}
-                value={password}
-                onChangeText={setPassword}
+                value={userData.password}
+                onChangeText={(text) =>
+                  setUserData({
+                    ...userData,
+                    password: text,
+                  })
+                }
                 placeholder="Şifrenizi girin"
               />
-              <TouchableOpacity style={styles.eyeIcon} onPress={() => setShowPassword(!showPassword)}>
-                <Text style={styles.eyeIconText}>{showPassword ? "Gizle" : "Göster"}</Text>
+              <TouchableOpacity
+                style={styles.eyeIcon}
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                <Text style={styles.eyeIconText}>
+                  {showPassword ? "Gizle" : "Göster"}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
 
           {isSignUp && (
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Şifreyi Onayla</Text>
-              <TextInput
-                style={styles.input}
-                secureTextEntry={!showPassword}
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                placeholder="Şifrenizi tekrar girin"
-              />
-            </View>
+            <>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>İsim</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="İsminizi giriniz"
+                  onChangeText={(text) =>
+                    setUserData({
+                      ...userData,
+                      name: text,
+                    })
+                  }
+                />
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Soyisim</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Soyisminizi giriniz"
+                  onChangeText={(text) =>
+                    setUserData({
+                      ...userData,
+                      surname: text,
+                    })
+                  }
+                />
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Telefon</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Telefonunuzu giriniz"
+                  keyboardType="phone-pad"
+                  onChangeText={(text) =>
+                    setUserData({
+                      ...userData,
+                      phone: text,
+                    })
+                  }
+                />
+              </View>
+            </>
           )}
 
           {!isSignUp && (
@@ -90,14 +157,20 @@ export default function AuthScreen() {
               <Text style={styles.label}>Kayıt Türü:</Text>
               <View style={styles.radioGroup}>
                 <TouchableOpacity
-                  style={[styles.radioButton, userType === "öğrenci" && styles.radioButtonChecked]}
+                  style={[
+                    styles.radioButton,
+                    userType === "öğrenci" && styles.radioButtonChecked,
+                  ]}
                   onPress={() => setUserType("öğrenci")}
                 >
                   <Text style={styles.radioLabel}>Öğrenci</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={[styles.radioButton, userType === "eğitmen" && styles.radioButtonChecked]}
+                  style={[
+                    styles.radioButton,
+                    userType === "eğitmen" && styles.radioButtonChecked,
+                  ]}
                   onPress={() => setUserType("eğitmen")}
                 >
                   <Text style={styles.radioLabel}>Eğitmen</Text>
@@ -108,21 +181,31 @@ export default function AuthScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="Eğitmen Davet Kodu"
-                  value={inviteCode}
-                  onChangeText={setInviteCode}
+                  value={userData.invite_code}
+                  onChangeText={(text) =>
+                    setUserData({ ...userData, invite_code: text })
+                  }
                 />
               )}
             </View>
           )}
 
-          <TouchableOpacity style={styles.button} onPress={() => console.log(isSignUp ? "Kayıt Olundu" : "Giriş Yapıldı")}>
-            <Text style={styles.buttonText}>{isSignUp ? "Kayıt Ol" : "Giriş Yap"}</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={isSignUp ? handleRegister : () => console.log("Giriş Yap")}
+          >
+            <Text style={styles.buttonText}>
+              {isSignUp ? "Kayıt Ol" : "Giriş Yap"}
+            </Text>
           </TouchableOpacity>
 
           <View style={styles.toggleContainer}>
             <Text style={styles.toggleText}>
               {isSignUp ? "Zaten bir hesabın var mı? " : "Hesabın yok mu? "}
-              <Text style={styles.toggleLink} onPress={() => setIsSignUp(!isSignUp)}>
+              <Text
+                style={styles.toggleLink}
+                onPress={() => setIsSignUp(!isSignUp)}
+              >
                 {isSignUp ? "Giriş Yap" : "Kayıt Ol"}
               </Text>
             </Text>
@@ -242,4 +325,3 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 });
-
