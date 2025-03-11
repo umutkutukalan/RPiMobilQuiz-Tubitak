@@ -11,7 +11,7 @@ export interface UpdateUserData {
 
 export const updateUser = async (UpdateUserData: UpdateUserData) => {
   try {
-    const responser = await axios.post(
+    const response = await axios.post(
         `${config.baseUrl}/User/update_user/user_id`,
     )
   } catch (error) {
