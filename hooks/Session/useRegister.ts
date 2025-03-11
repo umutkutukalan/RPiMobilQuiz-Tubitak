@@ -1,4 +1,4 @@
-import { register, RegisterData } from "@/app/services/Session/RegisterService";
+import { register, RegisterData } from "@/services/Session/RegisterService";
 import { useState } from "react";
 
 export const useRegister = () => {

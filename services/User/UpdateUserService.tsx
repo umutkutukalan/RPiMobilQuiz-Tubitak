@@ -1,6 +1,10 @@
 import axios from "axios";
+<<<<<<< HEAD:app/services/User/UpdateUserService.tsx
 import config from "../config";
 import { strogaService } from "../strogeService";
+=======
+import config from "../../config/config";
+>>>>>>> features/pages:services/User/UpdateUserService.tsx
 
 export interface UpdateUserData {
   email: string;

@@ -9,8 +9,8 @@ const Profile = () => {
   )
 }
 
-export default Profile*/ 
-import React, { useState } from 'react';
+export default Profile*/
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -20,18 +20,16 @@ import {
   ScrollView,
   SafeAreaView,
   StatusBar,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
-
-
+  Button,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { Link } from "expo-router";
 
 interface NavButtonProps {
   icon: string;
   label: string;
   active?: boolean;
 }
-
 
 export default function ProfileScreen() {
   const [stats] = useState({
@@ -66,7 +64,7 @@ export default function ProfileScreen() {
           <View style={styles.profileContent}>
             <View style={styles.avatarContainer}>
               <Image
-                source={{ uri: 'https://via.placeholder.com/96' }}
+                source={{ uri: "https://via.placeholder.com/96" }}
                 style={styles.avatar}
               />
             </View>
@@ -76,7 +74,9 @@ export default function ProfileScreen() {
             </View>
             <TouchableOpacity style={styles.editButton}>
               <Ionicons name="pencil-outline" size={16} color="#333" />
-              <Link href="/hesap_bilgileri"><Text style={styles.editButtonText}>Profili Düzenle</Text></Link>
+              <Link href="/user/edit_profile">
+                <Text style={styles.editButtonText}>Profili Düzenle</Text>
+              </Link>
             </TouchableOpacity>
           </View>
         </View>
@@ -87,7 +87,7 @@ export default function ProfileScreen() {
             <Ionicons name="medal" size={20} color="#F59E0B" />
             <Text style={styles.cardTitle}>Quiz İstatistikleri</Text>
           </View>
-          
+
           <View style={styles.statsGrid}>
             <View style={styles.statItem}>
               <Text style={styles.statLabel}>Çözülen Quiz</Text>
@@ -95,7 +95,9 @@ export default function ProfileScreen() {
             </View>
             <View style={styles.statItem}>
               <Text style={styles.statLabel}>Doğru Cevaplar</Text>
-              <Text style={styles.statValue}>{stats.correctAnswers}/{stats.totalQuestions}</Text>
+              <Text style={styles.statValue}>
+                {stats.correctAnswers}/{stats.totalQuestions}
+              </Text>
             </View>
             <View style={styles.statItem}>
               <Text style={styles.statLabel}>Ortalama Puan</Text>
@@ -113,7 +115,7 @@ export default function ProfileScreen() {
               <Text style={styles.progressValue}>{stats.rank}</Text>
             </View>
             <View style={styles.progressBarContainer}>
-              <View style={[styles.progressBar, { width: '65%' }]} />
+              <View style={[styles.progressBar, { width: "65%" }]} />
             </View>
             <Text style={styles.progressInfo}>
               750 puan daha kazanarak bir sonraki seviyeye geçebilirsiniz
@@ -123,34 +125,15 @@ export default function ProfileScreen() {
 
         {/* Menu items */}
         <View style={styles.card}>
-          <Link href="/hesap_bilgileri">
-          <MenuItem 
-            icon="person-outline" 
-            label="Hesap Bilgileri" 
-          /></Link>
-          <MenuItem 
-            icon="trophy-outline" 
-            label="Başarılarım" 
-          />
-          <MenuItem 
-            icon="settings-outline" 
-            label="Ayarlar" 
-          />
-          <MenuItem 
-            icon="log-out-outline" 
-            label="Çıkış Yap" 
-            danger 
-          />
+          <Link href="/user/password_update">
+            <MenuItem icon="trophy-outline" label="Şifre Değiştir" />
+          </Link>
+          <Link href="/user/hesap_bilgileri">
+            <MenuItem icon="settings-outline" label="Hesap Bilgileri" />
+          </Link>
+          <MenuItem icon="log-out-outline" label="Çıkış Yap" danger />
         </View>
       </ScrollView>
-
-      {/* Bottom navigation */}
-      <View style={styles.bottomNav}>
-        <NavButton icon="person" label="Profil" active />
-        <NavButton icon="list" label="Quizler" />
-        <NavButton icon="compass" label="Keşfet" />
-        <NavButton icon="podium" label="Sıralama" />
-      </View>
     </SafeAreaView>
   );
 }
@@ -163,23 +146,17 @@ interface MenuItemProps {
 
 function MenuItem({ icon, label, danger = false }: MenuItemProps) {
   return (
-    <TouchableOpacity 
-      style={[
-        styles.menuItem, 
-        danger && styles.dangerMenuItem
-      ]}
+    <TouchableOpacity
+      style={[styles.menuItem, danger && styles.dangerMenuItem]}
     >
       <View style={styles.menuItemLeft}>
-        <Ionicons 
-          name={icon as keyof typeof Ionicons.glyphMap} 
-          size={22} 
-          color={danger ? "#EF4444" : "#333"} 
+        <Ionicons
+          name={icon as keyof typeof Ionicons.glyphMap}
+          size={22}
+          color={danger ? "#EF4444" : "#333"}
         />
-        <Text 
-          style={[
-            styles.menuItemLabel, 
-            danger && styles.dangerMenuItemLabel
-          ]}
+        <Text
+          style={[styles.menuItemLabel, danger && styles.dangerMenuItemLabel]}
         >
           {label}
         </Text>
@@ -192,18 +169,15 @@ function MenuItem({ icon, label, danger = false }: MenuItemProps) {
 function NavButton({ icon, label, active = false }: NavButtonProps) {
   return (
     <TouchableOpacity style={styles.navButton}>
-      <Ionicons 
-      name={icon as keyof typeof Ionicons.glyphMap} 
-      size={22} 
-      color={active ? "#3B82F6" : "#666"} 
+      <Ionicons
+        name={icon as keyof typeof Ionicons.glyphMap}
+        size={22}
+        color={active ? "#3B82F6" : "#666"}
       />
-      <Text 
-      style={[
-        styles.navButtonLabel, 
-        active && styles.activeNavButtonLabel
-      ]}
+      <Text
+        style={[styles.navButtonLabel, active && styles.activeNavButtonLabel]}
       >
-      {label}
+        {label}
       </Text>
     </TouchableOpacity>
   );
@@ -212,29 +186,29 @@ function NavButton({ icon, label, active = false }: NavButtonProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: "#eee",
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 1,
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   headerIcons: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   iconButton: {
     padding: 8,
@@ -244,54 +218,54 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   profileCard: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 12,
     marginHorizontal: 16,
     marginTop: 16,
-    overflow: 'hidden',
+    overflow: "hidden",
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
   coverPhoto: {
     height: 80,
-    backgroundColor: '#3B82F6',
+    backgroundColor: "#3B82F6",
   },
   profileContent: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingBottom: 16,
   },
   avatarContainer: {
     marginTop: -40,
     borderWidth: 4,
-    borderColor: 'white',
+    borderColor: "white",
     borderRadius: 50,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   avatar: {
     width: 80,
     height: 80,
   },
   profileInfo: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 8,
   },
   profileName: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   profileEmail: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
     marginTop: 2,
   },
   editButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     borderRadius: 20,
     paddingVertical: 6,
     paddingHorizontal: 12,
@@ -302,89 +276,89 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   card: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 12,
     marginHorizontal: 16,
     marginTop: 16,
     padding: 16,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
   cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 16,
   },
   cardTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     marginLeft: 8,
   },
   statsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     marginBottom: 16,
   },
   statItem: {
-    width: '50%',
+    width: "50%",
     paddingVertical: 8,
   },
   statLabel: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
   },
   statValue: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 4,
   },
   progressContainer: {
     marginTop: 8,
   },
   progressHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 8,
   },
   progressLabel: {
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   progressValue: {
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   progressBarContainer: {
     height: 8,
-    backgroundColor: '#eee',
+    backgroundColor: "#eee",
     borderRadius: 4,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   progressBar: {
-    height: '100%',
-    backgroundColor: '#3B82F6',
+    height: "100%",
+    backgroundColor: "#3B82F6",
   },
   progressInfo: {
     fontSize: 12,
-    color: '#666',
-    textAlign: 'right',
+    color: "#666",
+    textAlign: "right",
     marginTop: 4,
   },
   menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingVertical: 14,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: "#eee",
   },
   menuItemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   menuItemLabel: {
     fontSize: 16,
@@ -394,27 +368,27 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   dangerMenuItemLabel: {
-    color: '#EF4444',
+    color: "#EF4444",
   },
   bottomNav: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    backgroundColor: "white",
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: "#eee",
     paddingBottom: 8,
     paddingTop: 8,
   },
   navButton: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   navButtonLabel: {
     fontSize: 12,
     marginTop: 4,
-    color: '#666',
+    color: "#666",
   },
   activeNavButtonLabel: {
-    color: '#3B82F6',
+    color: "#3B82F6",
   },
 });
