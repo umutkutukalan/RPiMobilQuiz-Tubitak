@@ -1,28 +1,28 @@
 import axios from "axios";
 import config from "../config";
 
-const resetPassword = (email: string) => {
-  return axios
-    .post(`${config.baseUrl}/Session/reset_password`, { email })
-    .then((response) => {
-      return response;
-    })
-    .catch((error) => {
-      if (axios.isAxiosError(error)) {
-        console.error(
-          "Reset password error:",
-          error.response ? error.response.data : error.message
-        );
-        return Promise.reject(
-          new Error(
-            error.response ? error.response.data : "Reset password failed"
-          )
-        );
-      } else {
-        console.error("Unexpected error:", error);
-        return Promise.reject(new Error("An unexpected error occurred"));
-      }
-    });
-};
+export interface ResetPasswordData {
+  email: string;
+}
 
-export default resetPassword;
+export const resetPassword = async (resetPasswordData: ResetPasswordData) => {
+  try {
+    const response = await axios.post(
+      `${config.baseUrl}/Session/reset_password`,
+      resetPasswordData
+    );
+    console.log("Reset password response:", response);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        "Login error:",
+        error.response ? error.response.data : error.message
+      );
+      throw new Error(error.response ? error.response.data : "Login failed");
+    } else {
+      console.error("Unexpected error:", error);
+      throw new Error("An unexpected error occurred");
+    }
+  }
+};

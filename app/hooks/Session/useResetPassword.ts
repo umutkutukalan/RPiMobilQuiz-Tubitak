@@ -1,30 +1,38 @@
+import { login, LoginData } from "@/app/services/Session/loginService";
+import {
+  resetPassword,
+  ResetPasswordData,
+} from "@/app/services/Session/ResetPasswordService";
 import { useState } from "react";
 
-const useResetPassword = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<boolean>(false);
+export const useResetPassword = () => {
+  const [resetPasswordData, setResetPasswordData] = useState<ResetPasswordData>(
+    {
+      email: "",
+    }
+  );
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const resetPassword = async (email: string) => {
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
+  const handleResetPassword = async () => {
+    setIsLoading(true);
     try {
-      const response = await resetPassword(email);
-      setSuccess(true);
+      const response = await resetPassword(resetPasswordData);
+      console.log("Login response:", response);
+      return response;
     } catch (error) {
-      setError(error.message);
+      setErrorMessage(error.message);
+      return null;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   return {
-    resetPassword,
-    loading,
-    error,
-    success,
+    resetPasswordData,
+    setResetPasswordData,
+    errorMessage,
+    isLoading,
+    handleResetPassword,
   };
 };
-
-export default useResetPassword;

@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useRegister } from "../hooks/Session/useRegister";
 import { useLogin } from "../hooks/Session/useLogin";
+import { useResetPassword } from "../hooks/Session/useResetPassword";
 
 export default function AuthScreen() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -20,6 +21,8 @@ export default function AuthScreen() {
   const { userData, setUserData, errorMessage, isLoading, handleRegister } =
     useRegister();
   const { userDataLogin, setUserDataLogin, handleLogin } = useLogin();
+  const { resetPasswordData, setResetPasswordData, handleResetPassword } =
+    useResetPassword();
 
   return (
     <View style={styles.container}>
@@ -33,13 +36,15 @@ export default function AuthScreen() {
               style={styles.input} // Genişliği %100 yapan stil
               placeholder="E-posta adresinizi girin"
               keyboardType="email-address"
+              onChangeText={(text) =>
+                setResetPasswordData({
+                  email: text,
+                })
+              }
             />
           </View>
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => console.log("E-posta gönderildi")}
-          >
+          <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
             <Text style={styles.buttonText}>Gönder</Text>
           </TouchableOpacity>
 
