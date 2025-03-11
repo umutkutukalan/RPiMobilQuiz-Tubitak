@@ -1,8 +1,8 @@
-import { login, LoginData } from "@/app/services/Session/loginService";
+import { login, LoginData } from "@/services/Session/loginService";
 import {
   resetPassword,
   ResetPasswordData,
-} from "@/app/services/Session/ResetPasswordService";
+} from "@/services/Session/ResetPasswordService";
 import { useState } from "react";
 
 export const useResetPassword = () => {

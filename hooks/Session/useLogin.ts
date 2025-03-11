@@ -1,5 +1,5 @@
-import { login, LoginData } from "@/app/services/Session/loginService";
-import { strogaService } from "@/app/services/strogeService";
+import { login, LoginData } from "@/services/Session/loginService";
+import { strogaService } from "@/config/strogeService";
 import { useState } from "react";
 
 export const useLogin = () => {

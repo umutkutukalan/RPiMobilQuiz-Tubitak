@@ -1,30 +1,26 @@
 import axios from "axios";
-import config from "../config";
+import config from "../../config/config";
 
-export interface RegisterData {
+export interface LoginData {
   email: string;
-  invite_code: string;
-  name: string;
   password: string;
-  phone: string;
-  surname: string;
 }
 
-export const register = async (userData: RegisterData) => {
+export const login = async (userDataLogin: LoginData) => {
   try {
     const response = await axios.post(
-      `${config.baseUrl}/Session/register`,
-      userData
+      `${config.baseUrl}/Session/login`,
+      userDataLogin
     );
-    console.log("Register response:", response);
+    console.log("Login response:", response);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error(
-        "Register error:",
+        "Login error:",
         error.response ? error.response.data : error.message
       );
-      throw new Error(error.response ? error.response.data : "Register failed");
+      throw new Error(error.response ? error.response.data : "Login failed");
     } else {
       console.error("Unexpected error:", error);
       throw new Error("An unexpected error occurred");
