@@ -1,3 +1,6 @@
+import { useLogin } from "@/hooks/Session/useLogin";
+import { useRegister } from "@/hooks/Session/useRegister";
+import { useResetPassword } from "@/hooks/Session/useResetPassword";
 import React, { useState } from "react";
 import {
   View,
@@ -7,9 +10,7 @@ import {
   Switch,
   StyleSheet,
 } from "react-native";
-import { useRegister } from "../hooks/Session/useRegister";
-import { useLogin } from "../hooks/Session/useLogin";
-import { useResetPassword } from "../hooks/Session/useResetPassword";
+
 
 export default function AuthScreen() {
   const [isSignUp, setIsSignUp] = useState(false);
