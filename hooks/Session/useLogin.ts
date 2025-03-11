@@ -3,7 +3,6 @@ import { strogaService } from "@/config/strogeService";
 import { useState } from "react";
 
 export const useLogin = () => {
-  const [token, setToken] = useState("");
   const [userDataLogin, setUserDataLogin] = useState<LoginData>({
     email: "",
     password: "",
@@ -15,9 +14,9 @@ export const useLogin = () => {
     setIsLoading(true);
     try {
       const response = await login(userDataLogin);
-      console.log("Login response:", response);
       await strogaService.store("token", response.token);
       await strogaService.store("user", JSON.stringify(response.User));
+      console.log("Login response:", response);
       return response;
     } catch (error) {
       setErrorMessage(error.message);

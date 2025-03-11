@@ -1,10 +1,7 @@
+import config from "@/config/config";
+import { strogaService } from "@/config/strogeService";
+import { useUser } from "@/hooks/useUser";
 import axios from "axios";
-<<<<<<< HEAD:app/services/User/UpdateUserService.tsx
-import config from "../config";
-import { strogaService } from "../strogeService";
-=======
-import config from "../../config/config";
->>>>>>> features/pages:services/User/UpdateUserService.tsx
 
 export interface UpdateUserData {
   email: string;
@@ -15,7 +12,7 @@ export interface UpdateUserData {
 }
 
 export const updateUser = async (UpdateUserData: UpdateUserData) => {
-  const userId = await strogaService.get("user_id");
+  const { user, userId, token } = useUser();
   try {
     const response = await axios.post(
       `${config.baseUrl}/User/update_user/${userId}`,
