@@ -1,7 +1,7 @@
-import { Link, NavigationProp } from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { SafeAreaView, StatusBar, TouchableOpacity, Text, View, StyleSheet } from 'react-native';
+import { SafeAreaView, StatusBar, TouchableOpacity, Text, View } from 'react-native';
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -9,76 +9,69 @@ interface Props {
 
 export default function AccountDetailsScreen({ navigation }: Props) {
   const [userData] = useState({
-    fullName: 'Mehmet Yılmaz',
+    firstName: 'Mehmet',
+    lastName: 'Yılmaz',
     email: 'mehmet.yilmaz@example.com',
     phone: '5551234567',
-    role: 'Öğrenci', // Kullanıcının rolü
+    role: 'Öğrenci',
   });
 
   const handleEditProfile = () => {
-    // Profil düzenleme ekranına yönlendirme yapılabilir
-    navigation.navigate('AccountUpdate'); // 'AccountUpdate' yerine sizin profil düzenleme ekranınızın ismi olmalı
+    navigation.navigate('AccountUpdate');
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#F3EDF7' }}>
+      <StatusBar barStyle="dark-content" />
 
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', padding: 15, backgroundColor: '#800080' }}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginRight: 10 }}>
           <Ionicons name="chevron-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Hesap Bilgilerim</Text>
+        <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Hesap Bilgilerim</Text>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Kişisel Bilgiler</Text>
+      <View style={{ padding: 20 }}>
+        <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 10, color: '#800080' }}>Kişisel Bilgiler</Text>
 
-        <View style={styles.infoContainer}>
-          <Text style={styles.label}>Ad Soyad:</Text>
-          <Text style={styles.infoText}>{userData.fullName}</Text>
+        <View style={{ marginBottom: 15, borderBottomWidth: 1, borderBottomColor: '#DDA0DD', paddingBottom: 5 }}>
+          <Text style={{ fontSize: 14, marginBottom: 5, fontWeight: 'bold', color: '#800080' }}>Ad:</Text>
+          <Text style={{ fontSize: 14, color: '#1C1C64' }}>{userData.firstName}</Text>
         </View>
 
-        <View style={styles.infoContainer}>
-          <Text style={styles.label}>E-posta:</Text>
-          <Text style={styles.infoText}>{userData.email}</Text>
+        <View style={{ marginBottom: 15, borderBottomWidth: 1, borderBottomColor: '#DDA0DD', paddingBottom: 5 }}>
+          <Text style={{ fontSize: 14, marginBottom: 5, fontWeight: 'bold', color: '#800080' }}>Soyad:</Text>
+          <Text style={{ fontSize: 14, color: '#1C1C64' }}>{userData.lastName}</Text>
         </View>
 
-        <View style={styles.infoContainer}>
-          <Text style={styles.label}>Telefon:</Text>
-          <Text style={styles.infoText}>{userData.phone}</Text>
+        <View style={{ marginBottom: 15, borderBottomWidth: 1, borderBottomColor: '#E6B0D4', paddingBottom: 5 }}>
+          <Text style={{ fontSize: 14, marginBottom: 5, fontWeight: 'bold', color: '#800080' }}>E-posta:</Text>
+          <Text style={{ fontSize: 14, color: '#1C1C64' }}>{userData.email}</Text>
         </View>
 
-        <View style={styles.infoContainer}>
-          <Text style={styles.label}>Kullanıcı Rolü:</Text>
-          <Text style={styles.infoText}>{userData.role}</Text>
+        <View style={{ marginBottom: 15, borderBottomWidth: 1, borderBottomColor: '#DDA0DD', paddingBottom: 5 }}>
+          <Text style={{ fontSize: 14, marginBottom: 5, fontWeight: 'bold', color: '#800080' }}>Telefon:</Text>
+          <Text style={{ fontSize: 14, color: '#1C1C64' }}>{userData.phone}</Text>
+        </View>
+
+        <View style={{ marginBottom: 15, borderBottomWidth: 1, borderBottomColor: '#E6B0D4', paddingBottom: 5 }}>
+          <Text style={{ fontSize: 14, marginBottom: 5, fontWeight: 'bold', color: '#800080' }}>Kullanıcı Rolü:</Text>
+          <Text style={{ fontSize: 14, color: '#1C1C64' }}>{userData.role}</Text>
         </View>
       </View>
 
-      {/* Profili Düzenle Butonu */}
-      <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
-        <Text style={styles.buttonText}>Profili Düzenle</Text>
+      <TouchableOpacity
+        style={{
+          backgroundColor: '#1C1C64',
+          padding: 15,
+          borderRadius: 5,
+          alignItems: 'center',
+          margin: 20,
+        }}
+        onPress={handleEditProfile}
+      >
+        <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Profili Düzenle</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f8f9fa' },
-  header: { flexDirection: 'row', alignItems: 'center', padding: 15, backgroundColor: '#007bff' },
-  backButton: { marginRight: 10 },
-  headerTitle: { color: 'white', fontSize: 18, fontWeight: 'bold' },
-  section: { padding: 20 },
-  sectionTitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 10 },
-  infoContainer: { marginBottom: 15 },
-  label: { fontSize: 14, marginBottom: 5, fontWeight: 'bold' },
-  infoText: { fontSize: 14, color: '#495057' },
-  editButton: {
-    backgroundColor: '#007bff',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-    margin: 20,
-  },
-  buttonText: { color: 'white', fontSize: 16, fontWeight: 'bold' },
-});

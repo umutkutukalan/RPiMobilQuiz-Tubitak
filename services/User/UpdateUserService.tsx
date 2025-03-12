@@ -1,5 +1,7 @@
+import config from "@/config/config";
+import { strogaService } from "@/config/strogeService";
+import { useUser } from "@/hooks/useUser";
 import axios from "axios";
-import config from "../../config/config";
 
 export interface UpdateUserData {
   email: string;
@@ -10,10 +12,14 @@ export interface UpdateUserData {
 }
 
 export const updateUser = async (UpdateUserData: UpdateUserData) => {
+  const { user, userId, token } = useUser();
   try {
     const response = await axios.post(
-        `${config.baseUrl}/User/update_user/user_id`,
-    )
+      `${config.baseUrl}/User/update_user/${userId}`,
+      UpdateUserData
+    );
+    console.log("User Id:", userId);
+    console.log(response.data);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error(
