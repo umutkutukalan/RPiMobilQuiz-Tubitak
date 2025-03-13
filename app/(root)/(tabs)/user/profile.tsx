@@ -20,134 +20,75 @@ export default function ProfileScreen() {
   });
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#F3EDF7" }}>
+    <SafeAreaView className="flex-1 bg-[#F3EDF7]">
       {/* Header */}
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingHorizontal: 16,
-          paddingVertical: 12,
-          backgroundColor: "white",
-          borderBottomWidth: 1,
-          borderBottomColor: "#000080",
-          shadowOffset: { width: 0, height: 1 },
-          shadowOpacity: 0.1,
-          shadowRadius: 1,
-          elevation: 2,
-        }}
-      >
-        <Text style={{ fontSize: 18, fontWeight: "bold", color: "#000080" }}>
-          Profil
-        </Text>
-        <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity style={{ padding: 8, marginLeft: 8 }}>
+      <View className="flex-row items-center justify-between p-4 bg-white border-b-2 border-[#000080] shadow-md">
+        <Text className="text-[#000080] text-xl font-bold">Profil</Text>
+        <View className="flex-row">
+          <TouchableOpacity className="p-2 ml-2"> 
             <Ionicons name="notifications-outline" size={24} color="#000080" />
           </TouchableOpacity>
-          <TouchableOpacity style={{ padding: 8, marginLeft: 8 }}>
+          <TouchableOpacity className="p-2 ml-2">
             <Ionicons name="settings-outline" size={24} color="#000080" />
           </TouchableOpacity>
         </View>
       </View>
 
       {/* Main content */}
-      <ScrollView style={{ flex: 1, paddingHorizontal: 16, marginTop: 16 }}>
+      <ScrollView className="p-4">
         {/* Profile card */}
-        <View
-          style={{
-            backgroundColor: "white",
-            borderRadius: 12,
-            marginBottom: 16,
-            overflow: "hidden",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
-            elevation: 2,
-          }}
-        >
-          <View style={{ height: 80, backgroundColor: "#000080" }} />
-          <View style={{ alignItems: "center", paddingBottom: 16 }}>
-            <View
-              style={{
-                marginTop: -40,
-                borderWidth: 4,
-                borderColor: "white",
-                borderRadius: 50,
-                overflow: "hidden",
-              }}
-            >
+        <View className="bg-white rounded-lg mb-4 overflow-hidden shadow-md">
+          <View className="h-20 bg-[#000080]" />
+          <View className="flex items-center pb-4">
+            <View className="mt-[-40px] border-4 border-white rounded-full overflow-hidden">
               <Image
                 source={{ uri: "https://via.placeholder.com/96" }}
-                style={{ width: 80, height: 80 }}
+                className="w-24 h-24"
               />
             </View>
-            <View style={{ alignItems: "center", marginTop: 8 }}>
-              <Text style={{ fontSize: 18, fontWeight: "bold", color: "#000080" }}>
+            <View className="items-center mt-2">
+              <Text className="text-[#000080] text-xl font-bold">
                 {userData.firstName} {userData.lastName}
               </Text>
-              <Text style={{ fontSize: 14, color: "#666", marginTop: 2 }}>
-                {userData.email}
-              </Text>
+              <Text className="text-[#666] mt-2">{userData.email}</Text>
             </View>
-            <TouchableOpacity
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                borderWidth: 1,
-                borderColor: "#000080",
-                borderRadius: 20,
-                paddingVertical: 6,
-                paddingHorizontal: 12,
-                marginTop: 12,
-              }}
-            >
+            <TouchableOpacity className="flex-row items-center border-2 border-[#000080] rounded-full p-1 ml-4 mt-2">
               <Ionicons name="pencil-outline" size={16} color="#000080" />
               <Link href="/user/edit_profile">
-                <Text
-                  style={{
-                    fontSize: 14,
-                    marginLeft: 4,
-                    color: "#000080",
-                  }}
-                >
-                  Profili Düzenle
-                </Text>
+                <Text className="text-[#000080] text-sm ml-1">Profili Düzenle</Text>
               </Link>
             </TouchableOpacity>
           </View>
         </View>
 
         {/* Personal Information */}
-        <View style={{ padding: 20, backgroundColor: "white", borderRadius: 12, marginBottom: 16 }}>
-          <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 10, color: "#000080" }}>
-            Kişisel Bilgiler
-          </Text>
-          <Text style={{ fontSize: 14, marginBottom: 5, fontWeight: "bold", color: "#000080" }}>Ad:</Text>
-          <Text style={{ fontSize: 14, color: "#1C1C64" }}>{userData.firstName}</Text>
-          <Text style={{ fontSize: 14, marginTop: 10, fontWeight: "bold", color: "#000080" }}>Soyad:</Text>
-          <Text style={{ fontSize: 14, color: "#1C1C64" }}>{userData.lastName}</Text>
-          <Text style={{ fontSize: 14, marginTop: 10, fontWeight: "bold", color: "#000080" }}>E-posta:</Text>
-          <Text style={{ fontSize: 14, color: "#1C1C64" }}>{userData.email}</Text>
-          <Text style={{ fontSize: 14, marginTop: 10, fontWeight: "bold", color: "#000080" }}>Telefon:</Text>
-          <Text style={{ fontSize: 14, color: "#1C1C64" }}>{userData.phone}</Text>
-          <Text style={{ fontSize: 14, marginTop: 10, fontWeight: "bold", color: "#000080" }}>Kullanıcı Rolü:</Text>
-          <Text style={{ fontSize: 14, color: "#1C1C64" }}>{userData.role}</Text>
+        <View className="bg-white rounded-lg p-4 mb-4">
+          <Text className="text-[#000080] text-xl font-bold mb-4">Kişisel Bilgiler</Text>
+          <Text className="text-[#000080] font-bold">Ad:</Text>
+          <Text className="text-[#1C1C64]">{userData.firstName}</Text>
+          <Text className="text-[#000080] font-bold mt-4">Soyad:</Text>
+          <Text className="text-[#1C1C64]">{userData.lastName}</Text>
+          <Text className="text-[#000080] font-bold mt-4">E-posta:</Text>
+          <Text className="text-[#1C1C64]">{userData.email}</Text>
+          <Text className="text-[#000080] font-bold mt-4">Telefon:</Text>
+          <Text className="text-[#1C1C64]">{userData.phone}</Text>  
+          <Text className="text-[#000080] font-bold mt-4">Kullanıcı Rolü:</Text>
+          <Text className="text-[#1C1C64]">{userData.role}</Text>
         </View>
-
+      
         {/* Additional Options */}
-        <View style={{ padding: 20, backgroundColor: "white", borderRadius: 12, marginBottom: 16, alignItems: "center" }}>
-          <TouchableOpacity style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 16, color: "#000080" }}>Şifre Değiştir</Text>
+        <View className="bg-white rounded-lg p-4 mb-4">
+          <TouchableOpacity className="mb-4">
+            <Text  className="text-[#000080] text-xl font-bold">Şifre Değiştir</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 16, color: "#000080" }}>Ayarlar</Text>
+          <TouchableOpacity className="mb-4">
+            <Text className="text-[#000080] text-xl font-bold">Ayarlar</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 16, color: "#000080" }}>Yardım</Text>
+          <TouchableOpacity className="mb-4">
+            <Text className="text-[#000080] text-xl font-bold">Yardım</Text>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Text style={{ fontSize: 16, color: "red", fontWeight: "bold" }}>Çıkış Yap</Text>
+            <Text className="text-[#FF0000] text-xl font-bold">Çıkış Yap</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
