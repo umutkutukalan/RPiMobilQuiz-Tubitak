@@ -11,13 +11,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 
 export default function ProfileScreen() {
-  const [stats] = useState({
-    quizzesTaken: 42,
-    correctAnswers: 156,
-    totalQuestions: 210,
-    averageScore: 74,
-    rank: "Gold",
-    points: 1250,
+  const [userData] = useState({
+    firstName: "Abc",
+    lastName: "Korkmaz",
+    email: "korkmaz.33@example.com",
+    phone: "5xxxxxxxxx",
+    role: "Öğrenci",
   });
 
   return (
@@ -32,22 +31,22 @@ export default function ProfileScreen() {
           paddingVertical: 12,
           backgroundColor: "white",
           borderBottomWidth: 1,
-          borderBottomColor: "#E6B0D4",
+          borderBottomColor: "#000080",
           shadowOffset: { width: 0, height: 1 },
           shadowOpacity: 0.1,
           shadowRadius: 1,
           elevation: 2,
         }}
       >
-        <Text style={{ fontSize: 18, fontWeight: "bold", color: "#800080" }}>
+        <Text style={{ fontSize: 18, fontWeight: "bold", color: "#000080" }}>
           Profil
         </Text>
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity style={{ padding: 8, marginLeft: 8 }}>
-            <Ionicons name="notifications-outline" size={24} color="#800080" />
+            <Ionicons name="notifications-outline" size={24} color="#000080" />
           </TouchableOpacity>
           <TouchableOpacity style={{ padding: 8, marginLeft: 8 }}>
-            <Ionicons name="settings-outline" size={24} color="#800080" />
+            <Ionicons name="settings-outline" size={24} color="#000080" />
           </TouchableOpacity>
         </View>
       </View>
@@ -67,7 +66,7 @@ export default function ProfileScreen() {
             elevation: 2,
           }}
         >
-          <View style={{ height: 80, backgroundColor: "#DDA0DD" }} />
+          <View style={{ height: 80, backgroundColor: "#000080" }} />
           <View style={{ alignItems: "center", paddingBottom: 16 }}>
             <View
               style={{
@@ -84,11 +83,11 @@ export default function ProfileScreen() {
               />
             </View>
             <View style={{ alignItems: "center", marginTop: 8 }}>
-              <Text style={{ fontSize: 18, fontWeight: "bold", color: "#800080" }}>
-                Kullanıcı Adı
+              <Text style={{ fontSize: 18, fontWeight: "bold", color: "#000080" }}>
+                {userData.firstName} {userData.lastName}
               </Text>
               <Text style={{ fontSize: 14, color: "#666", marginTop: 2 }}>
-                kullanici@email.com
+                {userData.email}
               </Text>
             </View>
             <TouchableOpacity
@@ -96,20 +95,20 @@ export default function ProfileScreen() {
                 flexDirection: "row",
                 alignItems: "center",
                 borderWidth: 1,
-                borderColor: "#E6B0D4",
+                borderColor: "#000080",
                 borderRadius: 20,
                 paddingVertical: 6,
                 paddingHorizontal: 12,
                 marginTop: 12,
               }}
             >
-              <Ionicons name="pencil-outline" size={16} color="#800080" />
+              <Ionicons name="pencil-outline" size={16} color="#000080" />
               <Link href="/user/edit_profile">
                 <Text
                   style={{
                     fontSize: 14,
                     marginLeft: 4,
-                    color: "#800080",
+                    color: "#000080",
                   }}
                 >
                   Profili Düzenle
@@ -119,132 +118,39 @@ export default function ProfileScreen() {
           </View>
         </View>
 
-        {/* Stats card */}
-        <View
-          style={{
-            backgroundColor: "white",
-            borderRadius: 12,
-            marginBottom: 16,
-            padding: 16,
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
-            elevation: 2,
-          }}
-        >
-          <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 16 }}>
-            <Ionicons name="medal" size={20} color="#F59E0B" />
-            <Text style={{ fontSize: 16, fontWeight: "600", marginLeft: 8 }}>
-              Quiz İstatistikleri
-            </Text>
-          </View>
-
-          <View style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 16 }}>
-            <View style={{ width: "50%", paddingVertical: 8 }}>
-              <Text style={{ fontSize: 14, color: "#666" }}>Çözülen Quiz</Text>
-              <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 4 }}>
-                {stats.quizzesTaken}
-              </Text>
-            </View>
-            <View style={{ width: "50%", paddingVertical: 8 }}>
-              <Text style={{ fontSize: 14, color: "#666" }}>Doğru Cevaplar</Text>
-              <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 4 }}>
-                {stats.correctAnswers}/{stats.totalQuestions}
-              </Text>
-            </View>
-            <View style={{ width: "50%", paddingVertical: 8 }}>
-              <Text style={{ fontSize: 14, color: "#666" }}>Ortalama Puan</Text>
-              <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 4 }}>
-                %{stats.averageScore}
-              </Text>
-            </View>
-            <View style={{ width: "50%", paddingVertical: 8 }}>
-              <Text style={{ fontSize: 14, color: "#666" }}>Toplam Puan</Text>
-              <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 4 }}>
-                {stats.points}
-              </Text>
-            </View>
-          </View>
-
-          <View style={{ marginTop: 8 }}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: 8,
-              }}
-            >
-              <Text style={{ fontSize: 14, fontWeight: "500" }}>Seviye İlerlemesi</Text>
-              <Text style={{ fontSize: 14, fontWeight: "500" }}>{stats.rank}</Text>
-            </View>
-            <View
-              style={{
-                height: 8,
-                backgroundColor: "#E6B0D4",
-                borderRadius: 4,
-                overflow: "hidden",
-              }}
-            >
-              <View style={{ height: "100%", backgroundColor: "#3B82F6", width: "65%" }} />
-            </View>
-            <Text style={{ fontSize: 12, color: "#666", textAlign: "right", marginTop: 4 }}>
-              750 puan daha kazanarak bir sonraki seviyeye geçebilirsiniz
-            </Text>
-          </View>
+        {/* Personal Information */}
+        <View style={{ padding: 20, backgroundColor: "white", borderRadius: 12, marginBottom: 16 }}>
+          <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 10, color: "#000080" }}>
+            Kişisel Bilgiler
+          </Text>
+          <Text style={{ fontSize: 14, marginBottom: 5, fontWeight: "bold", color: "#000080" }}>Ad:</Text>
+          <Text style={{ fontSize: 14, color: "#1C1C64" }}>{userData.firstName}</Text>
+          <Text style={{ fontSize: 14, marginTop: 10, fontWeight: "bold", color: "#000080" }}>Soyad:</Text>
+          <Text style={{ fontSize: 14, color: "#1C1C64" }}>{userData.lastName}</Text>
+          <Text style={{ fontSize: 14, marginTop: 10, fontWeight: "bold", color: "#000080" }}>E-posta:</Text>
+          <Text style={{ fontSize: 14, color: "#1C1C64" }}>{userData.email}</Text>
+          <Text style={{ fontSize: 14, marginTop: 10, fontWeight: "bold", color: "#000080" }}>Telefon:</Text>
+          <Text style={{ fontSize: 14, color: "#1C1C64" }}>{userData.phone}</Text>
+          <Text style={{ fontSize: 14, marginTop: 10, fontWeight: "bold", color: "#000080" }}>Kullanıcı Rolü:</Text>
+          <Text style={{ fontSize: 14, color: "#1C1C64" }}>{userData.role}</Text>
         </View>
 
-        {/* Menu items */}
-        <View
-          style={{
-            backgroundColor: "white",
-            borderRadius: 12,
-            marginBottom: 16,
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
-            elevation: 2,
-          }}
-        >
-          <Link href="/user/password_update">
-            <MenuItem icon="trophy-outline" label="Şifre Değiştir" />
-          </Link>
-          <Link href="/user/hesap_bilgileri">
-            <MenuItem icon="settings-outline" label="Hesap Bilgileri" />
-          </Link>
-          <MenuItem icon="log-out-outline" label="Çıkış Yap" danger />
+        {/* Additional Options */}
+        <View style={{ padding: 20, backgroundColor: "white", borderRadius: 12, marginBottom: 16, alignItems: "center" }}>
+          <TouchableOpacity style={{ marginBottom: 10 }}>
+            <Text style={{ fontSize: 16, color: "#000080" }}>Şifre Değiştir</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ marginBottom: 10 }}>
+            <Text style={{ fontSize: 16, color: "#000080" }}>Ayarlar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ marginBottom: 10 }}>
+            <Text style={{ fontSize: 16, color: "#000080" }}>Yardım</Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={{ fontSize: 16, color: "red", fontWeight: "bold" }}>Çıkış Yap</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
-}
-
-interface MenuItemProps {
-  icon: string;
-  label: string;
-  danger?: boolean;
-}
-
-function MenuItem({ icon, label, danger = false }: MenuItemProps) {
-  return (
-    <TouchableOpacity
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        paddingVertical: 14,
-        borderBottomWidth: 1,
-        borderBottomColor: "#E6B0D4",
-        ...(danger && { borderBottomWidth: 0 }),
-      }}
-    >
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Ionicons name={icon as any} size={22} color={danger ? "#EF4444" : "#800080"} />
-        <Text style={{ fontSize: 16, marginLeft: 12, ...(danger && { color: "#EF4444" }) }}>
-          {label}
-        </Text>
-      </View>
-      <Ionicons name="chevron-forward" size={20} color="#999" />
-    </TouchableOpacity>
   );
 }
