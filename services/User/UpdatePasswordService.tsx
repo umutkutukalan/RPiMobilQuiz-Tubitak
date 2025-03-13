@@ -20,6 +20,7 @@ export const updatePassword = async (
         password: UpdatePasswordData.password,
       }
     );
+    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error(
