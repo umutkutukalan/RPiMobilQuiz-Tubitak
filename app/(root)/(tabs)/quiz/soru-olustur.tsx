@@ -45,18 +45,18 @@ const ExamForm = () => {
     };
 
     return (
-        <ScrollView style={{ padding: 20, backgroundColor: '#F3EDF7' }}>
-            <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10, borderColor: '#000080', borderWidth: 2 }}>
-                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000080', marginBottom: 10 }}>Sınav Soruları</Text>
+        <ScrollView className='p-4 bg-[#F3EDF7]'>
+            <View className='bg-white p-4 rounded-lg border-2 border-[#DDA0DD] mb-4 shadow-md '>
+                <Text className='text-[#800080] text-xl font-bold mb-5'>Sınav Soruları</Text>
                 
                 {questions.map((question, qIndex) => (
-                    <View key={question.id} style={{ marginBottom: 20, padding: 10, borderWidth: 2, borderColor: '#000080', borderRadius: 5 }}>
-                        <Text style={{ color: '#000080' }}>Soru {qIndex + 1}</Text>
+                    <View key={question.id} className='bg-white rounded-lg mb-4 shadow-md'>
+                        <Text className='text-[#000080]'>Soru {qIndex + 1}</Text>
                         <TextInput
                             placeholder="Soru metnini girin"
                             value={question.text}
                             onChangeText={(text) => handleUpdateQuestion(qIndex, 'text', text)}
-                            style={{ borderWidth: 2, borderColor: '#000080', padding: 10, borderRadius: 5, marginBottom: 10 }}
+                            className='border-2 border-[#000080] p-2 rounded-md mb-5 mt-2 w-full'
                         />
                         {question.options.map((option, oIndex) => (
                             <TextInput
@@ -64,29 +64,29 @@ const ExamForm = () => {
                                 placeholder={`Şık ${String.fromCharCode(65 + oIndex)}`}
                                 value={option}
                                 onChangeText={(text) => handleUpdateOption(qIndex, oIndex, text)}
-                                style={{ borderWidth: 2, borderColor: '#000080', padding: 10, borderRadius: 5, marginBottom: 5 }}
+                                className='border-2 border-[#000080] p-2 rounded-md mb-2 w-full'
                             />
                         ))}
 
                         {/* Şık Ekle Butonu */}
-                        <TouchableOpacity onPress={() => addOption(qIndex)} style={{ backgroundColor: '#000080', padding: 10, borderRadius: 5, marginTop: 5 }}>
-                            <Text style={{ color: 'white', textAlign: 'center' }}>Şık Ekle</Text>
+                        <TouchableOpacity onPress={() => addOption(qIndex)} className='bg-[#000080] p-2 rounded-md mb-2'>
+                            <Text className='text-white text-center'>Şık Ekle</Text>
                         </TouchableOpacity>
 
                         {/* Güncelle ve Sil Butonları */}
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                            <TouchableOpacity onPress={() => updateQuestion(question.id)} style={{ backgroundColor: '#000080', padding: 10, borderRadius: 5, flex: 1, marginRight: 5 }}>
-                                <Text style={{ color: 'white', textAlign: 'center' }}>Güncelle</Text>
+                        <View className='flex-row justify-between mt-2'>
+                            <TouchableOpacity onPress={() => updateQuestion(question.id)} className='bg-[#000080] p-2 rounded-md flex-1 mr-2'>
+                                <Text className='text-white text-center'>Güncelle</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => removeQuestion(question.id)} style={{ backgroundColor: '#000080', padding: 10, borderRadius: 5, flex: 1, marginLeft: 5 }}>
-                                <Text style={{ color: 'white', textAlign: 'center' }}>Sil</Text>
+                            <TouchableOpacity onPress={() => removeQuestion(question.id)} className='bg-[#000080] p-2 rounded-md flex-1 ml-2'>
+                                <Text className='text-white text-center'>Sil</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                 ))}
                 
-                <TouchableOpacity onPress={addQuestion} style={{ backgroundColor: '#000080', padding: 10, borderRadius: 5, marginBottom: 10 }}>
-                    <Text style={{ color: 'white', textAlign: 'center' }}>Soru Ekle</Text>
+                <TouchableOpacity onPress={addQuestion} className='bg-[#000080] p-2 rounded-md mb-2 shadow-md'>
+                    <Text className='text-white text-center'>Soru Ekle</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>
