@@ -20,6 +20,7 @@ export const updateUser = async (UpdateUserData: UpdateUserData) => {
     );
     console.log("User Id:", userId);
     console.log(response.data);
+    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error(
