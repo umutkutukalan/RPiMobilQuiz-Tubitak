@@ -14,8 +14,8 @@ export default function SinavOlustur() {
   };
 
   return (
-    <View className="flex-1 bg-gray-100 p-5">
-      <Text className="text-2xl font-bold text-purple-700 mb-4">
+    <View className="flex-1 bg-white p-5">
+      <Text className="text-2xl font-bold text-blue-500 mb-4">
         Sınav Oluştur
       </Text>
 
@@ -47,13 +47,13 @@ export default function SinavOlustur() {
       ].map((item, index) => (
         <View
           key={index}
-          className="bg-white p-4 rounded-lg mb-3 border-l-4 border-purple-300"
+          className="bg-white p-4 rounded-lg mb-3 border-l-4 border-blue-900"
         >
-          <Text className="text-lg font-semibold text-purple-800 mb-2">
+          <Text className="text-lg font-semibold text-blue-500 mb-2">
             {item.label}
           </Text>
           <TextInput
-            className="border border-purple-300 p-2 rounded-md"
+            className="border border-blue-500 p-2 rounded-md"
             value={item.value}
             onChangeText={item.onChange}
             placeholder={item.placeholder || ""}
@@ -63,10 +63,11 @@ export default function SinavOlustur() {
 
       <TouchableOpacity
         onPress={handleSubmit}
-        className="bg-indigo-800 p-4 rounded-lg items-center mt-4"
+        className="bg-blue-500 p-4 rounded-lg items-center mt-4"
       >
         <Text className="text-white text-lg font-bold">Sınavı Kaydet</Text>
       </TouchableOpacity>
     </View>
   );
 }
+
