@@ -6,6 +6,7 @@ export default function QuizLayout() {
       <Stack.Screen name="index" options={{ title: "Quizler" }} />
       <Stack.Screen name="quiz-olustur" options={{ title: "Quiz Oluştur" }} />
       <Stack.Screen name="soru-olustur" options={{ title: "Soru Oluştur" }} />
+      <Stack.Screen name="exam-list" options={{ title: "Exam List" }} />
     </Stack>
   );
 }

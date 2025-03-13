@@ -5,10 +5,7 @@ export default function QuizScreen() {
   const router = useRouter();
 
   return (
-    <View
-      className="bg-black"
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-    >
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <View>
         <Text>Quiz Sayfası</Text>
         <Button
@@ -21,6 +18,13 @@ export default function QuizScreen() {
         <Button
           title="Soru Oluştur"
           onPress={() => router.push("/quiz/soru-olustur")}
+        />
+      </View>
+      <View >
+        <Text>ExamList</Text>
+        <Button
+          title="Exam List"
+          onPress={() => router.push("/quiz/exam-list")}
         />
       </View>
     </View>
