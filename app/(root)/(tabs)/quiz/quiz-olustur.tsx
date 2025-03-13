@@ -1,72 +1,73 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import "../../../globals.css";
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
 
 export default function SinavOlustur() {
-  const [examName, setExamName] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [examDuration, setExamDuration] = useState('');
-  const [instructorName, setInstructorName] = useState('');
+  const [examName, setExamName] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [examDuration, setExamDuration] = useState("");
+  const [instructorName, setInstructorName] = useState("");
 
   const handleSubmit = () => {
-    alert('Sınav bilgileri kaydedildi.');
+    alert("Sınav bilgileri kaydedildi.");
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#F3EDF7', padding: 20 }}>
-      <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#6A0DAD', marginBottom: 10 }}>Sınav Oluştur</Text>
-      
-      <View style={{ backgroundColor: 'white', padding: 15, borderRadius: 12, marginBottom: 10, borderLeftWidth: 5, borderLeftColor: '#DDA0DD' }}>
-        <Text style={{ fontSize: 16, fontWeight: '600', color: '#800080', marginBottom: 5 }}>Sınav Adı</Text>
-        <TextInput 
-          style={{ borderWidth: 1, borderColor: '#E6B0D4', padding: 10, borderRadius: 8 }}
-          value={examName} 
-          onChangeText={setExamName} 
-        />
-      </View>
+    <View className="flex-1 bg-white p-5">
+      <Text className="text-2xl font-bold text-blue-500 mb-4">
+        Sınav Oluştur
+      </Text>
 
-      <View style={{ backgroundColor: 'white', padding: 15, borderRadius: 12, marginBottom: 10, borderLeftWidth: 5, borderLeftColor: '#DDA0DD' }}>
-        <Text style={{ fontSize: 16, fontWeight: '600', color: '#800080', marginBottom: 5 }}>Başlangıç Zamanı</Text>
-        <TextInput 
-          style={{ borderWidth: 1, borderColor: '#E6B0D4', padding: 10, borderRadius: 8 }}
-          placeholder="YYYY-MM-DD HH:MM:SS"
-          value={startTime} 
-          onChangeText={setStartTime} 
-        />
-      </View>
-      
-      <View style={{ backgroundColor: 'white', padding: 15, borderRadius: 12, marginBottom: 10, borderLeftWidth: 5, borderLeftColor: '#DDA0DD' }}>
-        <Text style={{ fontSize: 16, fontWeight: '600', color: '#800080', marginBottom: 5 }}>Bitiş Zamanı</Text>
-        <TextInput 
-          style={{ borderWidth: 1, borderColor: '#E6B0D4', padding: 10, borderRadius: 8 }}
-          placeholder="YYYY-MM-DD HH:MM:SS"
-          value={endTime} 
-          onChangeText={setEndTime} 
-        />
-      </View>
-      
-      <View style={{ backgroundColor: 'white', padding: 15, borderRadius: 12, marginBottom: 10, borderLeftWidth: 5, borderLeftColor: '#DDA0DD' }}>
-        <Text style={{ fontSize: 16, fontWeight: '600', color: '#800080', marginBottom: 5 }}>Sınav Süresi (dk)</Text>
-        <TextInput 
-          style={{ borderWidth: 1, borderColor: '#E6B0D4', padding: 10, borderRadius: 8 }}
-          keyboardType="numeric"
-          value={examDuration} 
-          onChangeText={setExamDuration} 
-        />
-      </View>
+      {[
+        { label: "Sınav Adı", value: examName, onChange: setExamName },
+        {
+          label: "Başlangıç Zamanı",
+          value: startTime,
+          onChange: setStartTime,
+          placeholder: "YYYY-MM-DD HH:MM:SS",
+        },
+        {
+          label: "Bitiş Zamanı",
+          value: endTime,
+          onChange: setEndTime,
+          placeholder: "YYYY-MM-DD HH:MM:SS",
+        },
+        {
+          label: "Sınav Süresi (dk)",
+          value: examDuration,
+          onChange: setExamDuration,
+          keyboardType: "numeric",
+        },
+        {
+          label: "Eğitmen Adı",
+          value: instructorName,
+          onChange: setInstructorName,
+        },
+      ].map((item, index) => (
+        <View
+          key={index}
+          className="bg-white p-4 rounded-lg mb-3 border-l-4 border-blue-900"
+        >
+          <Text className="text-lg font-semibold text-blue-500 mb-2">
+            {item.label}
+          </Text>
+          <TextInput
+            className="border border-blue-500 p-2 rounded-md"
+            value={item.value}
+            onChangeText={item.onChange}
+            placeholder={item.placeholder || ""}
+          />
+        </View>
+      ))}
 
-      <View style={{ backgroundColor: 'white', padding: 15, borderRadius: 12, marginBottom: 10, borderLeftWidth: 5, borderLeftColor: '#DDA0DD' }}>
-        <Text style={{ fontSize: 16, fontWeight: '600', color: '#800080', marginBottom: 5 }}>Eğitmen Adı</Text>
-        <TextInput 
-          style={{ borderWidth: 1, borderColor: '#E6B0D4', padding: 10, borderRadius: 8 }}
-          value={instructorName} 
-          onChangeText={setInstructorName} 
-        />
-      </View>
-      
-      <TouchableOpacity onPress={handleSubmit} style={{ backgroundColor: '#1C1C64', padding: 15, borderRadius: 10, alignItems: 'center', marginTop: 10 }}>
-        <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Sınavı Kaydet</Text>
+      <TouchableOpacity
+        onPress={handleSubmit}
+        className="bg-blue-500 p-4 rounded-lg items-center mt-4"
+      >
+        <Text className="text-white text-lg font-bold">Sınavı Kaydet</Text>
       </TouchableOpacity>
     </View>
   );
 }
+
