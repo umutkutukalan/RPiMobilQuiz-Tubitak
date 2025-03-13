@@ -1,26 +1,24 @@
-import axios from "axios";
-import {
-  UpdatePasswordData,
-  updatePassword as updatePasswordService,
-} from "../../services/User/UpdatePasswordService";
+import { updatePassword } from "@/services/User/UpdatePasswordService";
+import { useState } from "react";
 
 export const useUpdatePassword = () => {
-  const updatePassword = async (UpdatePasswordData: UpdatePasswordData) => {
+  const [updatePasswordData, setUpdatePasswordData] = useState({
+    id: "",
+    password: "",
+    userId: "",
+  });
+  const handleUpdatePassword = async () => {
     try {
-      const response = await updatePasswordService(UpdatePasswordData);
+      const response = await updatePassword(updatePasswordData);
+      console.log("Update password response:", response);
+      return response;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error(
-          "Update password error:",
-          error.response ? error.response.data : error.message
-        );
-        throw new Error(
-          error.response ? error.response.data : "Update password failed"
-        );
-      } else {
-        console.error("Unexpected error:", error);
-        throw new Error("Unexpected error occurred");
-      }
+      console.error("Update password error:", error);
     }
+  };
+  return {
+    updatePasswordData,
+    setUpdatePasswordData,
+    handleUpdatePassword,
   };
 };
