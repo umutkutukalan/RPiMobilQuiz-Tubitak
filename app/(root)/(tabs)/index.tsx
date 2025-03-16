@@ -1,9 +1,11 @@
 import "../../globals.css";
 import { View, Text, Button, TouchableOpacity } from "react-native";
 import { Link, Stack, useRouter } from "expo-router";
+import { useLogin } from "@/hooks/Session/useLogin";
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { handleLogout } = useLogin();
 
   return (
     <View className="h-full flex flex-col justify-center items-center gap-5">
@@ -27,6 +29,10 @@ export default function HomeScreen() {
         >
           Quiz
         </Link>
+
+        <Button title="Çıkış yap" onPress={handleLogout}>
+          <Text>Çıkış Yap</Text>
+        </Button>
       </View>
     </View>
   );

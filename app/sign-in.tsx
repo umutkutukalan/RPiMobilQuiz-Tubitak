@@ -1,6 +1,8 @@
+import { useAuth } from "@/context/AuthProvider";
 import { useLogin } from "@/hooks/Session/useLogin";
 import { useRegister } from "@/hooks/Session/useRegister";
 import { useResetPassword } from "@/hooks/Session/useResetPassword";
+import { Redirect, router } from "expo-router";
 import React, { useState } from "react";
 import {
   View,
@@ -11,7 +13,6 @@ import {
   StyleSheet,
 } from "react-native";
 
-
 export default function AuthScreen() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -21,9 +22,15 @@ export default function AuthScreen() {
 
   const { userData, setUserData, errorMessage, isLoading, handleRegister } =
     useRegister();
-  const { userDataLogin, setUserDataLogin, handleLogin } = useLogin();
+  const { userDataLogin, setUserDataLogin, handleSubmit } = useLogin();
   const { resetPasswordData, setResetPasswordData, handleResetPassword } =
     useResetPassword();
+
+  const { isAuthenticated, isAuthLoading } = useAuth();
+
+  if (!isAuthLoading && isAuthenticated) {
+    return <Redirect href="/" />;
+  }
 
   return (
     <View style={styles.container}>
@@ -243,7 +250,7 @@ export default function AuthScreen() {
 
           <TouchableOpacity
             style={styles.button}
-            onPress={isSignUp ? handleRegister : handleLogin}
+            onPress={isSignUp ? handleRegister : handleSubmit}
           >
             <Text style={styles.buttonText}>
               {isSignUp ? "Kayıt Ol" : "Giriş Yap"}
