@@ -19,7 +19,6 @@ const AppLayout = () => {
       </View>
     );
   }
-
   return <Slot />;
 };
 
