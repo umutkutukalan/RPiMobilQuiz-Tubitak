@@ -19,6 +19,7 @@ export const login = async (userDataLogin: LoginData) => {
     }
 
     console.log("Login response:", response);
+    console.log("giriş yapıldı");
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { strogaService } from "@/config/strogeService"; // Bu servis doğru import edilmeli
 import { router } from "expo-router";
 import { login } from "@/services/Session/loginService"; // login fonksiyonunu import et
+import { strogeService } from "@/config/strogeService";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -21,8 +21,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // Auth check işlemi
   const checkAuth = async () => {
     try {
-      const token = await strogaService.get("token");
-      setIsAuthenticated(!!token); // Token varsa oturum açmış kabul et
+      
     } catch (error) {
       console.error("Error checking auth:", error);
       setIsAuthenticated(false); // Eğer hata alırsak false yap
@@ -46,8 +45,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const response = await login({ email, password });
       if (response?.token && response?.User) {
-        await strogaService.store("token", response.token);
-        await strogaService.store("user", response.User);
+        await strogeService.store("token", response.token);
+        await strogeService.store("user", response.User);
         refetch();
         setIsAuthenticated(true);
         console.log("Login response:", response);
@@ -66,8 +65,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const handleLogout = async () => {
     setIsAuthLoading(true);
     try {
-      await strogaService.remove("token");
-      await strogaService.remove("user");
+      await strogeService.remove("token");
+      await strogeService.remove("user");
       refetch();
       setIsAuthenticated(false);
       router.push("/sign-in"); // Çıkış yapıldığında giriş sayfasına yönlendir
