@@ -12,15 +12,22 @@ export const login = async (userDataLogin: LoginData) => {
       `${config.baseUrl}/Session/login`,
       userDataLogin
     );
+
+    // Response kontrolü
+    if (!response.data || !response.data.token) {
+      throw new Error("Invalid response data");
+    }
+
     console.log("Login response:", response);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error(
-        "Login error:",
-        error.response ? error.response.data : error.message
-      );
-      throw new Error(error.response ? error.response.data : "Login failed");
+      const errorMessage = error.response
+        ? error.response.data
+        : "Login failed";
+
+      console.error("Login error:", errorMessage);
+      throw new Error(errorMessage);
     } else {
       console.error("Unexpected error:", error);
       throw new Error("An unexpected error occurred");
