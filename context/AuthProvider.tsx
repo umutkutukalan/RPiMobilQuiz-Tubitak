@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         refetch();
         setIsAuthenticated(true);
         console.log("Login response:", response);
-        router.push("/user"); // Giriş yapıldığında kullanıcıyı yönlendir
+        router.push("/(root)/(tabs)"); // Giriş yapıldığında kullanıcıyı yönlendir
       } else {
         throw new Error("Giriş yapılırken bir hata oluştu.");
       }
