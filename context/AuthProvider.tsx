@@ -7,6 +7,8 @@ interface AuthContextType {
   isAuthenticated: boolean;
   setIsAuthenticated: (value: boolean) => void;
   isAuthLoading: boolean;
+  user: any; // Kullanıcı bilgisi
+  setUser: (user: any) => void;
   refetch: () => void;
   handleLogin: (email: string, password: string) => Promise<void>;
   handleLogout: () => Promise<void>;
@@ -17,13 +19,23 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<any>(null); // Kullanıcı bilgisi
 
   // Auth check işlemi
   const checkAuth = async () => {
     try {
-      
+      const storedUser = await strogeService.get("user");
+      const storedToken = await strogeService.get("token");
+      if (storedUser && storedToken) {
+        setUser(typeof storedUser === "string" ? JSON.parse(storedUser) : storedUser);
+        setIsAuthenticated(true);
+      } else {
+        setUser(null);
+        setIsAuthenticated(false);
+      }
     } catch (error) {
       console.error("Error checking auth:", error);
+      setUser(null);
       setIsAuthenticated(false); // Eğer hata alırsak false yap
     } finally {
       setIsAuthLoading(false); // Auth kontrolü bittiğinde loading'i kapat
@@ -46,7 +58,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const response = await login({ email, password });
       if (response?.token && response?.User) {
         await strogeService.store("token", response.token);
-        await strogeService.store("user", response.User);
+        await strogeService.store("user", JSON.stringify(response.User));
+        setUser(response.User); // Kullanıcıyı state'e ata
         refetch();
         setIsAuthenticated(true);
         console.log("Login response:", response);
@@ -67,6 +80,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       await strogeService.remove("token");
       await strogeService.remove("user");
+      setUser(null); // Kullanıcıyı temizle
       refetch();
       setIsAuthenticated(false);
       router.push("/sign-in"); // Çıkış yapıldığında giriş sayfasına yönlendir
@@ -84,6 +98,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         isAuthenticated,
         setIsAuthenticated,
         isAuthLoading,
+        user, // Kullanıcı bilgisi
+        setUser,
         refetch,
         handleLogin,
         handleLogout,

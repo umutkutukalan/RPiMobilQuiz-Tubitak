@@ -1,17 +1,19 @@
 import { useState } from "react";
-import { strogaService } from "@/config/strogeService";
+import { strogeService } from "@/config/strogeService";
 import { getByUserId } from "@/services/User/GetByUserIdService";
 
 export const useGetUserById = () => {
   const [userData, setUserData] = useState();
   const getUserById = async () => {
     try {
-      const userString = await strogaService.get("user");
-      if (!userString) {
-        throw new Error("User not found in storage");
+      const userString = await strogeService.get("user");
+      let user;
+      if (typeof userString === "string") {
+        user = JSON.parse(userString);
+      } else {
+        user = userString;
       }
-      const user = JSON.parse(userString);
-      if (!user.id) {
+      if (!user || !user.id) {
         throw new Error("User ID not found");
       }
 

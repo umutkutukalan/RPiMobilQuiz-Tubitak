@@ -10,10 +10,45 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { useGetUserById } from "@/hooks/User/useGetUserById";
+import { useAuth } from "@/context/AuthProvider";
+import { useLogin } from "@/hooks/Session/useLogin";
+
+interface MenuItemProps {
+  icon: keyof typeof Ionicons.glyphMap;
+  iconColor: string;
+  iconBgColor: string;
+  title: string;
+  onPress?: () => void;
+}
+
+const MenuItem = ({
+  icon,
+  iconColor,
+  iconBgColor,
+  title,
+  onPress,
+}: MenuItemProps) => (
+  <TouchableOpacity
+    className="flex-row items-center justify-between py-4 px-6 bg-white rounded-2xl mb-3"
+    onPress={onPress}
+  >
+    <View className="flex-row items-center">
+      <View
+        className={`w-12 h-12 rounded-full items-center justify-center mr-4`}
+        style={{ backgroundColor: iconBgColor }}
+      >
+        <Ionicons name={icon} size={24} color={iconColor} />
+      </View>
+      <Text className="text-gray-800 text-lg font-medium">{title}</Text>
+    </View>
+    <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
+  </TouchableOpacity>
+);
 
 const Profile = () => {
-
   const { getUserById, userData } = useGetUserById();
+  const { user } = useAuth();
+  const { handleLogout } = useLogin();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -28,82 +63,59 @@ const Profile = () => {
   }, []);
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F3EDF7]">
-      {/* Header */}
-      <View className="flex-row items-center justify-between p-4 bg-white border-b-2 border-[#000080] shadow-md">
-        <Text className="text-[#000080] text-xl font-bold">Profil</Text>
-        <View className="flex-row">
-          <TouchableOpacity className="p-2 ml-2">
-            <Ionicons name="notifications-outline" size={24} color="#000080" />
-          </TouchableOpacity>
-          <TouchableOpacity className="p-2 ml-2">
-            <Ionicons name="settings-outline" size={24} color="#000080" />
-          </TouchableOpacity>
-        </View>
-      </View>
+    <SafeAreaView className="flex-1 bg-gray-50">
+      <ScrollView className="flex-1">
+        {/* Header with Profile Info */}
+        <View className="items-center px-6 py-8 bg-white">
+          <Image
+            source={{ uri: "/placeholder.svg?height=120&width=120" }}
+            className="w-30 h-30 rounded-full mb-6"
+          />
 
-      {/* Main content */}
-      <ScrollView className="p-4">
-        {/* Profile card */}
-        <View className="bg-white rounded-lg mb-4 overflow-hidden shadow-md">
-          <View className="h-20 bg-[#000080]" />
-          <View className="flex items-center pb-4">
-            <View className="mt-[-40px] border-4 border-white rounded-full overflow-hidden">
-              <Image
-                source={{ uri: "https://via.placeholder.com/96" }}
-                className="w-24 h-24"
-              />
-            </View>
-            <View className="items-center mt-2">
-              <Text className="text-[#000080] text-xl font-bold">
-                
-              </Text>
-              <Text className="text-[#666] mt-2"></Text>
-            </View>
-            <TouchableOpacity className="flex-row items-center border-2 border-[#000080] rounded-full p-1 ml-4 mt-2">
-              <Ionicons name="pencil-outline" size={16} color="#000080" />
-              <Link href="/user/edit_profile">
-                <Text className="text-[#000080] text-sm ml-1">
-                  Profili Düzenle
-                </Text>
-              </Link>
-            </TouchableOpacity>
+          <View className="items-center">
+            <Text className="text-gray-500 text-sm mb-1">İsim</Text>
+            <Text className="text-blue-600 text-2xl font-bold mb-4">
+              {user?.name} {user?.surname}
+            </Text>
+
+            <Text className="text-gray-500 text-sm mb-1">Sınıfı</Text>
+            <Text className="text-blue-600 text-xl font-semibold mb-4">
+              4-B
+            </Text>
+
+            <Text className="text-gray-500 text-sm mb-1">Student ID</Text>
+            <Text className="text-blue-600 text-xl font-semibold">
+              2112101046
+            </Text>
           </View>
         </View>
 
-        {/* Personal Information */}
-        <View className="bg-white rounded-lg p-4 mb-4">
-          <Text className="text-[#000080] text-xl font-bold mb-4">
-            Kişisel Bilgiler
-          </Text>
-          <Text className="text-[#000080] font-bold">Ad:</Text>
-          <Text className="text-[#1C1C64]"></Text>
-          <Text className="text-[#000080] font-bold mt-4">Soyad:</Text>
-          <Text className="text-[#1C1C64]"></Text>
-          <Text className="text-[#000080] font-bold mt-4">E-posta:</Text>
-          <Text className="text-[#1C1C64]"></Text>
-          <Text className="text-[#000080] font-bold mt-4">Telefon:</Text>
-          <Text className="text-[#1C1C64]"></Text>
-          <Text className="text-[#000080] font-bold mt-4">Kullanıcı Rolü:</Text>
-          <Text className="text-[#1C1C64]"></Text>
+        {/* Profile Section */}
+        <View className="px-6 mt-6">
+          <Text className="text-gray-800 text-2xl font-bold mb-4">Profil</Text>
+
+          <MenuItem
+            icon="person"
+            iconColor="#3B82F6"
+            iconBgColor="#DBEAFE"
+            title="Manage Profile"
+            onPress={() => console.log("Manage Profile pressed")}
+          />
         </View>
 
-        {/* Additional Options */}
-        <View className="bg-white rounded-lg p-4 mb-4">
-          <TouchableOpacity className="mb-4">
-            <Text className="text-[#000080] text-xl font-bold">
-              Şifre Değiştir
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity className="mb-4">
-            <Text className="text-[#000080] text-xl font-bold">Ayarlar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity className="mb-4">
-            <Text className="text-[#000080] text-xl font-bold">Yardım</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text className="text-[#FF0000] text-xl font-bold">Çıkış Yap</Text>
-          </TouchableOpacity>
+        {/* Settings Section */}
+        <View className="px-6 mt-6 pb-8">
+          <Text className="text-gray-800 text-2xl font-bold mb-4">
+            Ayarlar
+          </Text>
+
+          <MenuItem
+            icon="play"
+            iconColor="#3B82F6"
+            iconBgColor="#DBEAFE"
+            title="Çıkış Yap"
+            onPress={() => handleLogout()}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
