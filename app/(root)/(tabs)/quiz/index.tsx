@@ -33,7 +33,7 @@ export default function QuizScreen() {
             padding: 24,
             backgroundColor: "#0f172a",
           }}
-          onPress={() => router.push("/quiz/quiz-olustur")}
+          onPress={() => router.push("/quiz/create-exam")}
         >
           <Text
             style={{
