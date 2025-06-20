@@ -1,80 +1,114 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Alert } from "react-native";
-import QuizOlustur from "./quiz-olustur"; // QuizOlustur sayfasını import ediyoruz
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 
-const ExamList = () => {
-  const [startTime, setStartTime] = useState("21.12.2021");
-  const [isQuizOlusturVisible, setQuizOlusturVisible] = useState(false); // Sayfa geçişi için state
-  const [exams, setExams] = useState([
-    { id: 1, name: "Sınav 1", startTime: "21.12.2021", endTime: "22.12.2021" },
-    { id: 2, name: "Sınav 2", startTime: "23.12.2021", endTime: "24.12.2021" },
-    { id: 3, name: "Sınav 3", startTime: "25.12.2021", endTime: "26.12.2021" },
-    { id: 4, name: "Sınav 4", startTime: "27.12.2021", endTime: "28.12.2021" } // Yeni sınav
-  ]);
+export default function ExamList() {
+  const [activeTab, setActiveTab] = useState("all");
 
-  // Silme fonksiyonu
-  const handleDelete = (examId: number) => {
-    Alert.alert(
-      "Silmek İstediğinizden Emin Misiniz?",
-      "Bu işlem geri alınamaz.",
-      [
-        {
-          text: "Hayır",
-          onPress: () => console.log("Silme iptal edildi"),
-          style: "cancel"
-        },
-        {
-          text: "Evet",
-          onPress: () => {
-            // Silme işlemi: examId'yi kullanarak o sınavı siliyoruz
-            setExams(exams.filter(exam => exam.id !== examId));
-          }
-        }
-      ]
-    );
-  };
-
-  // Eğer QuizOlustur sayfası visible ise, o sayfayı gösteriyoruz
-  if (isQuizOlusturVisible) {
-    return <QuizOlustur />;
-  }
+  const lists = [
+    {
+      id: 1,
+      title: "Daily To-do's",
+      category: "Work",
+      date: "24-09-2024",
+      gradient: ["#a78bfa", "#f472b6", "#fb923c"], // purple-400, pink-400, orange-400
+    },
+    {
+      id: 2,
+      title: "Traveling List",
+      category: "List",
+      date: "13-11-2024",
+      gradient: ["#0f172a", "#6d28d9", "#2563eb"], // slate-900, purple-900, blue-900
+    },
+    {
+      id: 3,
+      title: "Workout List",
+      category: "Others",
+      date: "07-10-2022",
+      gradient: ["#2563eb", "#7c3aed", "#db2777"], // blue-600, purple-600, pink-600
+    },
+  ];
 
   return (
-    <View className="w-full h-full">
-      <View className="w-full h-full flex flex-col items-center gap-4 p-4 overflow-hidden">
-        {exams.map((exam) => (
+    <ScrollView style={{ flex: 1, backgroundColor: "#F3F4F6", padding: 16 }}>
+      {/* Header Tabs */}
+      <View style={{ flexDirection: "row", marginBottom: 24 }}>
+        <TouchableOpacity
+          onPress={() => setActiveTab("all")}
+          style={{
+            flex: 1,
+            paddingVertical: 12,
+            paddingHorizontal: 24,
+            borderTopLeftRadius: 999,
+            borderBottomLeftRadius: 999,
+            backgroundColor: activeTab === "all" ? "#000" : "#E5E7EB",
+          }}
+        >
+          <Text style={{
+            color: activeTab === "all" ? "#fff" : "#4B5563",
+            fontWeight: "500",
+            fontSize: 12,
+            textAlign: "center"
+          }}>Tüm Sınavlar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setActiveTab("active")}
+          style={{
+            flex: 1,
+            paddingVertical: 12,
+            paddingHorizontal: 24,
+            backgroundColor: activeTab === "active" ? "#000" : "#E5E7EB",
+          }}
+        >
+          <Text style={{
+            color: activeTab === "active" ? "#fff" : "#4B5563",
+            fontWeight: "500",
+            fontSize: 12,
+            textAlign: "center"
+          }}>Devam Eden</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setActiveTab("pinned")}
+          style={{
+            flex: 1,
+            paddingVertical: 12,
+            paddingHorizontal: 24,
+            borderTopRightRadius: 999,
+            borderBottomRightRadius: 999,
+            backgroundColor: activeTab === "pinned" ? "#000" : "#E5E7EB",
+          }}
+        >
+          <Text style={{
+            color: activeTab === "pinned" ? "#fff" : "#4B5563",
+            fontWeight: "500",
+            fontSize: 12,
+            textAlign: "center"
+          }}>Bekleyen</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* List Cards */}
+      <View style={{ gap: 16, marginBottom: 80 }}>
+        {lists.map((list) => (
           <View
-            key={exam.id}
-            className="h-[100px] w-full bg-blue-500 rounded-xl p-2 flex flex-row justify-between overflow-hidden"
+            key={list.id}
+            style={{
+              borderRadius: 24,
+              padding: 24,
+              backgroundColor: list.gradient[0],
+              marginBottom: 0,
+              // Basit renk geçişi için sadece ilk rengi kullandık
+            }}
           >
-            <View className="h-full flex flex-col justify-between">
-              <Text className="text-white text-lg font-semibold line-clamp-1 w-[200px]">
-                {exam.name}
-              </Text>
-              <View>
-                <Text className="text-white">Başlangıç: {exam.startTime}</Text>
-                <Text className="text-white">Bitiş: {exam.endTime}</Text>
+            <Text style={{ fontSize: 22, fontWeight: "bold", marginBottom: 16, color: "#fff" }}>{list.title}</Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+              <Text style={{ color: "#fff", opacity: 0.9, fontSize: 14 }}>{list.category}</Text>
+              <View style={{ backgroundColor: "rgba(255,255,255,0.2)", borderRadius: 8, paddingHorizontal: 12, paddingVertical: 4 }}>
+                <Text style={{ color: "#fff", fontWeight: "500", fontSize: 14 }}>{list.date}</Text>
               </View>
-            </View>
-            <View className="flex flex-col justify-center gap-2">
-              <TouchableOpacity
-                className="bg-green-500 p-2 rounded-md"
-                onPress={() => setQuizOlusturVisible(true)} // Butona tıklandığında QuizOlustur sayfasını geçerli yap
-              >
-                <Text className="text-white text-center">Düzenle</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                className="bg-red-800 p-2 rounded-md"
-                onPress={() => handleDelete(exam.id)} // Silme butonuna tıklandığında handleDelete fonksiyonunu çalıştır
-              >
-                <Text className="text-white text-center">Sil</Text>
-              </TouchableOpacity>
             </View>
           </View>
         ))}
       </View>
-    </View>
+    </ScrollView>
   );
-};
-
-export default ExamList;
+}
