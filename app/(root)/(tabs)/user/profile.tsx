@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -8,7 +8,6 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Link } from "expo-router";
 import { useGetUserById } from "@/hooks/User/useGetUserById";
 import { useAuth } from "@/context/AuthProvider";
 import { useLogin } from "@/hooks/Session/useLogin";
@@ -44,6 +43,7 @@ const MenuItem = ({
     <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
   </TouchableOpacity>
 );
+
 
 const Profile = () => {
   const { getUserById, userData } = useGetUserById();
@@ -83,7 +83,7 @@ const Profile = () => {
               4-B
             </Text>
 
-            <Text className="text-gray-500 text-sm mb-1">Student ID</Text>
+            <Text className="text-gray-500 text-sm mb-1">Öğrenci Numarası</Text>
             <Text className="text-blue-600 text-xl font-semibold">
               2112101046
             </Text>
@@ -105,9 +105,7 @@ const Profile = () => {
 
         {/* Settings Section */}
         <View className="px-6 mt-6 pb-8">
-          <Text className="text-gray-800 text-2xl font-bold mb-4">
-            Ayarlar
-          </Text>
+          <Text className="text-gray-800 text-2xl font-bold mb-4">Ayarlar</Text>
 
           <MenuItem
             icon="play"

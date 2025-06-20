@@ -3,7 +3,8 @@ import { strogeService } from "@/config/strogeService";
 import { getByUserId } from "@/services/User/GetByUserIdService";
 
 export const useGetUserById = () => {
-  const [userData, setUserData] = useState();
+  const [userData, setUserData] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const getUserById = async () => {
     try {
       const userString = await strogeService.get("user");
@@ -20,6 +21,7 @@ export const useGetUserById = () => {
       const response = await getByUserId({ userId: user.id });
       console.log(response);
       setUserData(response); // Kullanıcı verilerini duruma kaydet
+      setIsLoading(false);
       return response;
     } catch (error) {
       console.error("Get user by id error:", error);
@@ -27,5 +29,5 @@ export const useGetUserById = () => {
     }
   };
 
-  return { getUserById, userData }; // userData'yı döndür
+  return { getUserById, userData, isLoading }; // userData'yı döndür
 };
