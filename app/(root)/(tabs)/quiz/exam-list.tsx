@@ -1,8 +1,11 @@
+import { useAuth } from "@/context/AuthProvider";
 import { useGetAllExam } from "@/hooks/Exam/useGetAllExam";
+import { DeleteExamService } from "@/services/Exam/DeleteExamService";
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView, Modal } from "react-native";
 
 export default function ExamList() {
+  const { token } = useAuth();
   const [activeTab, setActiveTab] = useState("all");
   const { getAllExams, isLoading, examList } = useGetAllExam();
   const [modalVisible, setModalVisible] = useState(false);
@@ -19,7 +22,7 @@ export default function ExamList() {
 
   const confirmDelete = () => {
     if (selectedExamId) {
-      // Sınav silme işlemi burada yapılacak
+      DeleteExamService(selectedExamId, token);
       console.log(`Sınav silindi: ${selectedExamId}`);
       setModalVisible(false);
       setSelectedExamId(null);
