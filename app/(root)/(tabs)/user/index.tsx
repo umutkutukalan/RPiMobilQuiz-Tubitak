@@ -6,12 +6,12 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+// import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "@/context/AuthProvider";
 import { router, useRouter } from "expo-router";
 
 interface MenuItemProps {
-  icon: keyof typeof Ionicons.glyphMap;
+  icon: string;
   iconColor: string;
   iconBgColor: string;
   title: string;
@@ -34,11 +34,11 @@ const MenuItem = ({
         className={`w-12 h-12 rounded-full items-center justify-center mr-4`}
         style={{ backgroundColor: iconBgColor }}
       >
-        <Ionicons name={icon} size={24} color={iconColor} />
+        <Text style={{ fontSize: 24 }}>{icon}</Text>
       </View>
       <Text className="text-gray-800 text-lg font-medium">{title}</Text>
     </View>
-    <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
+    <Text style={{ fontSize: 20, color: "#9CA3AF" }}>›</Text>
   </TouchableOpacity>
 );
 
@@ -79,7 +79,7 @@ export default function ProfileScreen() {
           <Text className="text-gray-800 text-2xl font-bold mb-4">Profil</Text>
 
           <MenuItem
-            icon="person"
+            icon="👤"
             iconColor="#3B82F6"
             iconBgColor="#DBEAFE"
             title="Öğrenci Bilgileri"
@@ -94,7 +94,7 @@ export default function ProfileScreen() {
           </Text>
 
           <MenuItem
-            icon="notifications"
+            icon="🔔"
             iconColor="#EF4444"
             iconBgColor="#FEE2E2"
             title="Notification Settings"
@@ -102,7 +102,7 @@ export default function ProfileScreen() {
           />
 
           <MenuItem
-            icon="globe"
+            icon="🌐"
             iconColor="#3B82F6"
             iconBgColor="#DBEAFE"
             title="Language"
@@ -110,7 +110,7 @@ export default function ProfileScreen() {
           />
 
           <MenuItem
-            icon="headset"
+            icon="🎧"
             iconColor="#F59E0B"
             iconBgColor="#FEF3C7"
             title="Help & Support"
@@ -118,7 +118,7 @@ export default function ProfileScreen() {
           />
 
           <MenuItem
-            icon="shield-checkmark"
+            icon="🛡️"
             iconColor="#10B981"
             iconBgColor="#D1FAE5"
             title="Privacy Settings"
@@ -126,7 +126,7 @@ export default function ProfileScreen() {
           />
 
           <MenuItem
-            icon="play"
+            icon="🚪"
             iconColor="#3B82F6"
             iconBgColor="#DBEAFE"
             title="Çıkış Yap"

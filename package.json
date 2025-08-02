@@ -15,7 +15,8 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@expo/vector-icons": "^14.1.0",
+    "@expo/vector-icons": "~14.0.4",
+    "@react-native-community/datetimepicker": "8.2.0",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.15",
     "@react-navigation/stack": "^7.1.2",
@@ -45,8 +46,7 @@
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
-    "tailwindcss": "^3.4.17",
-    "@react-native-community/datetimepicker": "8.2.0"
+    "tailwindcss": "^3.4.17"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

@@ -1,10 +1,12 @@
 import { useAuth } from "@/context/AuthProvider";
 import { useGetAllExam } from "@/hooks/Exam/useGetAllExam";
 import { DeleteExamService } from "@/services/Exam/DeleteExamService";
+import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView, Modal } from "react-native";
 
 export default function ExamList() {
+  const router = useRouter();
   const { token } = useAuth();
   const [activeTab, setActiveTab] = useState("all");
   const { getAllExams, isLoading, examList } = useGetAllExam();
@@ -122,9 +124,15 @@ export default function ExamList() {
       {/* List Cards */}
       <View style={{ gap: 16, marginBottom: 80 }}>
         {examList.map((exam) => (
-          <View
+          <TouchableOpacity
             key={exam.id}
-            className="bg-blue-400 p-4 rounded-lg shadow flex flex-col gap-4"
+            onPress={() =>
+              router.push({
+                pathname: "/quiz/exam-questions",
+                params: { examId: exam.id },
+              })
+            }
+            className="bg-blue-400 p-4 rounded-lg shadow flex flex-col gap-4 mb-4"
           >
             <View className="flex flex-row justify-between items-center">
               <View>
@@ -137,7 +145,10 @@ export default function ExamList() {
               </View>
               <TouchableOpacity
                 className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center"
-                onPress={() => handleDeleteExam(exam.id)}
+                onPress={(e) => {
+                  e.stopPropagation && e.stopPropagation();
+                  handleDeleteExam(exam.id);
+                }}
               >
                 <Text className="text-sm">✖️</Text>
               </TouchableOpacity>
@@ -153,7 +164,7 @@ export default function ExamList() {
                 </View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         ))}
       </View>
 
