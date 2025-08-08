@@ -1,5 +1,8 @@
+import ActiveExams from "@/components/Exam/ActiveExams";
+import AllExams from "@/components/Exam/AllExams";
 import { useAuth } from "@/context/AuthProvider";
 import { useGetAllExam } from "@/hooks/Exam/useGetAllExam";
+import { useStartExam } from "@/hooks/Exam/useStartExam";
 import { DeleteExamService } from "@/services/Exam/DeleteExamService";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -12,10 +15,24 @@ export default function ExamList() {
   const { getAllExams, isLoading, examList } = useGetAllExam();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedExamId, setSelectedExamId] = useState<string | null>(null);
+  const { startExam } = useStartExam();
 
   useEffect(() => {
     getAllExams();
   }, []);
+
+  const handleStartExam = (examId: number) => {
+    console.log("Sınav Başlatılıyor:", examId);
+    try {
+      startExam(examId);
+      alert("Sınav başarıyla başlatıldı!");
+      // Sınav listesini yenile
+      getAllExams();
+    } catch (error: any) {
+      console.error("Error starting exam:", error);
+      alert(error.message || "Sınavı başlatırken bir hata oluştu.");
+    }
+  };
 
   const handleDeleteExam = (examId: string) => {
     setSelectedExamId(examId);
@@ -122,51 +139,15 @@ export default function ExamList() {
       </View>
 
       {/* List Cards */}
-      <View style={{ gap: 16, marginBottom: 80 }}>
-        {examList.map((exam) => (
-          <TouchableOpacity
-            key={exam.id}
-            onPress={() =>
-              router.push({
-                pathname: "/quiz/exam-questions",
-                params: { examId: exam.id },
-              })
-            }
-            className="bg-blue-400 p-4 rounded-lg shadow flex flex-col gap-4 mb-4"
-          >
-            <View className="flex flex-row justify-between items-center">
-              <View>
-                <Text className="text-2xl color-white font-semibold">
-                  {exam.exam_name}
-                </Text>
-                <Text className="text-xs color-white font-semibold">
-                  {exam.status}
-                </Text>
-              </View>
-              <TouchableOpacity
-                className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center"
-                onPress={(e) => {
-                  e.stopPropagation && e.stopPropagation();
-                  handleDeleteExam(exam.id);
-                }}
-              >
-                <Text className="text-sm">✖️</Text>
-              </TouchableOpacity>
-            </View>
-            <View>
-              <View className="flex flex-row justify-between items-end">
-                <View className="flex flex-col">
-                  <Text>{formatDateTime(exam.start_time)}</Text>
-                  <Text>{formatDateTime(exam.end_time)}</Text>
-                </View>
-                <View>
-                  <Text>⏱️ {exam.exam_duration} dakika</Text>
-                </View>
-              </View>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </View>
+      {activeTab === "all" && (
+        <AllExams {...{ handleDeleteExam, formatDateTime, handleStartExam }} />
+      )}
+      {activeTab === "active" && (
+        <ActiveExams
+          {...{ handleDeleteExam, formatDateTime, handleStartExam }}
+        />
+      )}
+      {/* {activeTab === "pinned" && <ActiveExams {...{ handleDeleteExam, formatDateTime, handleStartExam }} />} */}
 
       {/* Modal */}
       <Modal visible={modalVisible} transparent animationType="fade">
