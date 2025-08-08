@@ -1,5 +1,8 @@
+import AddQuestion from "@/components/Questions/AddQuestion";
+import QuestionListItem from "@/components/Questions/QuestionListItem";
 import config from "@/config/config";
 import { useAuth } from "@/context/AuthProvider";
+import { useCreateQuestion } from "@/hooks/Question/useCreateQuestion";
 import { CreateQuestionService } from "@/services/Question/CreateQuestionService";
 import axios from "axios";
 import { useLocalSearchParams } from "expo-router";
@@ -20,18 +23,19 @@ export default function ExamQuestions() {
   const [questionText, setQuestionText] = useState("");
   const [questionType, setQuestionType] = useState("");
   const [correctAnswer, setCorrectAnswer] = useState("");
+  const { createQuestion } = useCreateQuestion();
+
+  const newQuestion = {
+    correct_answer: correctAnswer,
+    exam_id: Number(examId),
+    question_text: questionText,
+    question_type: questionType,
+  };
 
   const handleAddQuestion = () => {
-    // Burada API'ye post edebilirsin
-    const newQuestion = {
-      exam_id: Number(examId),
-      question_text: questionText,
-      question_type: questionType,
-      correct_answer: correctAnswer,
-    };
-
     try {
-      CreateQuestionService(newQuestion, token);
+      createQuestion(newQuestion);
+      alert("Soru başarıyla eklendi.");
     } catch (error) {
       console.error("Soru eklenirken hata oluştu:", error);
       alert("Soru eklenirken bir hata oluştu. Lütfen tekrar deneyin.");
@@ -43,20 +47,6 @@ export default function ExamQuestions() {
     setQuestionType("");
     setCorrectAnswer("");
   };
-
-  useEffect(() => {
-    try {
-      const response = axios.get(
-        `${config.baseUrl}/Questin/get_questions/${examId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      console.log("Sınav soruları:", response.data);
-    } catch (error) {
-      console.error("Sınav soruları yüklenirken hata oluştu:", error);
-    }
-  }, []);
 
   return (
     <ScrollView className="flex-1 bg-gray-100 p-4">
@@ -71,48 +61,28 @@ export default function ExamQuestions() {
         </TouchableOpacity>
       </View>
 
-      {/* Burada sınavın mevcut soruları listelenebilir */}
+      <View className="mb-6 flex flex-col gap-2">
+        <QuestionListItem
+          soruId={1}
+          question_text="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        />
+        <QuestionListItem
+          soruId={2}
+          question_text="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        />
+      </View>
 
-      {/* Soru Ekleme Modalı */}
-      <Modal visible={modalVisible} transparent animationType="fade">
-        <View className="flex-1 justify-center items-center bg-black/50">
-          <View className="bg-white rounded-2xl p-6 w-4/5">
-            <Text className="text-lg font-bold mb-4 text-center">
-              Soru Ekle
-            </Text>
-            <TextInput
-              className="bg-gray-100 rounded-lg p-3 mb-3"
-              placeholder="Soru Metni"
-              value={questionText}
-              onChangeText={setQuestionText}
-            />
-            <TextInput
-              className="bg-gray-100 rounded-lg p-3 mb-3"
-              placeholder="Soru Tipi (ör: multiple_choice)"
-              value={questionType}
-              onChangeText={setQuestionType}
-            />
-            <TextInput
-              className="bg-gray-100 rounded-lg p-3 mb-3"
-              placeholder="Doğru Cevap"
-              value={correctAnswer}
-              onChangeText={setCorrectAnswer}
-            />
-            <TouchableOpacity
-              className="bg-purple-500 rounded-lg py-3 items-center mt-2"
-              onPress={handleAddQuestion}
-            >
-              <Text className="text-white font-bold">Kaydet</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="bg-gray-300 rounded-lg py-3 items-center mt-2"
-              onPress={() => setModalVisible(false)}
-            >
-              <Text className="text-gray-800 font-bold">Vazgeç</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+      <AddQuestion
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        questionText={questionText}
+        setQuestionText={setQuestionText}
+        questionType={questionType}
+        setQuestionType={setQuestionType}
+        correctAnswer={correctAnswer}
+        setCorrectAnswer={setCorrectAnswer}
+        handleAddQuestion={handleAddQuestion}
+      />
     </ScrollView>
   );
 }

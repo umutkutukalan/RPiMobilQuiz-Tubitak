@@ -1,7 +1,17 @@
 import config from "@/config/config";
 import axios from "axios";
 
-export const CreateQuestionService = async (questionData, token: string) => {
+interface questionData {
+  correct_answer: string;
+  exam_id: number;
+  question_text: string;
+  question_type: string;
+}
+
+export const CreateQuestionService = async (
+  questionData: questionData,
+  token: string
+) => {
   try {
     const response = await axios.post(
       `${config.baseUrl}/Question/create_question`,

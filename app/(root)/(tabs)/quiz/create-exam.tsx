@@ -7,7 +7,6 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { useAuth } from "@/context/AuthProvider";
-import { CreateExamService } from "@/services/Exam/CreateExamService";
 import { useCreateExam } from "@/hooks/Exam/useCreateExam";
 
 export default function CreateExam() {
