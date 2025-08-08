@@ -1,7 +1,7 @@
 import config from "@/config/config";
 import axios from "axios";
 
-export const GetAllExamService = async (token) => {
+export const GetAllExamService = async (token: string) => {
   try {
     const response = await axios.get(`${config.baseUrl}/Exam/get_exams`, {
       headers: {

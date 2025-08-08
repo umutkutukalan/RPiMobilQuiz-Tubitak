@@ -8,29 +8,51 @@ import {
 import React, { useState } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { CreateExamService } from "@/services/Exam/CreateExamService";
+import { useCreateExam } from "@/hooks/Exam/useCreateExam";
 
 export default function CreateExam() {
   const [examName, setExamName] = useState("");
   const [startDateTime, setStartDateTime] = useState("");
   const [endDateTime, setEndDateTime] = useState("");
   const [examDuration, setExamDuration] = useState("");
-  const { user, token } = useAuth();
+  const { createExam } = useCreateExam();
+  const { user } = useAuth();
 
-  const examData = {
-    exam_name: examName,
-    teacher_id: user.id,
-    start_time: startDateTime,
-    end_time: endDateTime,
-    exam_duration: parseInt(examDuration, 10),
+  // Tarih formatını dönüştürme fonksiyonu
+  const formatDateTime = (input: string) => {
+    // "10.03.2025 09:00" formatından "2025-03-10 09:00:00" formatına çevir
+    if (!input) return "";
+
+    const [datePart, timePart] = input.split(" ");
+    if (!datePart || !timePart) return "";
+
+    const [day, month, year] = datePart.split(".");
+    return `${year}-${month.padStart(2, "0")}-${day.padStart(
+      2,
+      "0"
+    )} ${timePart}:00`;
   };
 
-  const handleCreateExam = () => {
+  const examData = {
+    end_time: formatDateTime(endDateTime),
+    exam_duration: parseInt(examDuration) || 0,
+    exam_name: examName,
+    start_time: formatDateTime(startDateTime),
+    teacher_id: parseInt(user?.id) || 0,
+  };
+
+  const handleCreateExam = async () => {
     try {
-      CreateExamService(examData, token);
+      console.log("Gönderilecek veri:", examData);
+      await createExam(examData);
       alert("Sınav başarıyla oluşturuldu!");
-    } catch (error) {
+      setExamName("");
+      setStartDateTime("");
+      setEndDateTime("");
+      setExamDuration("");
+    } catch (error: any) {
       console.error("Sınav oluşturma hatası:", error);
-      alert("Sınav oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.");
+      alert(error.message || "Sınav oluşturulurken bir hata oluştu.");
     }
   };
 
@@ -51,7 +73,7 @@ export default function CreateExam() {
           <TextInput
             value={startDateTime}
             onChangeText={setStartDateTime}
-            placeholder="20.06.2025 14:30"
+            placeholder="10.03.2025 09:00"
             className="bg-gray-100 rounded-lg p-3 mb-3"
           />
           <Text className="font-bold text-lg mb-2">
@@ -60,7 +82,7 @@ export default function CreateExam() {
           <TextInput
             value={endDateTime}
             onChangeText={setEndDateTime}
-            placeholder="20.06.2025 15:30"
+            placeholder="10.03.2025 10:00"
             className="bg-gray-100 rounded-lg p-3 mb-3"
           />
           <Text className="font-bold text-lg mb-2">Sınav Süresi (dk)</Text>

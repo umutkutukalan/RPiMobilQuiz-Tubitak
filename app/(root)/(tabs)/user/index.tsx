@@ -22,16 +22,20 @@ export default function ProfileScreen() {
             <Text className="text-blue-600 text-2xl font-bold mb-4">
               {user?.name} {user?.surname}
             </Text>
+            {user?.role == "student" && (
+              <Text className="text-gray-500 text-sm mb-1">Sınıfı</Text>
+            )}
 
-            <Text className="text-gray-500 text-sm mb-1">Sınıfı</Text>
-            <Text className="text-blue-600 text-xl font-semibold mb-4">
-              4-B
-            </Text>
-
-            <Text className="text-gray-500 text-sm mb-1">Öğrenci Numarası</Text>
-            <Text className="text-blue-600 text-xl font-semibold">
-              2112101046
-            </Text>
+            {user?.role == "student" && (
+              <View className="flex flex-col gap-1">
+                <Text className="text-gray-500 text-sm mb-1">
+                  Öğrenci Numarası
+                </Text>
+                <Text className="text-blue-600 text-xl font-semibold">
+                  2112101046
+                </Text>
+              </View>
+            )}
           </View>
         </View>
 
