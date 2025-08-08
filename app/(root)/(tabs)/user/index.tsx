@@ -1,46 +1,7 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
-} from "react-native";
-// import { Ionicons } from "@expo/vector-icons";
+import { View, Text, Image, ScrollView, SafeAreaView } from "react-native";
 import { useAuth } from "@/context/AuthProvider";
-import { router, useRouter } from "expo-router";
-
-interface MenuItemProps {
-  icon: string;
-  iconColor: string;
-  iconBgColor: string;
-  title: string;
-  onPress?: () => void;
-}
-
-const MenuItem = ({
-  icon,
-  iconColor,
-  iconBgColor,
-  title,
-  onPress,
-}: MenuItemProps) => (
-  <TouchableOpacity
-    className="flex-row items-center justify-between py-4 px-6 bg-white rounded-2xl mb-3"
-    onPress={onPress}
-  >
-    <View className="flex-row items-center">
-      <View
-        className={`w-12 h-12 rounded-full items-center justify-center mr-4`}
-        style={{ backgroundColor: iconBgColor }}
-      >
-        <Text style={{ fontSize: 24 }}>{icon}</Text>
-      </View>
-      <Text className="text-gray-800 text-lg font-medium">{title}</Text>
-    </View>
-    <Text style={{ fontSize: 20, color: "#9CA3AF" }}>›</Text>
-  </TouchableOpacity>
-);
+import { useRouter } from "expo-router";
+import { MenuItem } from "@/components/Menu/MenuItem";
 
 export default function ProfileScreen() {
   const { user } = useAuth();
@@ -92,38 +53,6 @@ export default function ProfileScreen() {
           <Text className="text-gray-800 text-2xl font-bold mb-4">
             Settings
           </Text>
-
-          <MenuItem
-            icon="🔔"
-            iconColor="#EF4444"
-            iconBgColor="#FEE2E2"
-            title="Notification Settings"
-            onPress={() => console.log("Notification Settings pressed")}
-          />
-
-          <MenuItem
-            icon="🌐"
-            iconColor="#3B82F6"
-            iconBgColor="#DBEAFE"
-            title="Language"
-            onPress={() => console.log("Language pressed")}
-          />
-
-          <MenuItem
-            icon="🎧"
-            iconColor="#F59E0B"
-            iconBgColor="#FEF3C7"
-            title="Help & Support"
-            onPress={() => console.log("Help & Support pressed")}
-          />
-
-          <MenuItem
-            icon="🛡️"
-            iconColor="#10B981"
-            iconBgColor="#D1FAE5"
-            title="Privacy Settings"
-            onPress={() => console.log("Privacy Settings pressed")}
-          />
 
           <MenuItem
             icon="🚪"

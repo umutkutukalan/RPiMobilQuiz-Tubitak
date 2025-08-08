@@ -1,5 +1,4 @@
 import { NavigationProp, useRoute } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
@@ -11,191 +10,60 @@ import {
 import { useRouter } from "expo-router";
 import { useGetUserById } from "@/hooks/User/useGetUserById";
 import LoadingScreen from "@/components/LoadingScreen";
+import { useAuth } from "@/context/AuthProvider";
 
 interface Props {
   navigation: NavigationProp<any>;
 }
 
 export default function AccountDetailsScreen({ navigation }: Props) {
+  const { user } = useAuth();
   const router = useRouter();
   const { getUserById, userData, isLoading } = useGetUserById();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        await getUserById();
-        console.log("User Data:", userData);
-      } catch (error) {
-        console.error("Failed to fetch user data:", error);
-      }
-    };
-    fetchUserData();
+    getUserById();
   }, []);
-
-  const handleEditProfile = () => {
-    navigation.navigate("AccountUpdate");
-  };
 
   if (isLoading) {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#F3EDF7",
-        }}
-      >
+      <View className="w-full h-full flex-items-center justify-center">
         <LoadingScreen />
       </View>
     );
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#F3EDF7" }}>
+    <SafeAreaView className="flex-1 p-4 bg-gray-50">
       <StatusBar barStyle="dark-content" />
+      <View className="w-full flex items-center justify-center">
+        <Text className="text-2xl font-bold mb-6 ">Kişisel Bilgiler</Text>
+      </View>
 
-      <View style={{ padding: 20 }}>
-        <Text
-          style={{
-            fontSize: 16,
-            fontWeight: "bold",
-            marginBottom: 10,
-            color: "#800080",
-          }}
-        >
-          Kişisel Bilgiler
-        </Text>
-
-        <View
-          style={{
-            marginBottom: 15,
-            borderBottomWidth: 1,
-            borderBottomColor: "#DDA0DD",
-            paddingBottom: 5,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 14,
-              marginBottom: 5,
-              fontWeight: "bold",
-              color: "#800080",
-            }}
-          >
-            Ad:
-          </Text>
-          <Text style={{ fontSize: 14, color: "#1C1C64" }}>
-            {userData?.name}
-          </Text>
+      <View className="flex flex-col gap-3 mb-6">
+        <View className="bg-white p-4 rounded-lg">
+          <Text className="text-gray-600 text-sm">Ad:</Text>
+          <Text className="text-xl font-semibold">{userData?.name}</Text>
         </View>
 
-        <View
-          style={{
-            marginBottom: 15,
-            borderBottomWidth: 1,
-            borderBottomColor: "#DDA0DD",
-            paddingBottom: 5,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 14,
-              marginBottom: 5,
-              fontWeight: "bold",
-              color: "#800080",
-            }}
-          >
-            Soyad:
-          </Text>
-          <Text style={{ fontSize: 14, color: "#1C1C64" }}>
-            {userData?.surname}
-          </Text>
+        <View className="bg-white p-4 rounded-lg">
+          <Text className="text-gray-600 text-sm">Soyad:</Text>
+          <Text className="text-xl font-semibold">{userData?.surname}</Text>
         </View>
 
-        <View
-          style={{
-            marginBottom: 15,
-            borderBottomWidth: 1,
-            borderBottomColor: "#E6B0D4",
-            paddingBottom: 5,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 14,
-              marginBottom: 5,
-              fontWeight: "bold",
-              color: "#800080",
-            }}
-          >
-            E-posta:
-          </Text>
-          <Text style={{ fontSize: 14, color: "#1C1C64" }}>
-            {userData?.email}
-          </Text>
+        <View className="bg-white p-4 rounded-lg">
+          <Text className="text-gray-600 text-sm">E-posta:</Text>
+          <Text className="text-xl font-semibold">{userData?.email}</Text>
         </View>
 
-        <View
-          style={{
-            marginBottom: 15,
-            borderBottomWidth: 1,
-            borderBottomColor: "#DDA0DD",
-            paddingBottom: 5,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 14,
-              marginBottom: 5,
-              fontWeight: "bold",
-              color: "#800080",
-            }}
-          >
-            Telefon:
-          </Text>
-          <Text style={{ fontSize: 14, color: "#1C1C64" }}>
-            232342343242342
-          </Text>
-        </View>
-
-        <View
-          style={{
-            marginBottom: 15,
-            borderBottomWidth: 1,
-            borderBottomColor: "#E6B0D4",
-            paddingBottom: 5,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 14,
-              marginBottom: 5,
-              fontWeight: "bold",
-              color: "#800080",
-            }}
-          >
-            Kullanıcı Rolü:
-          </Text>
-          <Text style={{ fontSize: 14, color: "#1C1C64" }}>
-            {userData?.role}
-          </Text>
+        <View className="bg-white p-4 rounded-lg">
+          <Text className="text-gray-600 text-sm">Telefon:</Text>
+          <Text className="text-xl font-semibold">{userData?.phone}</Text>
         </View>
       </View>
 
-      <TouchableOpacity
-        style={{
-          backgroundColor: "#1C1C64",
-          padding: 15,
-          borderRadius: 5,
-          alignItems: "center",
-          margin: 20,
-        }}
-        onPress={handleEditProfile}
-      >
-        <Text style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
-          Profili Düzenle
-        </Text>
+      <TouchableOpacity className="bg-blue-600 p-4 rounded-lg items-center">
+        <Text className="text-white font-bold text-lg">Profili Düzenle</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

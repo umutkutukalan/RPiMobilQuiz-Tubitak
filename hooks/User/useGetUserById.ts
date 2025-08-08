@@ -1,28 +1,18 @@
 import { useState } from "react";
 import { strogeService } from "@/config/strogeService";
 import { getByUserId } from "@/services/User/GetByUserIdService";
+import { useAuth } from "@/context/AuthProvider";
 
 export const useGetUserById = () => {
+  const { user } = useAuth();
   const [userData, setUserData] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const getUserById = async () => {
     try {
-      const userString = await strogeService.get("user");
-      let user;
-      if (typeof userString === "string") {
-        user = JSON.parse(userString);
-      } else {
-        user = userString;
-      }
-      if (!user || !user.id) {
-        throw new Error("User ID not found");
-      }
-
       const response = await getByUserId({ userId: user.id });
       console.log(response);
-      setUserData(response); // Kullanıcı verilerini duruma kaydet
+      setUserData(response);
       setIsLoading(false);
-      return response;
     } catch (error) {
       console.error("Get user by id error:", error);
       throw new Error("Get user by id failed");
