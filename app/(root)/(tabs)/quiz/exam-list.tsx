@@ -9,6 +9,7 @@ import { DeleteExamService } from "@/services/Exam/DeleteExamService";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView, Modal } from "react-native";
+import { formatDateTime } from "@/hooks/formatDateTime";
 
 export default function ExamList() {
   const router = useRouter();
@@ -61,29 +62,16 @@ export default function ExamList() {
     return <Text>Yükleniyor...</Text>;
   }
 
-  // Tarih ve saat formatlayıcı (gün.ay.yıl saat:dakika)
-  const formatDateTime = (dateString: string) => {
-    const date = new Date(dateString);
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear();
-    const hours = date.getHours().toString().padStart(2, "0");
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-    return `${day}.${month}.${year} ${hours}:${minutes}`;
-  };
-
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#F3F4F6", padding: 16 }}>
+    <View className="h-full w-full p-5">
       {/* Header Tabs */}
-      <View style={{ flexDirection: "row", marginBottom: 24 }}>
+      <View className="flex flex-row rounded-lg bg-gray-200 mb-4 overflow-hidden">
         <TouchableOpacity
           onPress={() => setActiveTab("scheduled")}
           style={{
             flex: 1,
             paddingVertical: 12,
             paddingHorizontal: 24,
-            borderTopLeftRadius: 999,
-            borderBottomLeftRadius: 999,
             backgroundColor: activeTab === "scheduled" ? "#000" : "#E5E7EB",
           }}
         >
@@ -124,8 +112,6 @@ export default function ExamList() {
             flex: 1,
             paddingVertical: 12,
             paddingHorizontal: 24,
-            borderTopRightRadius: 999,
-            borderBottomRightRadius: 999,
             backgroundColor: activeTab === "finished" ? "#000" : "#E5E7EB",
           }}
         >
@@ -144,7 +130,9 @@ export default function ExamList() {
 
       {/* List Cards */}
       {activeTab === "scheduled" && (
-        <ScheduledExams {...{ handleDeleteExam, formatDateTime, handleStartExam }} />
+        <ScheduledExams
+          {...{ handleDeleteExam, formatDateTime, handleStartExam }}
+        />
       )}
       {activeTab === "active" && (
         <ActiveExams
@@ -181,6 +169,6 @@ export default function ExamList() {
           </View>
         </View>
       </Modal>
-    </ScrollView>
+    </View>
   );
 }

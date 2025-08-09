@@ -1,7 +1,7 @@
 import { useGetAllExam } from "@/hooks/Exam/useGetAllExam";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 interface FinishedExamsProps {
   handleDeleteExam: (examId: string) => void;
@@ -30,13 +30,14 @@ const FinishedExams = ({
   }
 
   return (
-    <View style={{ gap: 16, marginBottom: 80 }}>
-      {examList
-        .filter((exam) => exam.status === "finished")
-        .map((exam) => (
+    <ScrollView>
+      <View className="flex flex-col gap-5">
+        {examList
+          .filter((exam) => exam.status === "finished")
+          .map((exam) => (
           <View
             key={exam.id}
-            className="bg-red-500 rounded-lg shadow overflow-hidden"
+            className="bg-red-600 rounded-lg shadow overflow-hidden"
           >
             <TouchableOpacity
               onPress={() =>
@@ -47,12 +48,14 @@ const FinishedExams = ({
               }
               className="flex flex-col gap-4 p-4"
             >
-              <View className="flex flex-row justify-between items-center">
+              <View className="flex flex-row justify-between items-start">
                 <View>
                   <Text className="text-2xl font-semibold text-white">
                     {exam.exam_name}
                   </Text>
-                  <Text className="text-xs font-semibold text-white">{exam.status}</Text>
+                  <Text className="text-xs font-semibold text-white">
+                    {exam.status}
+                  </Text>
                 </View>
                 <TouchableOpacity
                   className="w-7 h-7 rounded-full bg-white flex items-center justify-center"
@@ -67,11 +70,17 @@ const FinishedExams = ({
               <View>
                 <View className="flex flex-row justify-between items-end">
                   <View className="flex flex-col">
-                    <Text className="text-white">{formatDateTime(exam.start_time)}</Text>
-                    <Text className="text-white">{formatDateTime(exam.end_time)}</Text>
+                    <Text className="text-white">
+                      {formatDateTime(exam.start_time)}
+                    </Text>
+                    <Text className="text-white">
+                      {formatDateTime(exam.end_time)}
+                    </Text>
                   </View>
                   <View>
-                    <Text className="text-white">⏱️ {exam.exam_duration} dakika</Text>
+                    <Text className="text-white">
+                      ⏱️ {exam.exam_duration} dakika
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -83,7 +92,8 @@ const FinishedExams = ({
             </View>
           </View>
         ))}
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 

@@ -4,12 +4,11 @@ import { getByUserId } from "@/services/User/GetByUserIdService";
 import { useAuth } from "@/context/AuthProvider";
 
 export const useGetUserById = () => {
-  const { user } = useAuth();
   const [userData, setUserData] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const getUserById = async () => {
+  const getUserById = async (userId: number) => {
     try {
-      const response = await getByUserId({ userId: user.id });
+      const response = await getByUserId(userId);
       console.log(response);
       setUserData(response);
       setIsLoading(false);

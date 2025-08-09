@@ -1,16 +1,12 @@
 import config from "@/config/config";
 import axios from "axios";
 
-export interface GetByUserIdData {
-    userId: string;
-}
-
-export const getByUserId = async (GetByUserIdData: GetByUserIdData) => {
+export const getByUserId = async (userId: number) => {
     try {
         const response = await axios.get(
-            `${config.baseUrl}/User/get_user_by_id/${GetByUserIdData.userId}`
+            `${config.baseUrl}/User/get_user_by_id/${userId}`
         );
-        console.log("User Id:", GetByUserIdData.userId);
+        console.log("User Id:", userId);
         console.log(response.data);
         return response.data;
     } catch (error) {

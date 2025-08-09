@@ -28,9 +28,7 @@ const AddQuestion = ({
     <Modal visible={modalVisible} transparent animationType="fade">
       <View className="flex-1 justify-center items-center bg-black/50">
         <View className="bg-white rounded-2xl p-6 w-4/5">
-          <Text className="text-lg font-bold mb-4 text-center">
-            Soru Ekle
-          </Text>
+          <Text className="text-lg font-bold mb-4 text-center">Soru Ekle</Text>
           <TextInput
             className="bg-gray-100 rounded-lg p-3 mb-3"
             placeholder="Soru Metni"
