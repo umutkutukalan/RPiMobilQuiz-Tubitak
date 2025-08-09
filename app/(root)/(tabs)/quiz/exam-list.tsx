@@ -1,5 +1,7 @@
 import ActiveExams from "@/components/Exam/ActiveExams";
 import AllExams from "@/components/Exam/AllExams";
+import FinishedExams from "@/components/Exam/FinishedExams";
+import ScheduledExams from "@/components/Exam/ScheduledExams";
 import { useAuth } from "@/context/AuthProvider";
 import { useGetAllExam } from "@/hooks/Exam/useGetAllExam";
 import { useStartExam } from "@/hooks/Exam/useStartExam";
@@ -11,11 +13,13 @@ import { View, Text, TouchableOpacity, ScrollView, Modal } from "react-native";
 export default function ExamList() {
   const router = useRouter();
   const { token } = useAuth();
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState("scheduled");
   const { getAllExams, isLoading, examList } = useGetAllExam();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedExamId, setSelectedExamId] = useState<string | null>(null);
   const { startExam } = useStartExam();
+
+  console.log("Exam List Loaded", examList);
 
   useEffect(() => {
     getAllExams();
@@ -73,25 +77,25 @@ export default function ExamList() {
       {/* Header Tabs */}
       <View style={{ flexDirection: "row", marginBottom: 24 }}>
         <TouchableOpacity
-          onPress={() => setActiveTab("all")}
+          onPress={() => setActiveTab("scheduled")}
           style={{
             flex: 1,
             paddingVertical: 12,
             paddingHorizontal: 24,
             borderTopLeftRadius: 999,
             borderBottomLeftRadius: 999,
-            backgroundColor: activeTab === "all" ? "#000" : "#E5E7EB",
+            backgroundColor: activeTab === "scheduled" ? "#000" : "#E5E7EB",
           }}
         >
           <Text
             style={{
-              color: activeTab === "all" ? "#fff" : "#4B5563",
+              color: activeTab === "scheduled" ? "#fff" : "#4B5563",
               fontWeight: "500",
               fontSize: 12,
               textAlign: "center",
             }}
           >
-            Tüm Sınavlar
+            Bekleyen Sınavlar
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -111,43 +115,47 @@ export default function ExamList() {
               textAlign: "center",
             }}
           >
-            Devam Eden
+            Devam Eden Sınavlar
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => setActiveTab("pinned")}
+          onPress={() => setActiveTab("finished")}
           style={{
             flex: 1,
             paddingVertical: 12,
             paddingHorizontal: 24,
             borderTopRightRadius: 999,
             borderBottomRightRadius: 999,
-            backgroundColor: activeTab === "pinned" ? "#000" : "#E5E7EB",
+            backgroundColor: activeTab === "finished" ? "#000" : "#E5E7EB",
           }}
         >
           <Text
             style={{
-              color: activeTab === "pinned" ? "#fff" : "#4B5563",
+              color: activeTab === "finished" ? "#fff" : "#4B5563",
               fontWeight: "500",
               fontSize: 12,
               textAlign: "center",
             }}
           >
-            Bekleyen
+            Biten Sınavlar
           </Text>
         </TouchableOpacity>
       </View>
 
       {/* List Cards */}
-      {activeTab === "all" && (
-        <AllExams {...{ handleDeleteExam, formatDateTime, handleStartExam }} />
+      {activeTab === "scheduled" && (
+        <ScheduledExams {...{ handleDeleteExam, formatDateTime, handleStartExam }} />
       )}
       {activeTab === "active" && (
         <ActiveExams
           {...{ handleDeleteExam, formatDateTime, handleStartExam }}
         />
       )}
-      {/* {activeTab === "pinned" && <ActiveExams {...{ handleDeleteExam, formatDateTime, handleStartExam }} />} */}
+      {activeTab === "finished" && (
+        <FinishedExams
+          {...{ handleDeleteExam, formatDateTime, handleStartExam }}
+        />
+      )}
 
       {/* Modal */}
       <Modal visible={modalVisible} transparent animationType="fade">

@@ -3,17 +3,17 @@ import { useRouter } from "expo-router";
 import { useEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
-interface ActiveExamsProps {
+interface FinishedExamsProps {
   handleDeleteExam: (examId: string) => void;
   formatDateTime: (dateTime: string) => string;
   handleStartExam: (examId: number) => void;
 }
 
-const ActiveExams = ({
+const FinishedExams = ({
   handleDeleteExam,
   formatDateTime,
   handleStartExam,
-}: ActiveExamsProps) => {
+}: FinishedExamsProps) => {
   const router = useRouter();
   const { examList, getAllExams, isLoading } = useGetAllExam();
 
@@ -25,18 +25,18 @@ const ActiveExams = ({
     return <Text>Loading...</Text>;
   }
 
-  if (examList.filter((exam) => exam.status === "active").length === 0) {
-    return <Text>Aktif sınav bulunamadı.</Text>;
+  if (examList.filter((exam) => exam.status === "finished").length === 0) {
+    return <Text>Biten sınav bulunamadı.</Text>;
   }
 
   return (
     <View style={{ gap: 16, marginBottom: 80 }}>
       {examList
-        .filter((exam) => exam.status === "active")
+        .filter((exam) => exam.status === "finished")
         .map((exam) => (
           <View
             key={exam.id}
-            className="bg-blue-400 rounded-lg shadow overflow-hidden"
+            className="bg-red-500 rounded-lg shadow overflow-hidden"
           >
             <TouchableOpacity
               onPress={() =>
@@ -49,12 +49,10 @@ const ActiveExams = ({
             >
               <View className="flex flex-row justify-between items-center">
                 <View>
-                  <Text className="text-2xl color-white font-semibold">
+                  <Text className="text-2xl font-semibold text-white">
                     {exam.exam_name}
                   </Text>
-                  <Text className="text-xs color-white font-semibold">
-                    {exam.status}
-                  </Text>
+                  <Text className="text-xs font-semibold text-white">{exam.status}</Text>
                 </View>
                 <TouchableOpacity
                   className="w-7 h-7 rounded-full bg-white flex items-center justify-center"
@@ -69,31 +67,24 @@ const ActiveExams = ({
               <View>
                 <View className="flex flex-row justify-between items-end">
                   <View className="flex flex-col">
-                    <Text>{formatDateTime(exam.start_time)}</Text>
-                    <Text>{formatDateTime(exam.end_time)}</Text>
+                    <Text className="text-white">{formatDateTime(exam.start_time)}</Text>
+                    <Text className="text-white">{formatDateTime(exam.end_time)}</Text>
                   </View>
                   <View>
-                    <Text>⏱️ {exam.exam_duration} dakika</Text>
+                    <Text className="text-white">⏱️ {exam.exam_duration} dakika</Text>
                   </View>
                 </View>
               </View>
             </TouchableOpacity>
-            {exam.status === "active" ? (
-              <TouchableOpacity className="bg-red-500 w-full items-center p-2">
-                <Text className="text-lg text-white">Sınavı Bitir</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                className="bg-green-500 w-full items-center p-2"
-                onPress={() => handleStartExam(Number(exam?.id))}
-              >
-                <Text className="text-lg text-white">Sınavı Başlat</Text>
-              </TouchableOpacity>
-            )}
+            <View className="p-4 bg-gray-300">
+              <Text className="text-lg font-semibold">
+                Sınav yayından kaldırıldı.
+              </Text>
+            </View>
           </View>
         ))}
     </View>
   );
 };
 
-export default ActiveExams;
+export default FinishedExams;
