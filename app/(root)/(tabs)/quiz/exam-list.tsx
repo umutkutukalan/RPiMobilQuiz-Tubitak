@@ -26,19 +26,6 @@ export default function ExamList() {
     getAllExams();
   }, []);
 
-  const handleStartExam = (examId: number) => {
-    console.log("Sınav Başlatılıyor:", examId);
-    try {
-      startExam(examId);
-      alert("Sınav başarıyla başlatıldı!");
-      // Sınav listesini yenile
-      getAllExams();
-    } catch (error: any) {
-      console.error("Error starting exam:", error);
-      alert(error.message || "Sınavı başlatırken bir hata oluştu.");
-    }
-  };
-
   const handleDeleteExam = (examId: string) => {
     setSelectedExamId(examId);
     setModalVisible(true);
@@ -130,20 +117,10 @@ export default function ExamList() {
 
       {/* List Cards */}
       {activeTab === "scheduled" && (
-        <ScheduledExams
-          {...{ handleDeleteExam, formatDateTime, handleStartExam }}
-        />
+        <ScheduledExams {...{ handleDeleteExam }} />
       )}
-      {activeTab === "active" && (
-        <ActiveExams
-          {...{ handleDeleteExam, formatDateTime, handleStartExam }}
-        />
-      )}
-      {activeTab === "finished" && (
-        <FinishedExams
-          {...{ handleDeleteExam, formatDateTime, handleStartExam }}
-        />
-      )}
+      {activeTab === "active" && <ActiveExams {...{ handleDeleteExam }} />}
+      {activeTab === "finished" && <FinishedExams {...{ handleDeleteExam }} />}
 
       {/* Modal */}
       <Modal visible={modalVisible} transparent animationType="fade">

@@ -61,33 +61,36 @@ export default function ExamQuestions() {
   }
 
   return (
-    <View className="flex-1 bg-gray-100">
+    <View className="w-full flex-1 bg-gray-100">
       {/* Fixed Header */}
-      <View className="bg-white flex-row items-start justify-between border-b border-gray-300 p-4">
-        <View className="flex flex-col gap-1 justify-center">
-          <View className="flex flex-row items-center gap-2">
-            <View className="w-6 h-6 rounded-full bg-gray-400">
-              <Image
-                source={{ uri: userData?.profile_picture }}
-                className="w-full h-full rounded-full"
-              />
+      <View className="w-full bg-white flex-col gap-2 border-b border-gray-300 p-4">
+        <View className="w-full flex flex-row items-start justify-between">
+          <View className="w-5/6 flex flex-col gap-2 justify-center">
+            <View className="flex flex-row items-center gap-2">
+              <View className="w-6 h-6 rounded-full bg-gray-400">
+                <Image
+                  source={{ uri: userData?.profile_picture }}
+                  className="w-full h-full rounded-full"
+                />
+              </View>
+              <Text className="text-lg">
+                {userData?.name} {userData?.surname}{" "}
+              </Text>
             </View>
-            <Text className="text-lg">
-              {userData?.name} {userData?.surname}{" "}
-            </Text>
+            <Text className="text-4xl font-bold">{exam?.exam_name}</Text>
           </View>
-          <Text className="text-4xl font-bold">{exam?.exam_name}</Text>
-          <Text className="text-lg text-gray-600">
-            {formatDateTime(exam?.start_time)} -{" "}
-            {formatDateTime(exam?.end_time)}
-          </Text>
+          <View className="w-1/6 flex items-end justify-end">
+            <TouchableOpacity
+              className="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center"
+              onPress={() => setModalVisible(true)}
+            >
+              <Text className="text-white text-3xl font-bold">+</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <TouchableOpacity
-          className="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center"
-          onPress={() => setModalVisible(true)}
-        >
-          <Text className="text-white text-3xl font-bold">+</Text>
-        </TouchableOpacity>
+        <Text className="text-lg text-gray-600">
+          {formatDateTime(exam?.start_time)} - {formatDateTime(exam?.end_time)}
+        </Text>
       </View>
 
       {/* Scrollable Content */}
