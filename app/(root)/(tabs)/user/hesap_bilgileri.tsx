@@ -22,7 +22,7 @@ export default function AccountDetailsScreen({ navigation }: Props) {
   const { getUserById, userData, isLoading } = useGetUserById();
 
   useEffect(() => {
-    getUserById();
+    getUserById(user?.id);
   }, []);
 
   if (isLoading) {

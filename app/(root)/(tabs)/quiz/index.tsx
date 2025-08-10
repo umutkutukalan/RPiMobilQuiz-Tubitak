@@ -1,70 +1,39 @@
 import React from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
+import { useAuth } from "@/context/AuthProvider";
 
 export default function QuizScreen() {
+  const { user } = useAuth();
   const router = useRouter();
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#F3F4F6", padding: 16 }}>
-      <View style={{ gap: 16, marginBottom: 80 }}>
+      <View className="flex flex-col gap-5">
         <TouchableOpacity
-          style={{
-            borderRadius: 24,
-            padding: 24,
-            backgroundColor: "#a78bfa",
-          }}
+          className="rounded-lg p-5 bg-green-600 shadow-sm"
           onPress={() => router.push("/quiz/exam-list")}
         >
-          <Text
-            style={{
-              fontSize: 22,
-              fontWeight: "bold",
-              marginBottom: 16,
-              color: "#fff",
-            }}
-          >
-            Sınavlar
-          </Text>
+          <Text className="text-3xl text-white">Sınavlar</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            borderRadius: 24,
-            padding: 24,
-            backgroundColor: "#0f172a",
-          }}
-          onPress={() => router.push("/quiz/create-exam")}
-        >
-          <Text
-            style={{
-              fontSize: 22,
-              fontWeight: "bold",
-              marginBottom: 16,
-              color: "#fff",
-            }}
-          >
-            Sınav Oluştur
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            borderRadius: 24,
-            padding: 24,
-            backgroundColor: "#2563eb",
-          }}
-          onPress={() => router.push("/quiz/soru-olustur")}
-        >
-          <Text
-            style={{
-              fontSize: 22,
-              fontWeight: "bold",
-              marginBottom: 16,
-              color: "#fff",
-            }}
-          >
-            Başlatılmamış Sınavlar
-          </Text>
-        </TouchableOpacity>
+        {user?.role == "teacher" && (
+          <>
+            <TouchableOpacity
+              className="rounded-lg p-5 bg-blue-600 shadow-sm"
+              onPress={() => router.push("/quiz/scheduled-exams")}
+            >
+              <Text className="text-3xl text-white">
+                Başlatılmamış Sınavlar
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              className="rounded-lg p-5 bg-gray-600 shadow-sm"
+              onPress={() => router.push("/quiz/create-exam")}
+            >
+              <Text className="text-3xl text-white">Sınav Oluştur</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
     </ScrollView>
   );

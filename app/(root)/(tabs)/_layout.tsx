@@ -1,5 +1,4 @@
 import { Tabs } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
 
 export default function TabsLayout() {
   return (
@@ -22,18 +21,19 @@ export default function TabsLayout() {
           headerShown: false,
         }}
       />
-      <Tabs.Screen
-        name="user"
-        options={{
-          title: "Profil",
-          headerShown: false,
-        }}
-      />
 
       <Tabs.Screen
         name="quiz"
         options={{
           title: "Quiz",
+          headerShown: false,
+        }}
+      />
+
+      <Tabs.Screen
+        name="user"
+        options={{
+          title: "Profil",
           headerShown: false,
         }}
       />

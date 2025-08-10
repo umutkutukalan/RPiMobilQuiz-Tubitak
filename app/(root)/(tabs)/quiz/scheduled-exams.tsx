@@ -1,13 +1,11 @@
-import ActiveExams from "@/components/Exam/ActiveExams";
-import FinishedExams from "@/components/Exam/FinishedExams";
 import ScheduledExams from "@/components/Exam/ScheduledExams";
 import { useAuth } from "@/context/AuthProvider";
 import { useGetAllExam } from "@/hooks/Exam/useGetAllExam";
 import { DeleteExamService } from "@/services/Exam/DeleteExamService";
-import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, Modal } from "react-native";
+import { useEffect, useState } from "react";
+import { Modal, Text, TouchableOpacity, View } from "react-native";
 
-export default function ExamList() {
+export default function ScheduledExam() {
   const { token } = useAuth();
   const [activeTab, setActiveTab] = useState("scheduled");
   const { getAllExams, isLoading, examList } = useGetAllExam();
@@ -48,43 +46,23 @@ export default function ExamList() {
       {/* Header Tabs */}
       <View className="flex flex-row rounded-lg bg-gray-200 mb-4 overflow-hidden">
         <TouchableOpacity
-          onPress={() => setActiveTab("active")}
+          onPress={() => setActiveTab("scheduled")}
           style={{
             flex: 1,
             paddingVertical: 12,
             paddingHorizontal: 24,
-            backgroundColor: activeTab === "active" ? "#000" : "#E5E7EB",
+            backgroundColor: activeTab === "scheduled" ? "#000" : "#E5E7EB",
           }}
         >
           <Text
             style={{
-              color: activeTab === "active" ? "#fff" : "#4B5563",
+              color: activeTab === "scheduled" ? "#fff" : "#4B5563",
               fontWeight: "500",
               fontSize: 12,
               textAlign: "center",
             }}
           >
-            Devam Eden Sınavlar
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setActiveTab("finished")}
-          style={{
-            flex: 1,
-            paddingVertical: 12,
-            paddingHorizontal: 24,
-            backgroundColor: activeTab === "finished" ? "#000" : "#E5E7EB",
-          }}
-        >
-          <Text
-            style={{
-              color: activeTab === "finished" ? "#fff" : "#4B5563",
-              fontWeight: "500",
-              fontSize: 12,
-              textAlign: "center",
-            }}
-          >
-            Biten Sınavlar
+            Bekleyen Sınavlar
           </Text>
         </TouchableOpacity>
       </View>
@@ -93,8 +71,6 @@ export default function ExamList() {
       {activeTab === "scheduled" && (
         <ScheduledExams {...{ handleDeleteExam }} />
       )}
-      {activeTab === "active" && <ActiveExams {...{ handleDeleteExam }} />}
-      {activeTab === "finished" && <FinishedExams {...{ handleDeleteExam }} />}
 
       {/* Modal */}
       <Modal visible={modalVisible} transparent animationType="fade">
