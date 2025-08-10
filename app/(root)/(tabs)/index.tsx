@@ -4,9 +4,6 @@ import StudentRole from "./user/student-role";
 import TeacherRole from "./user/teacher-role";
 import AdminRole from "./user/admin-role";
 
-
-
-
 export default function HomeScreen() {
   const { user } = useAuth();
   console.log("User:", user);

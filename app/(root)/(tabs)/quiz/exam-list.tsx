@@ -9,7 +9,7 @@ import { View, Text, TouchableOpacity, Modal } from "react-native";
 
 export default function ExamList() {
   const { token } = useAuth();
-  const [activeTab, setActiveTab] = useState("scheduled");
+  const [activeTab, setActiveTab] = useState("active");
   const { getAllExams, isLoading, examList } = useGetAllExam();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedExamId, setSelectedExamId] = useState<string | null>(null);
