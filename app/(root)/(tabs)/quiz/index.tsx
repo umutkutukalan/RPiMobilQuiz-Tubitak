@@ -8,7 +8,7 @@ export default function QuizScreen() {
   const router = useRouter();
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#F3F4F6", padding: 16 }}>
+    <ScrollView className="flex-1 bg-gray-100 p-5">
       <View className="flex flex-col gap-5">
         <TouchableOpacity
           className="rounded-lg p-5 bg-green-600 shadow-sm"
