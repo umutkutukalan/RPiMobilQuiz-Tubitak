@@ -33,15 +33,17 @@ export default function AuthScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 justify-center p-4 bg-white">
       {isForgotPassword ? ( // Eğer şifremi unuttum sayfası açık ise
-        <View style={styles.forgotPasswordContainer}>
-          <Text style={styles.title}>Şifremi Unuttum</Text>
+        <View className="flex-1 justify-center p-4 bg-white">
+          <Text className="text-2xl font-bold text-center mb-5">
+            Şifremi Unuttum
+          </Text>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>E-posta</Text>
+          <View className="mb-4">
+            <Text className="text-lg font-medium">E-posta</Text>
             <TextInput
-              style={styles.input} // Genişliği %100 yapan stil
+              className="border border-gray-300 p-2 rounded"
               placeholder="E-posta adresinizi girin"
               keyboardType="email-address"
               onChangeText={(text) =>
@@ -52,26 +54,29 @@ export default function AuthScreen() {
             />
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
-            <Text style={styles.buttonText}>Gönder</Text>
+          <TouchableOpacity
+            className="bg-blue-500 p-2 rounded"
+            onPress={handleResetPassword}
+          >
+            <Text className="text-white text-center">Gönder</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => setIsForgotPassword(false)}>
-            <Text style={styles.toggleText}>Geri Dön</Text>
+            <Text className="text-blue-500 text-center">Geri Dön</Text>
           </TouchableOpacity>
         </View>
       ) : (
         <View>
-          <Text style={styles.title}>
+          <Text className="text-2xl font-bold text-center mb-5">
             {isSignUp ? "Kayıt Ol" : "Giriş Yap"}
           </Text>
 
           {isSignUp && (
             <>
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Email</Text>
+              <View className="mb-4">
+                <Text className="text-lg font-medium">Email</Text>
                 <TextInput
-                  style={styles.input}
+                  className="border border-gray-300 p-2 rounded"
                   placeholder="Email adresinizi girin"
                   keyboardType="email-address"
                   onChangeText={(text) =>
@@ -83,11 +88,11 @@ export default function AuthScreen() {
                 />
               </View>
 
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Şifre</Text>
-                <View style={styles.passwordContainer}>
+              <View className="mb-4">
+                <Text className="text-lg font-medium">Şifre</Text>
+                <View className="flex-row border border-gray-300 p-2 rounded">
                   <TextInput
-                    style={styles.input}
+                    className="flex-1"
                     secureTextEntry={!showPassword}
                     value={userData.password}
                     onChangeText={(text) =>
@@ -99,20 +104,20 @@ export default function AuthScreen() {
                     placeholder="Şifrenizi girin"
                   />
                   <TouchableOpacity
-                    style={styles.eyeIcon}
+                    className="p-1"
                     onPress={() => setShowPassword(!showPassword)}
                   >
-                    <Text style={styles.eyeIconText}>
+                    <Text className="text-blue-500">
                       {showPassword ? "Gizle" : "Göster"}
                     </Text>
                   </TouchableOpacity>
                 </View>
               </View>
 
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>İsim</Text>
+              <View className="mb-4">
+                <Text className="text-lg font-medium">İsim</Text>
                 <TextInput
-                  style={styles.input}
+                  className="border border-gray-300 p-2 rounded"
                   placeholder="İsminizi giriniz"
                   onChangeText={(text) =>
                     setUserData({
@@ -123,10 +128,10 @@ export default function AuthScreen() {
                 />
               </View>
 
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Soyisim</Text>
+              <View className="mb-4">
+                <Text className="text-lg font-medium">Soyisim</Text>
                 <TextInput
-                  style={styles.input}
+                  className="border border-gray-300 p-2 rounded"
                   placeholder="Soyisminizi giriniz"
                   onChangeText={(text) =>
                     setUserData({
@@ -137,10 +142,10 @@ export default function AuthScreen() {
                 />
               </View>
 
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Telefon</Text>
+              <View className="mb-4">
+                <Text className="text-lg font-medium">Telefon</Text>
                 <TextInput
-                  style={styles.input}
+                  className="border border-gray-300 p-2 rounded"
                   placeholder="Telefonunuzu giriniz"
                   keyboardType="phone-pad"
                   onChangeText={(text) =>
@@ -156,10 +161,10 @@ export default function AuthScreen() {
 
           {!isSignUp && (
             <>
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Email</Text>
+              <View className="mb-4">
+                <Text className="text-lg font-medium">Email</Text>
                 <TextInput
-                  style={styles.input}
+                  className="border border-gray-300 p-2 rounded"
                   placeholder="Email adresinizi girin"
                   keyboardType="email-address"
                   onChangeText={(text) =>
@@ -171,11 +176,11 @@ export default function AuthScreen() {
                 />
               </View>
 
-              <View style={styles.inputContainer}>
-                <Text style={styles.label}>Şifre</Text>
-                <View style={styles.passwordContainer}>
+              <View className="mb-4">
+                <Text className="text-lg font-medium">Şifre</Text>
+                <View className="flex-row items-center">
                   <TextInput
-                    style={styles.input}
+                    className="flex-1 border border-gray-300 p-2 rounded"
                     secureTextEntry={!showPassword}
                     value={userDataLogin.password}
                     onChangeText={(text) =>
@@ -187,33 +192,35 @@ export default function AuthScreen() {
                     placeholder="Şifrenizi girin"
                   />
                   <TouchableOpacity
-                    style={styles.eyeIcon}
+                    className="p-2"
                     onPress={() => setShowPassword(!showPassword)}
                   >
-                    <Text style={styles.eyeIconText}>
+                    <Text className="text-blue-500">
                       {showPassword ? "Gizle" : "Göster"}
                     </Text>
                   </TouchableOpacity>
                 </View>
               </View>
 
-              <View style={styles.rememberMeContainer}>
-                <Switch
-                  value={rememberMe}
-                  onValueChange={(value) => setRememberMe(value)} // Düzeltilmiş
-                />
-                <Text style={styles.rememberMeLabel}>Beni Hatırla</Text>
+              <View className="flex-row items-center justify-between mb-5">
+                <View className="flex-row items-center gap-2">
+                  <Switch
+                    value={rememberMe}
+                    onValueChange={(value) => setRememberMe(value)} // Düzeltilmiş
+                  />
+                  <Text className="ml-2">Beni Hatırla</Text>
+                </View>
                 <TouchableOpacity onPress={() => setIsForgotPassword(true)}>
-                  <Text style={styles.forgotPassword}>Şifremi Unuttum</Text>
+                  <Text className="text-blue-500">Şifremi Unuttum</Text>
                 </TouchableOpacity>
               </View>
             </>
           )}
 
           {isSignUp && (
-            <View style={styles.registrationContainer}>
-              <Text style={styles.label}>Kayıt Türü:</Text>
-              <View style={styles.radioGroup}>
+            <View className="mb-4">
+              <Text className="text-lg font-medium">Kayıt Türü:</Text>
+              <View className="flex-row">
                 <TouchableOpacity
                   style={[
                     styles.radioButton,
@@ -237,7 +244,7 @@ export default function AuthScreen() {
 
               {userType === "eğitmen" && (
                 <TextInput
-                  style={styles.input}
+                  className="border border-gray-300 p-2 rounded mt-2"
                   placeholder="Eğitmen Davet Kodu"
                   value={userData.invite_code}
                   onChangeText={(text) =>
@@ -249,19 +256,20 @@ export default function AuthScreen() {
           )}
 
           <TouchableOpacity
-            style={styles.button}
+            className="bg-blue-600 p-2 rounded-xl mt-2"
+            disabled={isLoading}
             onPress={isSignUp ? handleRegister : handleSubmit}
           >
-            <Text style={styles.buttonText}>
+            <Text className="text-white text-center text-2xl">
               {isSignUp ? "Kayıt Ol" : "Giriş Yap"}
             </Text>
           </TouchableOpacity>
 
-          <View style={styles.toggleContainer}>
-            <Text style={styles.toggleText}>
+          <View className="mt-4">
+            <Text className="text-black">
               {isSignUp ? "Zaten bir hesabın var mı? " : "Hesabın yok mu? "}
               <Text
-                style={styles.toggleLink}
+                className="text-blue-500"
                 onPress={() => setIsSignUp(!isSignUp)}
               >
                 {isSignUp ? "Giriş Yap" : "Kayıt Ol"}
@@ -275,64 +283,7 @@ export default function AuthScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 16,
-    backgroundColor: "white",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  inputContainer: {
-    marginBottom: 16,
-    width: "100%", // Input container'ın genişliği %100
-  },
-  label: {
-    fontSize: 18,
-    fontWeight: "500",
-  },
-  input: {
-    width: "100%", // Giriş kutularının genişliği %100 olacak
-    paddingVertical: 12,
-    paddingLeft: 10,
-    borderColor: "#d1d5db",
-    borderWidth: 1,
-    borderRadius: 8,
-  },
-  passwordContainer: {
-    position: "relative",
-  },
-  eyeIcon: {
-    position: "absolute",
-    right: 10,
-    top: "50%",
-    transform: [{ translateY: -10 }],
-  },
-  eyeIconText: {
-    color: "#3b82f6",
-    fontWeight: "500",
-  },
-  rememberMeContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  rememberMeLabel: {
-    color: "#4b5563",
-    marginLeft: 8,
-  },
-  forgotPassword: {
-    color: "#3b82f6",
-    fontWeight: "500",
-  },
-  registrationContainer: {
-    marginBottom: 16,
-  },
+
   radioGroup: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -351,35 +302,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
   },
-  button: {
-    width: "100%", // Butonun genişliği %100 olacak
-    backgroundColor: "#0f1117",
-    paddingVertical: 16,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#ffffff",
-    fontSize: 18,
-  },
-  toggleContainer: {
-    marginTop: 16,
-    alignItems: "center",
-  },
-  toggleText: {
-    color: "#4b5563",
-  },
-  toggleLink: {
-    color: "#3b82f6",
-    fontWeight: "600",
-  },
-  forgotPasswordContainer: {
-    alignItems: "center",
-    width: "100%", // Bu container'ın genişliğini %100 yapıyoruz
-  },
-  forgotPasswordText: {
-    marginTop: 16,
-    color: "#3b82f6",
-    fontWeight: "500",
-  },
+  
 });

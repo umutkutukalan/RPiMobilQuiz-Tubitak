@@ -1,9 +1,19 @@
 import { useAuth } from "@/context/AuthProvider";
+import { useGetActiveExams } from "@/hooks/Exam/useGetActiveExams";
+import { useGetScheduledExams } from "@/hooks/Exam/useGetScheduledExams";
+import { useEffect } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const StudentRole = () => {
   const { user } = useAuth();
+  const { getActiveExams, activeExams } = useGetActiveExams();
+  const { scheduledExams } = useGetScheduledExams();
+
+  useEffect(() => {
+    getActiveExams();
+  }, []);
+
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
       <ScrollView className="flex-1">
@@ -18,18 +28,6 @@ const StudentRole = () => {
                 {" " + user?.surname}
               </Text>
             </View>
-          </View>
-          <View className="flex-row space-x-4">
-            <TouchableOpacity>
-              <Text style={{ fontSize: 24 }}>🔍</Text>
-            </TouchableOpacity>
-            <TouchableOpacity className="relative">
-              <Text style={{ fontSize: 24 }}>🔔</Text>
-              <View className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full" />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text style={{ fontSize: 24 }}>☰</Text>
-            </TouchableOpacity>
           </View>
         </View>
 
@@ -77,52 +75,34 @@ const StudentRole = () => {
           <Text className="text-gray-800 text-xl font-bold mb-4">
             Quizler Sınıf Programı
           </Text>
-
-          <View className="flex-row space-x-4">
-            {/* Physics Schedule */}
-            <View className="flex-1">
-              <View className="bg-gradient-to-br from-purple-400 to-blue-500 rounded-2xl mb-3">
-                <View className="flex-row justify-between items-start">
-                  <Text className="text-lg font-semibold">
-                    Doç. Dr. İhsan Pençe
+          <ScrollView>
+            {activeExams.map((exam) => (
+              <View key={exam.id} className="flex-row space-x-4">
+                {/* Physics Schedule */}
+                <View className="flex-1">
+                  <View className="bg-gradient-to-br from-purple-400 to-blue-500 rounded-2xl mb-3">
+                    <View className="flex-row justify-between items-start">
+                      <Text className="text-lg font-semibold">
+                        Doç. Dr. İhsan Pençe
+                      </Text>
+                    </View>
+                    <Image
+                      style={{ width: 60, height: 60, borderRadius: 30 }}
+                    />
+                  </View>
+                  <Text className="text-gray-800 font-semibold text-base mb-1">
+                    Görüntü İşleme | 4-B
                   </Text>
+                  <View className="flex-row items-center">
+                    <Text style={{ fontSize: 16 }}>⏰</Text>
+                    <Text className="text-gray-600 text-sm ml-1">
+                      Saat: 13:50
+                    </Text>
+                  </View>
                 </View>
-                <Image
-                  source={{ uri: "/placeholder.svg?height=60&width=60" }}
-                  className="w-15 h-15 rounded-full"
-                />
               </View>
-              <Text className="text-gray-800 font-semibold text-base mb-1">
-                Görüntü İşleme | 4-B
-              </Text>
-              <View className="flex-row items-center">
-                <Text style={{ fontSize: 16 }}>⏰</Text>
-                <Text className="text-gray-600 text-sm ml-1">Saat: 13:50</Text>
-              </View>
-            </View>
-
-            {/* Chemistry Schedule */}
-            <View className="flex-1">
-              <View className="bg-gradient-to-br from-red-400 to-pink-500 rounded-2xl mb-3">
-                <View>
-                  <Text className="text-lg font-semibold">
-                    Doç. Dr. Melike Şişeci Çeşmeli
-                  </Text>
-                </View>
-                <Image
-                  source={{ uri: "/placeholder.svg?height=60&width=60" }}
-                  className="w-15 h-15 rounded-full"
-                />
-              </View>
-              <Text className="text-gray-800 font-semibold text-base mb-1">
-                İleri Web | 3-A
-              </Text>
-              <View className="flex-row items-center">
-                <Text style={{ fontSize: 16 }}>⏰</Text>
-                <Text className="text-gray-600 text-sm ml-1">Saat: 15:30</Text>
-              </View>
-            </View>
-          </View>
+            ))}
+          </ScrollView>
         </View>
 
         {/* Upcoming Tests */}

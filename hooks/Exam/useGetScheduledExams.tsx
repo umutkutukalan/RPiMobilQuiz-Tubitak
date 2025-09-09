@@ -14,6 +14,8 @@ export const useGetScheduledExams = () => {
       console.log("Scheduled Exams:", response.data);
     } catch (error) {
       console.error("Error fetching scheduled exams:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
   return { getScheduledExams, scheduledExams, isLoading };

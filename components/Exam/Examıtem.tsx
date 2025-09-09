@@ -22,19 +22,26 @@ const ExamItem = ({
 }: CourseItemProps) => {
   return (
     <View
-      className={`flex flex-col gap-3 rounded-2xl p-4 overflow-hidden`}
+      className={`flex flex-col gap-3 rounded-xl p-4 overflow-hidden`}
       style={{
         height: "110",
         backgroundColor: status === "active" ? "#529a6bff" : "#4e4d8aff",
       }}
     >
       <View className="flex-row items-center justify-between">
-        <Text className="text-sm text-gray-500 text-white">
-          {formatDateTime(startTime)} - {formatDateTime(endTime)}
-        </Text>
-        <Text className="px-2 py-0.5 text-xs font-semibold bg-gray-300 rounded-md">
-          Quiz
-        </Text>
+        <View className="flex flex-row items-center gap-1">
+          <Text className="text-sm text-gray-500 text-white">⏰</Text>
+          <Text className="text-sm text-gray-500 text-white">
+            {formatDateTime(startTime)}
+          </Text>
+        </View>
+        <Text className="text-white">→</Text>
+        <View className="flex flex-row items-center gap-1">
+          <Text className="text-sm text-gray-500">🏁</Text>
+          <Text className="text-sm text-gray-500 text-white">
+            {formatDateTime(endTime)}
+          </Text>
+        </View>
       </View>
       <View className="flex-row items-center gap-4">
         <View

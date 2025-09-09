@@ -2,16 +2,23 @@ import ExamItem from "@/components/Exam/Examıtem";
 import { useAuth } from "@/context/AuthProvider";
 import { useGetActiveExams } from "@/hooks/Exam/useGetActiveExams";
 import { useGetScheduledExams } from "@/hooks/Exam/useGetScheduledExams";
-import { useGetUserById } from "@/hooks/User/useGetUserById";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 const TeacherRole = () => {
   const { user } = useAuth();
   const router = useRouter();
-  const { getActiveExams, activeExams } = useGetActiveExams();
-  const { getScheduledExams, scheduledExams } = useGetScheduledExams();
+  const {
+    getActiveExams,
+    activeExams,
+    isLoading: isLoadingActive,
+  } = useGetActiveExams();
+  const {
+    getScheduledExams,
+    scheduledExams,
+    isLoading: isLoadingScheduled,
+  } = useGetScheduledExams();
 
   useEffect(() => {
     getActiveExams();
@@ -20,32 +27,26 @@ const TeacherRole = () => {
 
   console.log("Active Exams:", activeExams);
 
+  if (isLoadingActive && isLoadingScheduled) {
+    return (
+      <View className="flex h-full items-center justify-center">
+        <Text className="text-lg">Loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <View className="flex h-full">
       <ScrollView className="mx-auto px-4 py-6 w-full max-w-md">
         {/* Hero */}
-        <View className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-sky-100 to-indigo-100 p-6 shadow-sm ring-1 ring-sky-100 bg-red-300">
-          {/* Decorative blobs */}
-          <View className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/40 blur-2xl" />
-          <View className="pointer-events-none absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-white/40 blur-2xl" />
-
+        <View className="relative overflow-hidden rounded-xl p-6 border border-gray-200 bg-white">
           <View className="flex flex-col gap-6">
             <View className="flex-1">
               <View className="flex flex-row items-center gap-2">
-                <View className="w-12 h-12 rounded-full bg-gray-300"></View>
-                <Text className="text-2xl font-extrabold leading-snug text-slate-900">
+                <View className="w-12 h-12 rounded-full border border-gray-300"></View>
+                <Text className="text-xl font-bold">
                   {user?.name} {user?.surname}
                 </Text>
-              </View>
-              <View className="mt-4">
-                <TouchableOpacity
-                  onPress={() => router.push("/quiz/create-exam")}
-                  className="rounded-lg bg-orange-500"
-                >
-                  <Text className="px-4 py-2 text-white font-bold">
-                    Sınav Oluşturun
-                  </Text>
-                </TouchableOpacity>
               </View>
             </View>
           </View>
