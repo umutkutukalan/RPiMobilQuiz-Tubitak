@@ -3,6 +3,7 @@ import QuestionListItem from "@/components/Questions/QuestionListItem";
 import { useGetExamById } from "@/hooks/Exam/useGetExamById";
 import { formatDateTime } from "@/hooks/formatDateTime";
 import { useCreateQuestion } from "@/hooks/Question/useCreateQuestion";
+import { useGetQuestionByExam } from "@/hooks/Question/useGetQuestionByExam";
 import { useGetUserById } from "@/hooks/User/useGetUserById";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -14,6 +15,11 @@ export default function ExamQuestions() {
   const [questionText, setQuestionText] = useState("");
   const [questionType, setQuestionType] = useState("multiple_choice");
   const { createQuestion } = useCreateQuestion();
+  const {
+    getQuestionByExam,
+    examQuestions,
+    isLoading: isLoadingQuestions,
+  } = useGetQuestionByExam();
   const { getExamById, exam, isLoading } = useGetExamById();
   const { getUserById, userData } = useGetUserById();
 
@@ -26,6 +32,7 @@ export default function ExamQuestions() {
   useEffect(() => {
     if (examId) {
       getExamById(Number(examId));
+      getQuestionByExam(Number(examId));
     }
   }, [examId]);
 
@@ -100,34 +107,14 @@ export default function ExamQuestions() {
       {/* Scrollable Content */}
       <ScrollView className="flex-1">
         <View className="flex flex-col gap-2 p-2">
-          <QuestionListItem
-            soruId={1}
-            question_text="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-          />
-          <QuestionListItem
-            soruId={2}
-            question_text="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-          />
-          <QuestionListItem
-            soruId={3}
-            question_text="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-          />
-          <QuestionListItem
-            soruId={4}
-            question_text="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-          />
-          <QuestionListItem
-            soruId={5}
-            question_text="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-          />
-          <QuestionListItem
-            soruId={6}
-            question_text="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-          />
-          <QuestionListItem
-            soruId={7}
-            question_text="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-          />
+          {examQuestions.map((question: any, idx: number) => (
+            <QuestionListItem
+              key={question.id}
+              soruId={question.id}
+              soruIdx={idx + 1}
+              question_text={question.question_text}
+            />
+          ))}
         </View>
       </ScrollView>
 
