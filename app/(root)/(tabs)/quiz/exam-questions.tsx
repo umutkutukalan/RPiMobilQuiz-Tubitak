@@ -12,14 +12,12 @@ export default function ExamQuestions() {
   const { examId } = useLocalSearchParams();
   const [modalVisible, setModalVisible] = useState(false);
   const [questionText, setQuestionText] = useState("");
-  const [questionType, setQuestionType] = useState("");
-  const [correctAnswer, setCorrectAnswer] = useState("");
+  const [questionType, setQuestionType] = useState("multiple_choice");
   const { createQuestion } = useCreateQuestion();
   const { getExamById, exam, isLoading } = useGetExamById();
   const { getUserById, userData } = useGetUserById();
 
   const newQuestion = {
-    correct_answer: correctAnswer,
     exam_id: Number(examId),
     question_text: questionText,
     question_type: questionType,
@@ -52,8 +50,6 @@ export default function ExamQuestions() {
     console.log("Yeni Soru:", newQuestion);
     setModalVisible(false);
     setQuestionText("");
-    setQuestionType("");
-    setCorrectAnswer("");
   };
 
   if (isLoading) {
@@ -79,18 +75,26 @@ export default function ExamQuestions() {
             </View>
             <Text className="text-4xl font-bold">{exam?.exam_name}</Text>
           </View>
-          <View className="w-1/6 flex items-end justify-end">
-            <TouchableOpacity
-              className="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center"
-              onPress={() => setModalVisible(true)}
-            >
-              <Text className="text-white text-3xl font-bold">+</Text>
-            </TouchableOpacity>
-          </View>
+          {exam?.status === "scheduled" && (
+            <View className="w-1/6 flex items-end justify-end">
+              <TouchableOpacity
+                className="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center"
+                onPress={() => setModalVisible(true)}
+              >
+                <Text className="text-white text-3xl font-bold">+</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
-        <Text className="text-lg text-gray-600">
-          {formatDateTime(exam?.start_time)} - {formatDateTime(exam?.end_time)}
-        </Text>
+        <View className="flex flex-row items-center gap-2">
+          <Text className="text-lg text-gray-600 text-sm">
+            {formatDateTime(exam?.start_time)}
+          </Text>
+          <Text className="text-lg text-gray-600 text-sm"> → </Text>
+          <Text className="text-lg text-gray-600 text-sm">
+            {formatDateTime(exam?.end_time)}
+          </Text>
+        </View>
       </View>
 
       {/* Scrollable Content */}
@@ -132,10 +136,6 @@ export default function ExamQuestions() {
         setModalVisible={setModalVisible}
         questionText={questionText}
         setQuestionText={setQuestionText}
-        questionType={questionType}
-        setQuestionType={setQuestionType}
-        correctAnswer={correctAnswer}
-        setCorrectAnswer={setCorrectAnswer}
         handleAddQuestion={handleAddQuestion}
       />
     </View>

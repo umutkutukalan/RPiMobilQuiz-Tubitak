@@ -49,7 +49,7 @@ const EditProfileForm = () => {
           </View>
 
           <View className="flex flex-col gap-1">
-            <Text className="text-[#800080]">Telefon</Text>
+            <Text className="text-[#800080]">Telefo</Text>
             <TextInput
               placeholder="Telefon numaranızı giriniz"
               value={phone}

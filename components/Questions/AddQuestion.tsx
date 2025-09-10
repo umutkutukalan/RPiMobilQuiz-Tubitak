@@ -1,15 +1,12 @@
 import { Modal, Text, TextInput, TouchableOpacity, View } from "react-native";
 import React from "react";
+import { useCreateQuestion } from "@/hooks/Question/useCreateQuestion";
 
 interface AddQuestionProps {
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
   questionText: string;
   setQuestionText: (text: string) => void;
-  questionType: string;
-  setQuestionType: (type: string) => void;
-  correctAnswer: string;
-  setCorrectAnswer: (answer: string) => void;
   handleAddQuestion: () => void;
 }
 
@@ -18,10 +15,6 @@ const AddQuestion = ({
   setModalVisible,
   questionText,
   setQuestionText,
-  questionType,
-  setQuestionType,
-  correctAnswer,
-  setCorrectAnswer,
   handleAddQuestion,
 }: AddQuestionProps) => {
   return (
@@ -34,18 +27,6 @@ const AddQuestion = ({
             placeholder="Soru Metni"
             value={questionText}
             onChangeText={setQuestionText}
-          />
-          <TextInput
-            className="bg-gray-100 rounded-lg p-3 mb-3"
-            placeholder="Soru Tipi (ör: multiple_choice)"
-            value={questionType}
-            onChangeText={setQuestionType}
-          />
-          <TextInput
-            className="bg-gray-100 rounded-lg p-3 mb-3"
-            placeholder="Doğru Cevap"
-            value={correctAnswer}
-            onChangeText={setCorrectAnswer}
           />
           <TouchableOpacity
             className="bg-purple-500 rounded-lg py-3 items-center mt-2"

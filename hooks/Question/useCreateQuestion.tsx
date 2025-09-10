@@ -5,7 +5,6 @@ export const useCreateQuestion = () => {
   const { token } = useAuth();
 
   interface questionData {
-    correct_answer: string;
     exam_id: number;
     question_text: string;
     question_type: string;

@@ -2,7 +2,6 @@ import config from "@/config/config";
 import axios from "axios";
 
 interface questionData {
-  correct_answer: string;
   exam_id: number;
   question_text: string;
   question_type: string;
