@@ -8,10 +8,12 @@ import {
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { useGetQuestionById } from "@/hooks/Question/useGetQuestionById";
+import { usePostChoiceForExam } from "@/hooks/Choices/usePostChoiceForExam";
 
 export default function QuestionChoices() {
   const { soruId } = useLocalSearchParams();
   const { getQuestionById, question, isLoading } = useGetQuestionById();
+  const { postChoiceForExam } = usePostChoiceForExam();
   const [choices, setChoices] = useState<any[]>([]);
   const [choiceText, setChoiceText] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
@@ -31,7 +33,10 @@ export default function QuestionChoices() {
     if (editIndex !== null) {
       // Güncelleme
       newChoices = [...choices];
-      newChoices[editIndex] = { choice_text: choiceText, is_correct: isCorrect };
+      newChoices[editIndex] = {
+        choice_text: choiceText,
+        is_correct: isCorrect,
+      };
       setChoices(newChoices);
       setEditIndex(null);
     } else {
@@ -45,10 +50,20 @@ export default function QuestionChoices() {
     setIsCorrect(false);
 
     // Doğru şık kontrolü
-    const hasCorrect = (editIndex !== null ? newChoices : choices).some(c => c.is_correct || (editIndex !== null && isCorrect));
-    if (editIndex === null && newChoices.length === 4 && !newChoices.some(c => c.is_correct)) {
+    const hasCorrect = (editIndex !== null ? newChoices : choices).some(
+      (c) => c.is_correct || (editIndex !== null && isCorrect)
+    );
+    if (
+      editIndex === null &&
+      newChoices.length === 4 &&
+      !newChoices.some((c) => c.is_correct)
+    ) {
       setError("En az bir şık doğru seçilmeli!");
-    } else if (editIndex !== null && newChoices.length === 4 && !newChoices.some(c => c.is_correct)) {
+    } else if (
+      editIndex !== null &&
+      newChoices.length === 4 &&
+      !newChoices.some((c) => c.is_correct)
+    ) {
       setError("En az bir şık doğru seçilmeli!");
     } else {
       setError("");
@@ -77,6 +92,38 @@ export default function QuestionChoices() {
     }
   };
 
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const handleSubmitChoices = async () => {
+    setSubmitLoading(true);
+    setSubmitError("");
+    setSubmitSuccess(false);
+    try {
+      if (!soruId) {
+        setSubmitError("Soru ID bulunamadı!");
+        setSubmitLoading(false);
+        return;
+      }
+      if (choices.length !== 4) {
+        setSubmitError("4 adet şık eklemelisiniz!");
+        setSubmitLoading(false);
+        return;
+      }
+      if (!choices.some((c) => c.is_correct)) {
+        setSubmitError("En az bir şık doğru olmalı!");
+        setSubmitLoading(false);
+        return;
+      }
+      await postChoiceForExam(choices, Number(soruId));
+      setSubmitSuccess(true);
+    } catch (err) {
+      setSubmitError("Şıklar gönderilemedi. Lütfen tekrar deneyin.");
+    }
+    setSubmitLoading(false);
+  };
+
   if (isLoading) {
     return (
       <View className="w-full h-full flex items-center justify-center">
@@ -95,10 +142,11 @@ export default function QuestionChoices() {
             ellipsizeMode="tail"
             numberOfLines={10}
           >
-            {question?.question_text}
+            {typeof question?.question_text === "string"
+              ? question.question_text
+              : "Soru metni bulunamadı"}
           </Text>
         </View>
-
 
         {/* Şık ekleme alanı açma butonu sadece 4'ten az şık varsa görünür */}
         {!showAddChoice && choices.length < 4 && (
@@ -118,7 +166,9 @@ export default function QuestionChoices() {
         {/* Şık ekleme/düzenleme alanı: editIndex null ise ekle, değilse güncelle butonu */}
         {showAddChoice && (
           <View className="flex flex-col gap-4 mb-4 border border-blue-300 rounded-lg p-4 bg-blue-50">
-            <Text className="text-lg font-semibold">{editIndex !== null ? "Şık Güncelle" : "Şık Ekle"}</Text>
+            <Text className="text-lg font-semibold">
+              {editIndex !== null ? "Şık Güncelle" : "Şık Ekle"}
+            </Text>
             <TextInput
               className="border border-gray-300 rounded-lg p-2"
               placeholder="Şık metni"
@@ -128,7 +178,9 @@ export default function QuestionChoices() {
             <View className="flex-row items-center justify-between">
               <View className="flex-row items-center gap-2">
                 <TouchableOpacity
-                  className={`px-3 py-2 rounded-lg ${isCorrect ? "bg-green-500" : "bg-gray-200"}`}
+                  className={`px-3 py-2 rounded-lg ${
+                    isCorrect ? "bg-green-500" : "bg-gray-200"
+                  }`}
                   onPress={() => setIsCorrect(!isCorrect)}
                 >
                   <Text className={isCorrect ? "text-white" : "text-gray-800"}>
@@ -140,7 +192,9 @@ export default function QuestionChoices() {
                   onPress={handleAddChoice}
                   disabled={editIndex === null && choices.length === 4}
                 >
-                  <Text className="text-white">{editIndex !== null ? "Güncelle" : "Ekle"}</Text>
+                  <Text className="text-white">
+                    {editIndex !== null ? "Güncelle" : "Ekle"}
+                  </Text>
                 </TouchableOpacity>
               </View>
               <TouchableOpacity
@@ -185,7 +239,11 @@ export default function QuestionChoices() {
                   onPress={() => {
                     handleEditChoice(idx);
                   }}
-                  disabled={choices.length === 4 && editIndex !== null && editIndex !== idx}
+                  disabled={
+                    choices.length === 4 &&
+                    editIndex !== null &&
+                    editIndex !== idx
+                  }
                 >
                   <Text className="text-white">Düzenle</Text>
                 </TouchableOpacity>
@@ -199,6 +257,40 @@ export default function QuestionChoices() {
             </View>
           ))}
         </View>
+
+        {/* Şıkları gönder butonu ve durum mesajları - sadece 4 şık ve en az bir doğru varsa görünür */}
+        {choices.length === 4 && choices.some(c => c.is_correct) ? (
+          <View className="mt-6">
+            <TouchableOpacity
+              className="bg-green-600 px-6 py-3 rounded-lg"
+              onPress={handleSubmitChoices}
+              disabled={submitLoading}
+            >
+              <Text className="text-white text-center font-bold">
+                Şıkları Oluştur
+              </Text>
+            </TouchableOpacity>
+            {submitLoading && (
+              <Text className="text-blue-600 text-center mt-2">
+                Gönderiliyor...
+              </Text>
+            )}
+            {submitError && (
+              <Text className="text-red-600 text-center mt-2">
+                {submitError}
+              </Text>
+            )}
+            {submitSuccess && (
+              <Text className="text-green-600 text-center mt-2">
+                Şıklar başarıyla oluşturuldu!
+              </Text>
+            )}
+          </View>
+        ) : choices.length === 4 && !choices.some(c => c.is_correct) ? (
+          <View className="mt-6">
+            <Text className="text-red-600 text-center font-bold">Hiç doğru şık seçmediniz!</Text>
+          </View>
+        ) : null}
       </View>
     </ScrollView>
   );
