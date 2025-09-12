@@ -1,18 +1,53 @@
+import config from "@/config/config";
 import { useAuth } from "@/context/AuthProvider";
 import { useGetActiveExams } from "@/hooks/Exam/useGetActiveExams";
 import { useGetScheduledExams } from "@/hooks/Exam/useGetScheduledExams";
-import { useEffect } from "react";
+import { formatDateTime } from "@/hooks/formatDateTime";
+import { useGetUserById } from "@/hooks/User/useGetUserById";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const StudentRole = () => {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const { getActiveExams, activeExams } = useGetActiveExams();
-  const { scheduledExams } = useGetScheduledExams();
+  const { getScheduledExams, scheduledExams } = useGetScheduledExams();
 
   useEffect(() => {
     getActiveExams();
+    getScheduledExams();
   }, []);
+
+  const getStudentExams = async () => {
+    try {
+      const response = await axios.get(
+        `${config.baseUrl}/Exam/student_active_exams`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Student Exams Response:", response.data);
+    } catch (error) {
+      console.error("Error fetching student exams:", error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    getStudentExams();
+  }, []);
+
+  console.log("Active Exams:", activeExams);
+  console.log("Scheduled Exams:", scheduledExams);
+
+  // Aktif quizler için index yönetimi
+  const [activeIndex, setActiveIndex] = useState(0);
+  const handleNextQuiz = () => {
+    setActiveIndex((prev) => (prev + 1 < activeExams.length ? prev + 1 : 0));
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
@@ -27,82 +62,65 @@ const StudentRole = () => {
                 {user?.name}
                 {" " + user?.surname}
               </Text>
+              ,
             </View>
           </View>
         </View>
 
-        {/* Main Physics Card */}
-        <View className="mx-6 mt-6 p-6 bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl">
-          <View className="flex-row justify-between items-start mb-6">
-            <View>
-              <Text className="text-2xl font-bold">
-                Yazılım Tasarım Mimarisi
-              </Text>
-              <Text className="text-base">Konu : Tasarım Mimarileri</Text>
-            </View>
-            <View className="flex-row space-x-2">
-              <View className="px-3 py-2 rounded-lg">
-                <Text className="text-white font-bold text-lg">00</Text>
-              </View>
-              <View className="px-3 py-2 rounded-lg">
-                <Text className="font-bold text-lg">19</Text>
-              </View>
-              <View className="px-3 py-2 rounded-lg">
-                <Text className="text-white font-bold text-lg">00</Text>
-              </View>
-            </View>
-          </View>
-
-          <Text className="text-lg font-semibold mb-2">
-            Yaklaşmakta Olan Quiz
-          </Text>
-
-          <View className="flex-row justify-between items-center">
-            <View>
-              <Text className="text-base">Saat: 10:20</Text>
-              <Text className="text-base">Melike Şişeci Çeşmeli</Text>
-            </View>
-            <TouchableOpacity className="bg-white px-6 py-3 rounded-xl">
-              <Text className="text-gray-800 font-semibold text-base">
-                Quize Katıl
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Class Schedules */}
-        <View className="px-6 mt-8">
-          <Text className="text-gray-800 text-xl font-bold mb-4">
-            Quizler Sınıf Programı
-          </Text>
-          <ScrollView>
-            {activeExams.map((exam) => (
-              <View key={exam.id} className="flex-row space-x-4">
-                {/* Physics Schedule */}
-                <View className="flex-1">
-                  <View className="bg-gradient-to-br from-purple-400 to-blue-500 rounded-2xl mb-3">
-                    <View className="flex-row justify-between items-start">
-                      <Text className="text-lg font-semibold">
-                        Doç. Dr. İhsan Pençe
-                      </Text>
-                    </View>
-                    <Image
-                      style={{ width: 60, height: 60, borderRadius: 30 }}
-                    />
-                  </View>
-                  <Text className="text-gray-800 font-semibold text-base mb-1">
-                    Görüntü İşleme | 4-B
+        {/* Aktif Quizler - tek item w-full ve ok ile geçiş */}
+        <View className="mt-6">
+          <Text className="mx-6 mb-2 text-lg font-bold">Aktif Quizler</Text>
+          {activeExams.length > 0 && (
+            <View className="w-full px-6">
+              <View className="w-full p-6 rounded-2xl border bg-white relative">
+                <View className="w-full flex flex-row items-center justify-between mb-2">
+                  <Text className="mb-2 bg-blue-500 self-start text-white px-3 py-1 rounded-md">
+                    Aktif Quiz
                   </Text>
-                  <View className="flex-row items-center">
-                    <Text style={{ fontSize: 16 }}>⏰</Text>
-                    <Text className="text-gray-600 text-sm ml-1">
-                      Saat: 13:50
+                  {/* Ok butonu */}
+                  {activeExams.length > 1 && (
+                    <TouchableOpacity
+                      onPress={handleNextQuiz}
+                      className="bg-blue-500 w-10 h-10 rounded-full flex items-center justify-center"
+                    >
+                      <Text className="text-white text-xl">→</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+                <View className="flex-row justify-between items-start mb-5">
+                  <View>
+                    <Text className="text-xl font-bold"
+                    ellipsizeMode="tail"
+                    numberOfLines={2}
+                    >
+                      {activeExams[activeIndex]?.exam_name}
                     </Text>
                   </View>
                 </View>
+                <View className="flex-row items-end justify-between">
+                  <View>
+                    <View className="flex-row items-center gap-1">
+                      <Text style={{ fontSize: 10 }}>⏰</Text>
+                      <Text className="text-base">
+                        {formatDateTime(activeExams[activeIndex]?.start_time)}
+                      </Text>
+                    </View>
+                    <View className="flex-row items-center gap-1">
+                      <Text style={{ fontSize: 10 }}>🏁</Text>
+                      <Text className="text-base">
+                        {formatDateTime(activeExams[activeIndex]?.end_time)}
+                      </Text>
+                    </View>
+                  </View>
+                  <TouchableOpacity className="bg-red-400 px-4 py-1 rounded-md">
+                    <Text className="text-white font-semibold text-base">
+                      Quize Katıl
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            ))}
-          </ScrollView>
+            </View>
+          )}
         </View>
 
         {/* Upcoming Tests */}

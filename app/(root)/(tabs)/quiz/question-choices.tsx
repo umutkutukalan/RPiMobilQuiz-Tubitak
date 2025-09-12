@@ -9,11 +9,17 @@ import React, { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { useGetQuestionById } from "@/hooks/Question/useGetQuestionById";
 import { usePostChoiceForExam } from "@/hooks/Choices/usePostChoiceForExam";
+import { useGetChoicesForQuestion } from "@/hooks/Choices/useGetChoicesForQuestion";
 
 export default function QuestionChoices() {
   const { soruId } = useLocalSearchParams();
   const { getQuestionById, question, isLoading } = useGetQuestionById();
   const { postChoiceForExam } = usePostChoiceForExam();
+  const {
+    getChoicesForQuestion,
+    choices: questionChoices,
+    isLoading: isLoadingChoices,
+  } = useGetChoicesForQuestion();
   const [choices, setChoices] = useState<any[]>([]);
   const [choiceText, setChoiceText] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
@@ -24,6 +30,7 @@ export default function QuestionChoices() {
   useEffect(() => {
     if (soruId) {
       getQuestionById(Number(soruId));
+      getChoicesForQuestion(Number(soruId));
     }
   }, [soruId]);
 
@@ -133,6 +140,9 @@ export default function QuestionChoices() {
   }
 
   console.log("Question Data:", question);
+  // Eğer questionChoices doluysa onları göster, yoksa ekleme/gönderme alanı göster
+  const showServerChoices = Array.isArray(questionChoices) && questionChoices.length > 0;
+
   return (
     <ScrollView className="w-full h-full p-5">
       <View className="flex flex-col gap-5">
@@ -148,149 +158,172 @@ export default function QuestionChoices() {
           </Text>
         </View>
 
-        {/* Şık ekleme alanı açma butonu sadece 4'ten az şık varsa görünür */}
-        {!showAddChoice && choices.length < 4 && (
-          <TouchableOpacity
-            className="self-start bg-blue-600 px-5 py-2 rounded-lg"
-            onPress={() => {
-              setShowAddChoice(true);
-              setEditIndex(null);
-              setChoiceText("");
-              setIsCorrect(false);
-            }}
-          >
-            <Text className="text-white">Şık Ekle</Text>
-          </TouchableOpacity>
-        )}
-
-        {/* Şık ekleme/düzenleme alanı: editIndex null ise ekle, değilse güncelle butonu */}
-        {showAddChoice && (
-          <View className="flex flex-col gap-4 mb-4 border border-blue-300 rounded-lg p-4 bg-blue-50">
-            <Text className="text-lg font-semibold">
-              {editIndex !== null ? "Şık Güncelle" : "Şık Ekle"}
-            </Text>
-            <TextInput
-              className="border border-gray-300 rounded-lg p-2"
-              placeholder="Şık metni"
-              value={choiceText}
-              onChangeText={setChoiceText}
-            />
-            <View className="flex-row items-center justify-between">
-              <View className="flex-row items-center gap-2">
-                <TouchableOpacity
-                  className={`px-3 py-2 rounded-lg ${
-                    isCorrect ? "bg-green-500" : "bg-gray-200"
-                  }`}
-                  onPress={() => setIsCorrect(!isCorrect)}
-                >
-                  <Text className={isCorrect ? "text-white" : "text-gray-800"}>
-                    {isCorrect ? "Doğru Şık" : "Yanlış Şık"}
+        {showServerChoices ? (
+          <View className="flex flex-col gap-2 mt-4">
+            <Text className="text-base font-semibold mb-2">Eklenmiş Şıklar</Text>
+            {questionChoices.map((choice: any, idx: number) => (
+              <View
+                key={idx}
+                className="w-full border border-gray-300 rounded-lg overflow-hidden flex flex-row items-center justify-between gap-2 p-4"
+              >
+                <View className="flex-1">
+                  <Text>{choice.choice_text}</Text>
+                  <Text className={choice.is_correct ? "text-green-600" : "text-gray-500"}>
+                    {choice.is_correct ? "Doğru" : "Yanlış"}
                   </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  className="bg-blue-600 px-4 py-2 rounded-lg"
-                  onPress={handleAddChoice}
-                  disabled={editIndex === null && choices.length === 4}
-                >
-                  <Text className="text-white">
-                    {editIndex !== null ? "Güncelle" : "Ekle"}
-                  </Text>
-                </TouchableOpacity>
+                </View>
               </View>
+            ))}
+          </View>
+        ) : (
+          <>
+            {/* Şık ekleme alanı açma butonu sadece 4'ten az şık varsa görünür */}
+            {!showAddChoice && choices.length < 4 && (
               <TouchableOpacity
-                className="bg-gray-400 px-4 py-2 rounded-lg"
+                className="self-start bg-blue-600 px-5 py-2 rounded-lg"
                 onPress={() => {
-                  setShowAddChoice(false);
+                  setShowAddChoice(true);
+                  setEditIndex(null);
                   setChoiceText("");
                   setIsCorrect(false);
-                  setEditIndex(null);
-                  setError("");
                 }}
               >
-                <Text className="text-white ">Kapat</Text>
+                <Text className="text-white">Şık Ekle</Text>
               </TouchableOpacity>
-            </View>
-            {error ? (
-              <Text className="text-red-600 text-sm mt-2">{error}</Text>
-            ) : null}
-          </View>
-        )}
+            )}
 
-        {/* Eklenen şıklar */}
-        <View className="flex flex-col gap-2">
-          {choices.map((choice, idx) => (
-            <View
-              key={idx}
-              className="w-full border border-gray-300 rounded-lg overflow-hidden flex flex-row items-center justify-between gap-2 p-4"
-            >
-              <View className="flex-1">
-                <Text>{choice.choice_text}</Text>
-                <Text
-                  className={
-                    choice.is_correct ? "text-green-600" : "text-gray-500"
-                  }
+            {/* Şık ekleme/düzenleme alanı: editIndex null ise ekle, değilse güncelle butonu */}
+            {showAddChoice && (
+              <View className="flex flex-col gap-4 mb-4 border border-blue-300 rounded-lg p-4 bg-blue-50">
+                <Text className="text-lg font-semibold">
+                  {editIndex !== null ? "Şık Güncelle" : "Şık Ekle"}
+                </Text>
+                <TextInput
+                  className="border border-gray-300 rounded-lg p-2"
+                  placeholder="Şık metni"
+                  value={choiceText}
+                  onChangeText={setChoiceText}
+                />
+                <View className="flex-row items-center justify-between">
+                  <View className="flex-row items-center gap-2">
+                    <TouchableOpacity
+                      className={`px-3 py-2 rounded-lg ${
+                        isCorrect ? "bg-green-500" : "bg-gray-200"
+                      }`}
+                      onPress={() => setIsCorrect(!isCorrect)}
+                    >
+                      <Text className={isCorrect ? "text-white" : "text-gray-800"}>
+                        {isCorrect ? "Doğru Şık" : "Yanlış Şık"}
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      className="bg-blue-600 px-4 py-2 rounded-lg"
+                      onPress={handleAddChoice}
+                      disabled={editIndex === null && choices.length === 4}
+                    >
+                      <Text className="text-white">
+                        {editIndex !== null ? "Güncelle" : "Ekle"}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <TouchableOpacity
+                    className="bg-gray-400 px-4 py-2 rounded-lg"
+                    onPress={() => {
+                      setShowAddChoice(false);
+                      setChoiceText("");
+                      setIsCorrect(false);
+                      setEditIndex(null);
+                      setError("");
+                    }}
+                  >
+                    <Text className="text-white ">Kapat</Text>
+                  </TouchableOpacity>
+                </View>
+                {error ? (
+                  <Text className="text-red-600 text-sm mt-2">{error}</Text>
+                ) : null}
+              </View>
+            )}
+
+            {/* Eklenen şıklar */}
+            <View className="flex flex-col gap-2">
+              {choices.map((choice, idx) => (
+                <View
+                  key={idx}
+                  className="w-full border border-gray-300 rounded-lg overflow-hidden flex flex-row items-center justify-between gap-2 p-4"
                 >
-                  {choice.is_correct ? "Doğru" : "Yanlış"}
+                  <View className="flex-1">
+                    <Text>{choice.choice_text}</Text>
+                    <Text
+                      className={
+                        choice.is_correct ? "text-green-600" : "text-gray-500"
+                      }
+                    >
+                      {choice.is_correct ? "Doğru" : "Yanlış"}
+                    </Text>
+                  </View>
+                  <View className="flex-row gap-2">
+                    <TouchableOpacity
+                      className="bg-yellow-400 px-3 py-1 rounded-lg"
+                      onPress={() => {
+                        handleEditChoice(idx);
+                      }}
+                      disabled={
+                        choices.length === 4 &&
+                        editIndex !== null &&
+                        editIndex !== idx
+                      }
+                    >
+                      <Text className="text-white">Düzenle</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      className="bg-red-500 px-3 py-1 rounded-lg"
+                      onPress={() => handleDeleteChoice(idx)}
+                    >
+                      <Text className="text-white">Sil</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ))}
+            </View>
+
+            {/* Şıkları gönder butonu ve durum mesajları - sadece 4 şık ve en az bir doğru varsa görünür */}
+            {choices.length === 4 && choices.some((c) => c.is_correct) ? (
+              <View className="mt-6">
+                <TouchableOpacity
+                  className="bg-green-600 px-6 py-3 rounded-lg"
+                  onPress={handleSubmitChoices}
+                  disabled={submitLoading}
+                >
+                  <Text className="text-white text-center font-bold">
+                    Şıkları Oluştur
+                  </Text>
+                </TouchableOpacity>
+                {submitLoading && (
+                  <Text className="text-blue-600 text-center mt-2">
+                    Gönderiliyor...
+                  </Text>
+                )}
+                {submitError && (
+                  <Text className="text-red-600 text-center mt-2">
+                    {submitError}
+                  </Text>
+                )}
+                {submitSuccess && (
+                  <Text className="text-green-600 text-center mt-2">
+                    Şıklar başarıyla oluşturuldu!
+                  </Text>
+                )}
+              </View>
+            ) : choices.length === 4 && !choices.some((c) => c.is_correct) ? (
+              <View className="mt-6">
+                <Text className="text-red-600 text-center font-bold">
+                  Hiç doğru şık seçmediniz!
                 </Text>
               </View>
-              <View className="flex-row gap-2">
-                <TouchableOpacity
-                  className="bg-yellow-400 px-3 py-1 rounded-lg"
-                  onPress={() => {
-                    handleEditChoice(idx);
-                  }}
-                  disabled={
-                    choices.length === 4 &&
-                    editIndex !== null &&
-                    editIndex !== idx
-                  }
-                >
-                  <Text className="text-white">Düzenle</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  className="bg-red-500 px-3 py-1 rounded-lg"
-                  onPress={() => handleDeleteChoice(idx)}
-                >
-                  <Text className="text-white">Sil</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ))}
-        </View>
-
-        {/* Şıkları gönder butonu ve durum mesajları - sadece 4 şık ve en az bir doğru varsa görünür */}
-        {choices.length === 4 && choices.some(c => c.is_correct) ? (
-          <View className="mt-6">
-            <TouchableOpacity
-              className="bg-green-600 px-6 py-3 rounded-lg"
-              onPress={handleSubmitChoices}
-              disabled={submitLoading}
-            >
-              <Text className="text-white text-center font-bold">
-                Şıkları Oluştur
-              </Text>
-            </TouchableOpacity>
-            {submitLoading && (
-              <Text className="text-blue-600 text-center mt-2">
-                Gönderiliyor...
-              </Text>
-            )}
-            {submitError && (
-              <Text className="text-red-600 text-center mt-2">
-                {submitError}
-              </Text>
-            )}
-            {submitSuccess && (
-              <Text className="text-green-600 text-center mt-2">
-                Şıklar başarıyla oluşturuldu!
-              </Text>
-            )}
-          </View>
-        ) : choices.length === 4 && !choices.some(c => c.is_correct) ? (
-          <View className="mt-6">
-            <Text className="text-red-600 text-center font-bold">Hiç doğru şık seçmediniz!</Text>
-          </View>
-        ) : null}
+            ) : null}
+          </>
+        )}
       </View>
     </ScrollView>
   );

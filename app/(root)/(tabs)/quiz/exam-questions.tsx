@@ -45,9 +45,10 @@ export default function ExamQuestions() {
   console.log("Exam Data:", exam);
   console.log("User Data:", userData);
 
-  const handleAddQuestion = () => {
+  const handleAddQuestion = async () => {
     try {
-      createQuestion(newQuestion);
+      await createQuestion(newQuestion);
+      await getQuestionByExam(Number(examId));
       alert("Soru başarıyla eklendi.");
     } catch (error) {
       console.error("Soru eklenirken hata oluştu:", error);
@@ -113,6 +114,7 @@ export default function ExamQuestions() {
               soruId={question.id}
               soruIdx={idx + 1}
               question_text={question.question_text}
+              onDelete={() => getQuestionByExam(Number(examId))}
             />
           ))}
         </View>

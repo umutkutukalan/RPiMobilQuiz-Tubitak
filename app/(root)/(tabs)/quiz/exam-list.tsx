@@ -6,6 +6,7 @@ import { useGetAllExam } from "@/hooks/Exam/useGetAllExam";
 import { DeleteExamService } from "@/services/Exam/DeleteExamService";
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Modal } from "react-native";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 export default function ExamList() {
   const { token } = useAuth();
