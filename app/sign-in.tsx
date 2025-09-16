@@ -1,3 +1,4 @@
+import { signback } from "@/constants";
 import { useAuth } from "@/context/AuthProvider";
 import { useLogin } from "@/hooks/Session/useLogin";
 import { useRegister } from "@/hooks/Session/useRegister";
@@ -11,6 +12,7 @@ import {
   TouchableOpacity,
   Switch,
   ScrollView,
+  Image,
 } from "react-native";
 
 export default function AuthScreen() {
@@ -32,15 +34,19 @@ export default function AuthScreen() {
   }
 
   return (
-    <View className="flex-1 bg-white">
+    <ScrollView className="flex-1 bg-white relative">
       {/* Üstte mavi tonlarında w-full, belirli yükseklikte alan ve ortasında daire */}
-      <View className="w-full h-[180px] bg-blue-700 relative flex justify-center items-center">
-        <View className="absolute left-1/2 top-[180px] w-40 h-40 rounded-full bg-blue-800 transform -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center">
-          <Text className="text-white text-3xl font-bold">RPQ</Text>
-        </View>
+      <View className="w-full h-[300px] bg-blue-700 relative flex justify-center items-center">
+        <Image
+          source={signback}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
       </View>
-      <View className="flex-1 justify-center px-5 py-10 mb-5 mt-20">
-        <ScrollView showsVerticalScrollIndicator={false}>
+      <View className="absolute left-1/2 top-[260px] w-44 h-44 rounded-full bg-blue-800 transform -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center">
+        <Text className="text-white text-6xl font-bold">RPQ</Text>
+      </View>
+      <View className="flex-1 justify-center px-5 mb-5">
+        <ScrollView showsVerticalScrollIndicator={false} className="py-20">
           {isForgotPassword ? (
             <View className="flex-1 justify-center p-4">
               <Text className="text-2xl font-bold text-center mb-5 text-blue-700">
@@ -51,7 +57,7 @@ export default function AuthScreen() {
                   E-posta
                 </Text>
                 <TextInput
-                  className="border border-blue-300 p-3 rounded-xl bg-blue-50"
+                  className="border border-blue-300 p-3 rounded-xl bg-white"
                   placeholder="E-posta adresinizi girin"
                   keyboardType="email-address"
                   onChangeText={(text) => setResetPasswordData({ email: text })}
@@ -71,7 +77,7 @@ export default function AuthScreen() {
             </View>
           ) : (
             <View>
-              <Text className="text-2xl font-bold text-center mb-5 text-blue-700">
+              <Text className="text-3xl font-bold text-center mb-5 text-blue-800">
                 {isSignUp ? "Kayıt Ol" : "Giriş Yap"}
               </Text>
               {isSignUp && (
@@ -81,7 +87,7 @@ export default function AuthScreen() {
                       Email
                     </Text>
                     <TextInput
-                      className="border border-blue-300 p-3 rounded-xl bg-blue-50"
+                      className="border border-blue-300 p-3 rounded-xl bg-white"
                       placeholder="Email adresinizi girin"
                       keyboardType="email-address"
                       onChangeText={(text) =>
@@ -93,7 +99,7 @@ export default function AuthScreen() {
                     <Text className="text-lg font-medium text-blue-600">
                       Şifre
                     </Text>
-                    <View className="flex-row border border-blue-300 p-3 rounded-xl bg-blue-50">
+                    <View className="flex-row border border-blue-300 p-3 rounded-xl bg-white">
                       <TextInput
                         className="flex-1"
                         secureTextEntry={!showPassword}
@@ -118,7 +124,7 @@ export default function AuthScreen() {
                       İsim
                     </Text>
                     <TextInput
-                      className="border border-blue-300 p-3 rounded-xl bg-blue-50"
+                      className="border border-blue-300 p-3 rounded-xl bg-white"
                       placeholder="İsminizi giriniz"
                       onChangeText={(text) =>
                         setUserData({ ...userData, name: text })
@@ -130,7 +136,7 @@ export default function AuthScreen() {
                       Soyisim
                     </Text>
                     <TextInput
-                      className="border border-blue-300 p-3 rounded-xl bg-blue-50"
+                      className="border border-blue-300 p-3 rounded-xl bg-white"
                       placeholder="Soyisminizi giriniz"
                       onChangeText={(text) =>
                         setUserData({ ...userData, surname: text })
@@ -142,7 +148,7 @@ export default function AuthScreen() {
                       Telefon
                     </Text>
                     <TextInput
-                      className="border border-blue-300 p-3 rounded-xl bg-blue-50"
+                      className="border border-blue-300 p-3 rounded-xl bg-white"
                       placeholder="Telefonunuzu giriniz"
                       keyboardType="phone-pad"
                       onChangeText={(text) =>
@@ -246,7 +252,7 @@ export default function AuthScreen() {
                   </View>
                   {userType === "eğitmen" && (
                     <TextInput
-                      className="border border-blue-300 p-3 rounded-xl bg-blue-50 mt-2"
+                      className="border border-blue-300 p-3 rounded-xl bg-white mt-2"
                       placeholder="Eğitmen Davet Kodu"
                       value={userData.invite_code}
                       onChangeText={(text) =>
@@ -280,6 +286,6 @@ export default function AuthScreen() {
           )}
         </ScrollView>
       </View>
-    </View>
+    </ScrollView>
   );
 }

@@ -1,6 +1,6 @@
 import { home } from "@/constants";
-import { Tabs } from "expo-router";
-import { Image } from "react-native";
+import { Tabs, router } from "expo-router";
+import { Image, TouchableOpacity } from "react-native";
 
 export default function TabsLayout() {
   return (
@@ -43,6 +43,14 @@ export default function TabsLayout() {
           title: "Sınavlar",
           headerShown: false,
           tabBarIcon: () => null,
+          tabBarButton: (props) => (
+            <TouchableOpacity
+              {...props}
+              onPress={() => {
+                router.push("/quiz");
+              }}
+            />
+          ),
         }}
       />
 

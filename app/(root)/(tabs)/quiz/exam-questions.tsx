@@ -61,8 +61,12 @@ export default function ExamQuestions() {
     setQuestionText("");
   };
 
-  if (isLoading) {
-    return <Text>Loading...</Text>;
+  if (isLoadingQuestions) {
+    return (
+      <View className="w-full h-full flex items-center justify-center">
+        <Text>Loading...</Text>
+      </View>
+    );
   }
 
   return (

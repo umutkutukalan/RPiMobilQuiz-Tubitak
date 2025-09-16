@@ -5,7 +5,7 @@ import { useGetActiveExams } from "@/hooks/Exam/useGetActiveExams";
 import { useGetScheduledExams } from "@/hooks/Exam/useGetScheduledExams";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 const TeacherRole = () => {
   const { user } = useAuth();
@@ -37,7 +37,7 @@ const TeacherRole = () => {
   }
 
   return (
-  <View className="flex-1 bg-[#39394A] pb-[80px]">
+    <View className="flex-1 bg-[#39394A] pb-[80px]">
       {/* Profil alanı - student-role ile aynı koyu tema ve detaylar */}
       <View
         className="w-full h-80 border-r border-l border-b border-white/10 flex flex-col justify-between px-6 py-2 relative"
@@ -88,8 +88,11 @@ const TeacherRole = () => {
               ) : (
                 <>
                   {activeExams.map((exam) => (
-                    <View
+                    <TouchableOpacity
                       key={exam.id}
+                      onPress={() =>
+                        router.push(`/quiz/exam-questions?examId=${exam.id}`)
+                      }
                       className="rounded-2xl bg-gradient-to-br from-blue-500 via-purple-500 to-blue-300 shadow-lg p-4"
                     >
                       <ExamItem
@@ -100,7 +103,7 @@ const TeacherRole = () => {
                         status={exam.status}
                         teacherId={exam.teacher_id}
                       />
-                    </View>
+                    </TouchableOpacity>
                   ))}
                 </>
               )}
@@ -118,8 +121,11 @@ const TeacherRole = () => {
               ) : (
                 <>
                   {scheduledExams.map((exam) => (
-                    <View
+                    <TouchableOpacity
                       key={exam.id}
+                      onPress={() =>
+                        router.push(`/quiz/exam-questions?examId=${exam.id}`)
+                      }
                       className="rounded-2xl bg-gradient-to-br from-orange-400 via-pink-400 to-red-300 shadow-lg p-4"
                     >
                       <ExamItem
@@ -130,7 +136,7 @@ const TeacherRole = () => {
                         status={exam.status}
                         teacherId={exam.teacher_id}
                       />
-                    </View>
+                    </TouchableOpacity>
                   ))}
                 </>
               )}
