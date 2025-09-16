@@ -36,71 +36,100 @@ const TeacherRole = () => {
   }
 
   return (
-    <View className="flex h-full">
-      <ScrollView className="mx-auto px-4 py-6 w-full max-w-md">
-        {/* Hero */}
-        <View className="relative overflow-hidden rounded-xl p-6 border border-gray-200 bg-white">
-          <View className="flex flex-col gap-6">
-            <View className="flex-1">
-              <View className="flex flex-row items-center gap-2">
-                <View className="w-12 h-12 rounded-full border border-gray-300"></View>
-                <Text className="text-xl font-bold">
-                  {user?.name} {user?.surname}
-                </Text>
-              </View>
-            </View>
+    <View className="flex-1 bg-[#18181B] pb-[100px]">
+      {/* Profil alanı - student-role ile aynı koyu tema ve detaylar */}
+      <View
+        className="w-full h-80 border-r border-l border-b border-white/10 flex flex-col justify-between px-6 py-2 relative"
+        style={{ borderBottomLeftRadius: 32, borderBottomRightRadius: 32 }}
+      >
+        <View className="flex flex-col items-center gap-2 pt-20">
+          <View className="w-[100px] h-[100px] rounded-full bg-[#18181B] border border-gray-700 flex items-center justify-center">
+            {/* Buraya öğretmen avatarı eklenebilir */}
+          </View>
+          <View className="flex flex-col items-center">
+            <Text className="text-white text-2xl font-bold">
+              {user?.name} {user?.surname}
+            </Text>
+            <Text className="text-gray-300 text-sm">
+              {user?.role || "Eğitmen"}
+            </Text>
           </View>
         </View>
+        {/* Profil ek bilgileri alt bar gibi en alta w-full */}
+        <View className="w-full flex-row flex-wrap justify-center gap-2 px-6 pb-2">
+          <View className="flex-row items-center gap-1">
+            <Text className="text-gray-400 text-sm">🎓</Text>
+            <Text className="text-white text-sm">Eğitmen</Text>
+          </View>
+          <View className="flex-row items-center gap-1">
+            <Text className="text-gray-400 text-sm">📚</Text>
+            <Text className="text-white text-sm">Quiz: 5</Text>
+          </View>
+          <View className="flex-row items-center gap-1">
+            <Text className="text-gray-400 text-sm">🧑‍🎓</Text>
+            <Text className="text-white text-sm">Öğrenci: 48</Text>
+          </View>
+        </View>
+      </View>
 
+      <ScrollView className="mx-auto px-4 py-6 w-full max-w-md">
         {/* Last seen */}
-        <View className="mt-6 flex flex-col gap-4">
-          <View className="">
-            <Text className="mb-3 text-lg font-semibold text-gray-800">
+        <View className="mt-5 flex flex-col gap-6">
+          <View>
+            <Text className="mb-3 text-lg font-semibold text-white">
               Aktif Sınavlar
             </Text>
-            <View className="space-y-3 flex flex-col">
+            <View className="flex flex-col gap-4">
               {activeExams.length === 0 ? (
-                <Text className="text-gray-500">
+                <Text className="text-gray-400">
                   Aktif sınav bulunmamaktadır.
                 </Text>
               ) : (
                 <>
                   {activeExams.map((exam) => (
-                    <ExamItem
+                    <View
                       key={exam.id}
-                      title={exam.exam_name}
-                      time={exam.exam_duration}
-                      startTime={exam.start_time}
-                      endTime={exam.end_time}
-                      status={exam.status}
-                      teacherId={exam.teacher_id}
-                    />
+                      className="rounded-2xl bg-gradient-to-br from-blue-500 via-purple-500 to-blue-300 shadow-lg p-4"
+                    >
+                      <ExamItem
+                        title={exam.exam_name}
+                        time={exam.exam_duration}
+                        startTime={exam.start_time}
+                        endTime={exam.end_time}
+                        status={exam.status}
+                        teacherId={exam.teacher_id}
+                      />
+                    </View>
                   ))}
                 </>
               )}
             </View>
           </View>
-          <View className="">
-            <Text className="mb-3 text-lg font-semibold text-gray-800">
+          <View>
+            <Text className="mb-3 text-lg font-semibold text-white">
               Başlatılmayı Bekleyen Sınavlar
             </Text>
-            <View className="space-y-3 flex flex-col gap-2">
+            <View className="flex flex-col gap-4">
               {scheduledExams.length === 0 ? (
-                <Text className="text-gray-500">
+                <Text className="text-gray-400">
                   Başlatılmayı bekleyen sınav bulunmamaktadır.
                 </Text>
               ) : (
                 <>
                   {scheduledExams.map((exam) => (
-                    <ExamItem
+                    <View
                       key={exam.id}
-                      title={exam.exam_name}
-                      time={exam.exam_duration}
-                      startTime={exam.start_time}
-                      endTime={exam.end_time}
-                      status={exam.status}
-                      teacherId={exam.teacher_id}
-                    />
+                      className="rounded-2xl bg-gradient-to-br from-orange-400 via-pink-400 to-red-300 shadow-lg p-4"
+                    >
+                      <ExamItem
+                        title={exam.exam_name}
+                        time={exam.exam_duration}
+                        startTime={exam.start_time}
+                        endTime={exam.end_time}
+                        status={exam.status}
+                        teacherId={exam.teacher_id}
+                      />
+                    </View>
                   ))}
                 </>
               )}

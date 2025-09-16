@@ -8,10 +8,10 @@ export default function ProfileScreen() {
   const router = useRouter();
   const { handleLogout } = useAuth();
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <SafeAreaView className="flex-1">
       <ScrollView className="flex-1">
         {/* Header with Profile Info */}
-        <View className="items-center px-6 py-8 bg-white">
+        <View className="items-center px-6 py-8">
           <Image
             source={{ uri: "/placeholder.svg?height=120&width=120" }}
             className="w-30 h-30 rounded-full mb-6"

@@ -55,7 +55,7 @@ export default function CreateExam() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-gray-100 p-4">
+    <ScrollView className="flex-1 bg-gray-100 px-4 py-20">
       <View className="gap-4 mb-20">
         <View className="bg-white rounded-2xl p-4">
           <Text className="font-bold text-lg mb-2">Sınav Adı</Text>

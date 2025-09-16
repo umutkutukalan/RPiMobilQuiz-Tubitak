@@ -42,7 +42,7 @@ export default function ScheduledExam() {
   }
 
   return (
-    <View className="h-full w-full p-5">
+    <View className="h-full w-full px-5 py-20">
       {/* Header Tabs */}
       <View className="flex flex-row rounded-lg bg-gray-200 mb-4 overflow-hidden">
         <TouchableOpacity

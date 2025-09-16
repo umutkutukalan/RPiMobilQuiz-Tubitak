@@ -45,7 +45,7 @@ export default function ExamList() {
   }
 
   return (
-    <View className="h-full w-full p-5">
+    <View className="h-full w-full p-5 pt-20">
       {/* Header Tabs */}
       <View className="flex flex-row rounded-lg bg-gray-200 mb-4 overflow-hidden">
         <TouchableOpacity
