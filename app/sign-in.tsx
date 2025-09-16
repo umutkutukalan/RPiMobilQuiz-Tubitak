@@ -43,7 +43,7 @@ export default function AuthScreen() {
         />
       </View>
       <View className="absolute left-1/2 top-[260px] w-44 h-44 rounded-full bg-blue-800 transform -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center">
-        <Text className="text-white text-6xl font-bold">RPQ</Text>
+        <Text className="text-white text-6xl font-bold">qrex</Text>
       </View>
       <View className="flex-1 justify-center px-5 mb-5">
         <ScrollView showsVerticalScrollIndicator={false} className="py-20">
