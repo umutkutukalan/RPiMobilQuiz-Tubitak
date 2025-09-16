@@ -1,10 +1,11 @@
 import ExamItem from "@/components/Exam/Examıtem";
+import { teacherprofile } from "@/constants";
 import { useAuth } from "@/context/AuthProvider";
 import { useGetActiveExams } from "@/hooks/Exam/useGetActiveExams";
 import { useGetScheduledExams } from "@/hooks/Exam/useGetScheduledExams";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, View } from "react-native";
 
 const TeacherRole = () => {
   const { user } = useAuth();
@@ -36,7 +37,7 @@ const TeacherRole = () => {
   }
 
   return (
-    <View className="flex-1 bg-[#18181B] pb-[100px]">
+  <View className="flex-1 bg-[#39394A] pb-[100px]">
       {/* Profil alanı - student-role ile aynı koyu tema ve detaylar */}
       <View
         className="w-full h-80 border-r border-l border-b border-white/10 flex flex-col justify-between px-6 py-2 relative"
@@ -44,7 +45,10 @@ const TeacherRole = () => {
       >
         <View className="flex flex-col items-center gap-2 pt-20">
           <View className="w-[100px] h-[100px] rounded-full bg-[#18181B] border border-gray-700 flex items-center justify-center">
-            {/* Buraya öğretmen avatarı eklenebilir */}
+            <Image
+              source={teacherprofile}
+              className="w-[100px] h-[100px] rounded-full bg-[#18181B]"
+            />
           </View>
           <View className="flex flex-col items-center">
             <Text className="text-white text-2xl font-bold">
