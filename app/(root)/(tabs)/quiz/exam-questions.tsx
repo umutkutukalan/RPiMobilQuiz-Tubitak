@@ -1,5 +1,6 @@
 import AddQuestion from "@/components/Questions/AddQuestion";
 import QuestionListItem from "@/components/Questions/QuestionListItem";
+import { teacherprofile } from "@/constants";
 import { useGetExamById } from "@/hooks/Exam/useGetExamById";
 import { formatDateTime } from "@/hooks/formatDateTime";
 import { useCreateQuestion } from "@/hooks/Question/useCreateQuestion";
@@ -71,15 +72,18 @@ export default function ExamQuestions() {
         <View className="w-full flex flex-row items-start justify-between">
           <View className="w-5/6 flex flex-col gap-2 justify-center">
             <View className="flex flex-row items-center gap-2">
-              <View className="w-6 h-6 rounded-full bg-gray-400">
+              <View className="w-10 h-10 rounded-full bg-gray-400">
                 <Image
-                  source={{ uri: userData?.profile_picture }}
+                  source={teacherprofile}
                   className="w-full h-full rounded-full"
                 />
               </View>
-              <Text className="text-lg">
-                {userData?.name} {userData?.surname}{" "}
-              </Text>
+              <View className="flex flex-col">
+                <Text className="text-sm">
+                  {userData?.name} {userData?.surname}{" "}
+                </Text>
+                <Text className="text-xs text-gray-500">Mobil Programlama</Text>
+              </View>
             </View>
             <Text className="text-4xl font-bold">{exam?.exam_name}</Text>
           </View>

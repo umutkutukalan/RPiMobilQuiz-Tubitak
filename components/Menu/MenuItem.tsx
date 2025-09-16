@@ -19,7 +19,7 @@ export const MenuItem = ({
     className="flex-row items-center justify-between py-4 px-6 bg-white rounded-2xl mb-3"
     onPress={onPress}
   >
-    <View className="flex-row items-center">
+    <View className="flex-row items-center gap-2">
       <View
         className={`w-12 h-12 rounded-full items-center justify-center mr-4`}
         style={{ backgroundColor: iconBgColor }}

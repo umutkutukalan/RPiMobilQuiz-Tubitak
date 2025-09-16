@@ -51,8 +51,8 @@ const TeacherRole = () => {
             />
           </View>
           <View className="flex flex-col items-center">
-            <Text className="text-white text-3xl font-bold">
-              {user?.name} {user?.surname}
+            <Text className="text-white text-2xl font-bold">
+              Dr. {user?.name} {user?.surname}
             </Text>
           </View>
         </View>
@@ -60,7 +60,7 @@ const TeacherRole = () => {
         <View className="w-full flex-row flex-wrap justify-center gap-2 px-6 pb-2">
           <View className="flex-row items-center gap-1">
             <Text className="text-gray-400 text-sm">🎓</Text>
-            <Text className="text-white text-sm">Eğitmen</Text>
+            <Text className="text-white text-sm">Öğretim Üyesi</Text>
           </View>
           <View className="flex-row items-center gap-1">
             <Text className="text-gray-400 text-sm">📚</Text>

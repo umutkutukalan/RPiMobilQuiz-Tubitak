@@ -41,7 +41,11 @@ export default function ExamList() {
   };
 
   if (isLoading) {
-    return <Text>Yükleniyor...</Text>;
+    return (
+      <View className="h-full w-full p-5 pt-20 flex justify-center items-center">
+        <Text>Loading...</Text>
+      </View>
+    );
   }
 
   return (
