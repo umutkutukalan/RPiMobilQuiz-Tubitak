@@ -38,7 +38,7 @@ const StudentRole = () => {
   };
 
   return (
-  <View className="flex-1 bg-[#18181B]">
+    <View className="flex-1 bg-[#18181B]">
       {" "}
       {/* Genel arka plan: açık gri */}
       {/* Üstte kullanıcı alanı - gri tonları, w-full, yüksekliği belirgin */}
@@ -46,17 +46,14 @@ const StudentRole = () => {
         className="w-full h-80 border-r border-l border-b border-white/10 flex flex-col justify-between px-6 py-2 relative"
         style={{ borderBottomLeftRadius: 32, borderBottomRightRadius: 32 }}
       >
-        <View className="flex flex-col items-center gap-2 pt-20">
+        <View className="flex flex-col items-center gap-4 pt-[70px]">
           <Image
             source={avatar}
             className="w-[100px] h-[100px] rounded-full bg-[#18181B]"
           />
           <View className="flex flex-col items-center">
-            <Text className="text-white text-2xl font-bold">
+            <Text className="text-white text-3xl font-bold">
               {user?.name} {user?.surname}
-            </Text>
-            <Text className="text-gray-300 text-sm">
-              {user?.role || "ornek@mail.com"}
             </Text>
           </View>
         </View>
@@ -76,7 +73,7 @@ const StudentRole = () => {
           </View>
         </View>
       </View>
-  <ScrollView className="flex-1">
+      <ScrollView className="flex-1">
         {/* Quiz kartları altına devam ediyor */}
         <View className="mt-8">
           <Text className="mx-6 mb-2 text-lg font-bold text-white">
@@ -86,9 +83,15 @@ const StudentRole = () => {
             <View className="w-full px-6">
               <View className="w-full p-6 rounded-2xl border border-white/10">
                 <View className="w-full flex flex-row items-center justify-between mb-2">
-                  <Text className="mb-2 bg-[#18181B] border border-white/10 self-start text-white px-3 py-1 rounded-md font-bold tracking-wide">
-                    Aktif Quiz
-                  </Text>
+                  <View className="flex flex-row items-center gap-2">
+                    <Text className="mb-2 bg-[#18181B] border border-white/10 self-start text-white px-3 py-1 rounded-md font-bold tracking-wide">
+                      Aktif Quiz
+                    </Text>
+                    <Text className="text-white text-xs">
+                      {"Süre: "}
+                      {activeExams[activeIndex].exam_duration}dk
+                    </Text>
+                  </View>
                   {/* Ok butonu - birden fazla quiz varsa */}
                   {activeExams.length > 1 && (
                     <TouchableOpacity
@@ -127,7 +130,7 @@ const StudentRole = () => {
                   </View>
                   <TouchableOpacity
                     onPress={() => takeToQuiz(activeExams[activeIndex].id)}
-                    className="px-6 py-2 rounded-full bg-[#18181B]"
+                    className="px-6 py-2 rounded-full bg-[#18181B] border border-white/10"
                   >
                     <Text className="text-white font-bold text-base">
                       Quize Katıl
@@ -186,7 +189,12 @@ const StudentRole = () => {
                       </Text>
                     </View>
                   </View>
-                  {/* Tamamlanan quizde buton olmayacak */}
+                  <View>
+                    <Text className="text-white text-xs">
+                      {"Süre: "}
+                      {activeExams[completedIndex].exam_duration}dk
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>

@@ -43,7 +43,7 @@ const TeacherRole = () => {
         className="w-full h-80 border-r border-l border-b border-white/10 flex flex-col justify-between px-6 py-2 relative"
         style={{ borderBottomLeftRadius: 32, borderBottomRightRadius: 32 }}
       >
-        <View className="flex flex-col items-center gap-2 pt-20">
+        <View className="flex flex-col items-center gap-4 pt-[70px]">
           <View className="w-[100px] h-[100px] rounded-full bg-[#18181B] border border-gray-700 flex items-center justify-center">
             <Image
               source={teacherprofile}
@@ -51,11 +51,8 @@ const TeacherRole = () => {
             />
           </View>
           <View className="flex flex-col items-center">
-            <Text className="text-white text-2xl font-bold">
+            <Text className="text-white text-3xl font-bold">
               {user?.name} {user?.surname}
-            </Text>
-            <Text className="text-gray-300 text-sm">
-              {user?.role || "Eğitmen"}
             </Text>
           </View>
         </View>
