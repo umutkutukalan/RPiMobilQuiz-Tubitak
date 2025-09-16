@@ -47,8 +47,8 @@ export default function AccountDetailsScreen({ navigation }: Props) {
 
   if (isLoading) {
     return (
-      <View className="w-full h-full flex-items-center justify-center">
-        <LoadingScreen />
+      <View className="w-full h-full flex items-center justify-center">
+        <Text>Loading...</Text>
       </View>
     );
   }

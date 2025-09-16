@@ -60,6 +60,14 @@ export default function TabsLayout() {
           title: "Profil",
           headerShown: false,
           tabBarIcon: () => null,
+          tabBarButton: (props) => (
+            <TouchableOpacity
+              {...props}
+              onPress={() => {
+                router.push("/user");
+              }}
+            />
+          ),
         }}
       />
     </Tabs>
