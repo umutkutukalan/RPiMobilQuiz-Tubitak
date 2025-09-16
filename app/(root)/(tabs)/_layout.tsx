@@ -1,16 +1,30 @@
+import { home } from "@/constants";
 import { Tabs } from "expo-router";
+import { Image } from "react-native";
 
 export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarShowLabel: true,
         tabBarStyle: {
-          backgroundColor: "white",
+          backgroundColor: "#18181B",
           position: "absolute",
-          borderTopColor: "#0061FF1A",
+          borderTopColor: "#ffffff1a",
           borderTopWidth: 1,
-          minHeight: 70,
+          minHeight: 50,
+          alignItems: "center",
+          justifyContent: "center",
+        },
+        tabBarLabelStyle: {
+          fontSize: 14,
+          fontWeight: "bold",
+          color: "#fff",
+          textAlign: "center",
+          alignSelf: "center",
+        },
+        tabBarItemStyle: {
+          justifyContent: "center",
+          alignItems: "center",
         },
       }}
     >
@@ -19,14 +33,16 @@ export default function TabsLayout() {
         options={{
           title: "Anasayfa",
           headerShown: false,
+          tabBarIcon: () => null,
         }}
       />
 
       <Tabs.Screen
         name="quiz"
         options={{
-          title: "Quiz",
+          title: "Sınavlar",
           headerShown: false,
+          tabBarIcon: () => null,
         }}
       />
 
@@ -35,6 +51,7 @@ export default function TabsLayout() {
         options={{
           title: "Profil",
           headerShown: false,
+          tabBarIcon: () => null,
         }}
       />
     </Tabs>

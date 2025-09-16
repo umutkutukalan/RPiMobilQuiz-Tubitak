@@ -5,7 +5,7 @@ import { View } from "react-native";
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <View className="flex-1 mt-20">
+      <View className="flex-1">
         <Stack screenOptions={{ headerShown: false }} />
       </View>
     </AuthProvider>

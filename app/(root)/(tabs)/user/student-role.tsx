@@ -1,44 +1,32 @@
-import config from "@/config/config";
+import { avatar } from "@/constants";
 import { useAuth } from "@/context/AuthProvider";
 import { useGetActiveExams } from "@/hooks/Exam/useGetActiveExams";
 import { useGetScheduledExams } from "@/hooks/Exam/useGetScheduledExams";
+import { useRegisterForTheExam } from "@/hooks/ExamForStudent/useRegisterForTheExam";
 import { formatDateTime } from "@/hooks/formatDateTime";
-import { useGetUserById } from "@/hooks/User/useGetUserById";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const StudentRole = () => {
+  // Tamamlanan quizler için index yönetimi
+  const [completedIndex, setCompletedIndex] = useState(0);
+  const handleNextCompletedQuiz = () => {
+    setCompletedIndex((prev) => (prev + 1 < activeExams.length ? prev + 1 : 0));
+  };
   const { user, token } = useAuth();
   const { getActiveExams, activeExams } = useGetActiveExams();
   const { getScheduledExams, scheduledExams } = useGetScheduledExams();
+  const { registerForTheExam } = useRegisterForTheExam();
 
   useEffect(() => {
     getActiveExams();
     getScheduledExams();
   }, []);
 
-  const getStudentExams = async () => {
-    try {
-      const response = await axios.get(
-        `${config.baseUrl}/Exam/student_active_exams`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log("Student Exams Response:", response.data);
-    } catch (error) {
-      console.error("Error fetching student exams:", error);
-      throw error;
-    }
+  const takeToQuiz = (examId: number) => {
+    registerForTheExam(examId);
   };
-
-  useEffect(() => {
-    getStudentExams();
-  }, []);
 
   console.log("Active Exams:", activeExams);
   console.log("Scheduled Exams:", scheduledExams);
@@ -50,38 +38,62 @@ const StudentRole = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
-      <ScrollView className="flex-1">
-        {/* Header */}
-        <View className="flex-row items-center justify-between px-6 py-4 bg-white">
-          <View className="flex-row items-center">
-            <Image className="w-12 h-12 rounded-full mr-3 bg-gray-300" />
-            <View>
-              <Text className="text-gray-600 text-sm">Hoş Geldin,</Text>
-              <Text className="text-blue-600 text-lg font-semibold">
-                {user?.name}
-                {" " + user?.surname}
-              </Text>
-              ,
-            </View>
+  <View className="flex-1 bg-[#18181B]">
+      {" "}
+      {/* Genel arka plan: açık gri */}
+      {/* Üstte kullanıcı alanı - gri tonları, w-full, yüksekliği belirgin */}
+      <View
+        className="w-full h-80 border-r border-l border-b border-white/10 flex flex-col justify-between px-6 py-2 relative"
+        style={{ borderBottomLeftRadius: 32, borderBottomRightRadius: 32 }}
+      >
+        <View className="flex flex-col items-center gap-2 pt-20">
+          <Image
+            source={avatar}
+            className="w-[100px] h-[100px] rounded-full bg-[#18181B]"
+          />
+          <View className="flex flex-col items-center">
+            <Text className="text-white text-2xl font-bold">
+              {user?.name} {user?.surname}
+            </Text>
+            <Text className="text-gray-300 text-sm">
+              {user?.role || "ornek@mail.com"}
+            </Text>
           </View>
         </View>
-
-        {/* Aktif Quizler - tek item w-full ve ok ile geçiş */}
-        <View className="mt-6">
-          <Text className="mx-6 mb-2 text-lg font-bold">Aktif Quizler</Text>
-          {activeExams.length > 0 && (
+        {/* Profil ek bilgileri alt bar gibi en alta w-full absolute */}
+        <View className="w-full flex-row flex-wrap justify-center gap-2 px-6 pb-2">
+          <View className="flex-row items-center gap-1">
+            <Text className="text-gray-400 text-sm">🎓</Text>
+            <Text className="text-white text-sm">Öğrenci</Text>
+          </View>
+          <View className="flex-row items-center gap-1">
+            <Text className="text-gray-400 text-sm">📚</Text>
+            <Text className="text-white text-sm">Quiz: 12</Text>
+          </View>
+          <View className="flex-row items-center gap-1">
+            <Text className="text-gray-400 text-sm">🏆</Text>
+            <Text className="text-white text-sm">Başarı: %78</Text>
+          </View>
+        </View>
+      </View>
+  <ScrollView className="flex-1">
+        {/* Quiz kartları altına devam ediyor */}
+        <View className="mt-8">
+          <Text className="mx-6 mb-2 text-lg font-bold text-white">
+            Aktif Quizler
+          </Text>
+          {activeExams.length > 0 && activeExams[activeIndex] && (
             <View className="w-full px-6">
-              <View className="w-full p-6 rounded-2xl border bg-white relative">
+              <View className="w-full p-6 rounded-2xl border border-white/10">
                 <View className="w-full flex flex-row items-center justify-between mb-2">
-                  <Text className="mb-2 bg-blue-500 self-start text-white px-3 py-1 rounded-md">
+                  <Text className="mb-2 bg-[#18181B] border border-white/10 self-start text-white px-3 py-1 rounded-md font-bold tracking-wide">
                     Aktif Quiz
                   </Text>
-                  {/* Ok butonu */}
+                  {/* Ok butonu - birden fazla quiz varsa */}
                   {activeExams.length > 1 && (
                     <TouchableOpacity
                       onPress={handleNextQuiz}
-                      className="bg-blue-500 w-10 h-10 rounded-full flex items-center justify-center"
+                      className="bg-[#18181B] w-10 h-10 rounded-full flex items-center justify-center border border-white/10"
                     >
                       <Text className="text-white text-xl">→</Text>
                     </TouchableOpacity>
@@ -89,31 +101,35 @@ const StudentRole = () => {
                 </View>
                 <View className="flex-row justify-between items-start mb-5">
                   <View>
-                    <Text className="text-xl font-bold"
-                    ellipsizeMode="tail"
-                    numberOfLines={2}
+                    <Text
+                      className="text-2xl font-extrabold text-white"
+                      ellipsizeMode="tail"
+                      numberOfLines={2}
                     >
-                      {activeExams[activeIndex]?.exam_name}
+                      {activeExams[activeIndex].exam_name}
                     </Text>
                   </View>
                 </View>
                 <View className="flex-row items-end justify-between">
                   <View>
-                    <View className="flex-row items-center gap-1">
-                      <Text style={{ fontSize: 10 }}>⏰</Text>
-                      <Text className="text-base">
-                        {formatDateTime(activeExams[activeIndex]?.start_time)}
+                    <View className="flex-row items-center gap-1 mb-1">
+                      <Text style={{ fontSize: 12, color: "#A1A1AA" }}>⏰</Text>
+                      <Text className="text-base text-white font-semibold">
+                        {formatDateTime(activeExams[activeIndex].start_time)}
                       </Text>
                     </View>
                     <View className="flex-row items-center gap-1">
-                      <Text style={{ fontSize: 10 }}>🏁</Text>
-                      <Text className="text-base">
-                        {formatDateTime(activeExams[activeIndex]?.end_time)}
+                      <Text style={{ fontSize: 12, color: "#A1A1AA" }}>🏁</Text>
+                      <Text className="text-base text-white font-semibold">
+                        {formatDateTime(activeExams[activeIndex].end_time)}
                       </Text>
                     </View>
                   </View>
-                  <TouchableOpacity className="bg-red-400 px-4 py-1 rounded-md">
-                    <Text className="text-white font-semibold text-base">
+                  <TouchableOpacity
+                    onPress={() => takeToQuiz(activeExams[activeIndex].id)}
+                    className="px-6 py-2 rounded-full bg-[#18181B]"
+                  >
+                    <Text className="text-white font-bold text-base">
                       Quize Katıl
                     </Text>
                   </TouchableOpacity>
@@ -122,31 +138,62 @@ const StudentRole = () => {
             </View>
           )}
         </View>
-
-        {/* Upcoming Tests */}
-        <View className="px-6 mt-8 pb-8">
-          <Text className="text-gray-800 text-xl font-bold mb-4">
+        {/* Tamamlanan Quizler alanı */}
+        <View className="mt-8">
+          <Text className="mx-6 mb-2 text-lg font-bold text-white">
             Tamamlanan Quizler
           </Text>
-
-          <View className="flex-row space-x-4">
-            {/* Chemistry Test */}
-            <TouchableOpacity className="flex-1 bg-gradient-to-br from-red-400 to-pink-500 p-6 rounded-2xl items-center">
-              <Text style={{ fontSize: 32 }}>📄</Text>
-              <Text className="text-lg font-bold mt-2">
-                İş Sağlığı Güvenliği
-              </Text>
-            </TouchableOpacity>
-
-            {/* Physics Test */}
-            <TouchableOpacity className="flex-1 bg-gradient-to-br from-purple-400 to-blue-500 p-6 rounded-2xl items-center">
-              <Text style={{ fontSize: 32 }}>📄</Text>
-              <Text className="text-lg font-bold mt-2">Algoritma II</Text>
-            </TouchableOpacity>
-          </View>
+          {activeExams.length > 0 && activeExams[completedIndex] && (
+            <View className="w-full px-6">
+              <View className="w-full p-6 rounded-2xl border bg-[#27272A] border-[#18181B]">
+                <View className="w-full flex flex-row items-center justify-between mb-2">
+                  <Text className="mb-2 bg-[#A1A1AA] self-start text-white px-3 py-1 rounded-md font-bold tracking-wide">
+                    Tamamlandı
+                  </Text>
+                  {/* Ok butonu - birden fazla quiz varsa */}
+                  {activeExams.length > 1 && (
+                    <TouchableOpacity
+                      onPress={handleNextCompletedQuiz}
+                      className="bg-[#18181B] w-10 h-10 rounded-full flex items-center justify-center"
+                    >
+                      <Text className="text-white text-xl">→</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+                <View className="flex-row justify-between items-start mb-5">
+                  <View>
+                    <Text
+                      className="text-2xl font-extrabold text-white"
+                      ellipsizeMode="tail"
+                      numberOfLines={2}
+                    >
+                      {activeExams[completedIndex].exam_name}
+                    </Text>
+                  </View>
+                </View>
+                <View className="flex-row items-end justify-between">
+                  <View>
+                    <View className="flex-row items-center gap-1 mb-1">
+                      <Text style={{ fontSize: 12, color: "#A1A1AA" }}>⏰</Text>
+                      <Text className="text-base text-white font-semibold">
+                        {formatDateTime(activeExams[completedIndex].start_time)}
+                      </Text>
+                    </View>
+                    <View className="flex-row items-center gap-1">
+                      <Text style={{ fontSize: 12, color: "#A1A1AA" }}>🏁</Text>
+                      <Text className="text-base text-white font-semibold">
+                        {formatDateTime(activeExams[completedIndex].end_time)}
+                      </Text>
+                    </View>
+                  </View>
+                  {/* Tamamlanan quizde buton olmayacak */}
+                </View>
+              </View>
+            </View>
+          )}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 export default StudentRole;
