@@ -144,7 +144,7 @@ export default function QuestionChoices() {
   const showServerChoices = Array.isArray(questionChoices) && questionChoices.length > 0;
 
   return (
-    <ScrollView className="w-full h-full p-5">
+    <ScrollView className="w-full h-full px-5 pt-20">
       <View className="flex flex-col gap-5">
         <View>
           <Text

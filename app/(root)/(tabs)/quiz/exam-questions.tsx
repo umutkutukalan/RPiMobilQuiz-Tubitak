@@ -67,7 +67,7 @@ export default function ExamQuestions() {
   return (
     <View className="w-full flex-1 bg-gray-100">
       {/* Fixed Header */}
-      <View className="w-full bg-white flex-col gap-2 border-b border-gray-300 p-4">
+      <View className="w-full bg-white flex-col gap-2 border-b border-gray-300 px-4 pb-4 pt-20">
         <View className="w-full flex flex-row items-start justify-between">
           <View className="w-5/6 flex flex-col gap-2 justify-center">
             <View className="flex flex-row items-center gap-2">
