@@ -24,8 +24,10 @@ const StudentRole = () => {
     getScheduledExams();
   }, []);
 
-  const takeToQuiz = (examId: number) => {
-    registerForTheExam(examId);
+  const takeToQuiz = (examId: number, userId: number) => {
+    console.log("Navigating to quiz with ID:", examId);
+    console.log("For user ID:", userId);
+    registerForTheExam(examId, userId);
   };
 
   console.log("Active Exams:", activeExams);
@@ -129,7 +131,9 @@ const StudentRole = () => {
                     </View>
                   </View>
                   <TouchableOpacity
-                    onPress={() => takeToQuiz(activeExams[activeIndex].id)}
+                    onPress={() =>
+                      takeToQuiz(activeExams[activeIndex].id, user?.id)
+                    }
                     className="px-6 py-2 rounded-full bg-[#18181B] border border-white/10"
                   >
                     <Text className="text-white font-bold text-base">

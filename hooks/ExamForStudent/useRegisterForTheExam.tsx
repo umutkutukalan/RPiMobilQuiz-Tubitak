@@ -3,9 +3,9 @@ import { RegisterForTheExamService } from "@/services/ExamForStudent/RegisterFor
 
 export const useRegisterForTheExam = () => {
   const { token } = useAuth();
-  const registerForTheExam = async (examId: number) => {
+  const registerForTheExam = async (examId: number, userId: number) => {
     try {
-      await RegisterForTheExamService(examId, String(token));
+      await RegisterForTheExamService(examId, userId, String(token));
       console.log("Successfully registered for the exam.");
     } catch (error) {
       console.error("Error registering for the exam:", error);

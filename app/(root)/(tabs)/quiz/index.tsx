@@ -95,13 +95,13 @@ export default function QuizScreen() {
             <View className="bg-white rounded-xl px-4 py-2 shadow">
               <Text className="text-xs text-gray-500">Başarı</Text>
               <Text className="text-lg font-bold text-blue-600">
-                {quizStats.success}
+                %78
               </Text>
             </View>
             <View className="bg-white rounded-xl px-4 py-2 shadow">
               <Text className="text-xs text-gray-500">Son Katılma Tarihi</Text>
               <Text className="text-lg font-bold text-pink-500">
-                {quizStats.last}
+                16 Eylül 2025
               </Text>
             </View>
           </View>

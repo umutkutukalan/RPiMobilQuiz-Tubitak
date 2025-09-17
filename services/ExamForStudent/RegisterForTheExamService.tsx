@@ -3,12 +3,14 @@ import axios from "axios";
 
 export const RegisterForTheExamService = async (
   examId: number,
+  userId: number,
   token: string
 ) => {
   try {
     const response = await axios.post(
-      `${config.baseUrl}/Enrollment/enroll_exam`,
+      `${config.baseUrl}/ExamEnrollment/enroll_exam`,
       {
+        student_id: userId,
         exam_id: examId,
       },
       {

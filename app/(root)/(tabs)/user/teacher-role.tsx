@@ -52,7 +52,7 @@ const TeacherRole = () => {
           </View>
           <View className="flex flex-col items-center">
             <Text className="text-white text-2xl font-bold">
-              Dr. {user?.name} {user?.surname}
+              Dr. Öğr. Üyesi {user?.name} {user?.surname}
             </Text>
           </View>
         </View>
@@ -80,7 +80,7 @@ const TeacherRole = () => {
             <Text className="mb-3 text-lg font-semibold text-white">
               Aktif Sınavlar
             </Text>
-            <View className="flex flex-col gap-4">
+            <View className="flex flex-col">
               {activeExams.length === 0 ? (
                 <Text className="text-gray-400">
                   Aktif sınav bulunmamaktadır.
@@ -113,7 +113,7 @@ const TeacherRole = () => {
             <Text className="mb-3 text-lg font-semibold text-white">
               Başlatılmayı Bekleyen Sınavlar
             </Text>
-            <View className="flex flex-col gap-4">
+            <View className="flex flex-col">
               {scheduledExams.length === 0 ? (
                 <Text className="text-gray-400">
                   Başlatılmayı bekleyen sınav bulunmamaktadır.
