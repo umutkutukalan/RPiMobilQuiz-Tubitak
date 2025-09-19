@@ -7,6 +7,7 @@ import { formatDateTime } from "@/hooks/formatDateTime";
 import { useEffect, useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 
 const StudentRole = () => {
   // Tamamlanan quizler için index yönetimi
@@ -18,6 +19,7 @@ const StudentRole = () => {
   const { getActiveExams, activeExams } = useGetActiveExams();
   const { getScheduledExams, scheduledExams } = useGetScheduledExams();
   const { registerForTheExam } = useRegisterForTheExam();
+  const router = useRouter();
 
   useEffect(() => {
     getActiveExams();
@@ -27,6 +29,25 @@ const StudentRole = () => {
   const takeToQuiz = (examId: number, userId: number) => {
     console.log("Navigating to quiz with ID:", examId);
     console.log("For user ID:", userId);
+
+    // Sınav verilerini exam-choices-for-student.tsx sayfasına ilet
+    const examData = activeExams.find((exam) => exam.id === examId);
+    if (examData) {
+      router.push({
+        pathname: "/quiz/exam-choices-for-student",
+        params: {
+          examId: examId,
+          userId: userId,
+          examName: examData.exam_name,
+          examDuration: examData.exam_duration,
+          startTime: examData.start_time,
+          endTime: examData.end_time,
+          status: examData.status,
+          teacherId: examData.teacher_id,
+        },
+      });
+    }
+
     registerForTheExam(examId, userId);
   };
 
